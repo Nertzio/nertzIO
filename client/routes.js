@@ -5,7 +5,7 @@ import {Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
 import {Main, Login, Signup, UserHome} from './components'
-import {me} from './store'
+import {me, updateReduxUsersUponDbUpdates} from './store'
 import firebase from 'firebase'
 import secrets from '../secrets'
 
@@ -13,40 +13,44 @@ import secrets from '../secrets'
 /* FIREBASE */
   // Initialize Firebase
 
-  firebase.initializeApp(secrets.firebaseConfig);
+  // firebase.initializeApp(secrets.firebaseConfig);
 
-  const database = firebase.database()
+  // const database = firebase.database()
 
-  var users = database.ref('users/');
-  users.on('value', function(snapshot) {
-    console.log(snapshot.val());
-  });
-
-
-
-  database.ref('users/' + 15).set({
-    name: 'Bob',
-    score: 3
-  });
-
-  let score = 3
-
- // document.querySelector('body').addEventListener("click", () => {
- //    score++
- //    database.ref('users/15').push({
- //        score: score
- //    })
- //  })
-
-  document.querySelector('body').addEventListener("click", () => {
-
-  })
+  // var users = database.ref('users/');
+  // users.on('value', function(snapshot) {
+  //   console.log(snapshot.val());
+  // });
 
 
-  // database.ref('users/').once('value')
-  //   .then(snapshot => {
-  //     console.log('snapshot: ', snapshot, 'snapshot.val(): ', snapshot.val())
-  //   })
+  // database.ref('users/' + 15).set({
+  //   name: 'Bob',
+  //   score: 3
+  // });
+
+  // database.ref('users/15').update({
+  //   score: 45
+  // })
+  //   .then(() => )
+//   let score = 3
+
+//  // document.querySelector('body').addEventListener("click", () => {
+//  //    score++
+//  //    database.ref('users/15').push({
+//  //        score: score
+//  //    })
+//  //  })
+
+//   document.querySelector('body').addEventListener("click", () => {
+
+//   })
+
+
+//   // database.ref('users/').once('value')
+//   //   .then(snapshot => {
+//   //     console.log('snapshot: ', snapshot, 'snapshot.val(): ', snapshot.val())
+//   //   })
+
 
 /**
  * COMPONENT
@@ -96,7 +100,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     loadInitialData () {
-      dispatch(me())
+      dispatch(me());
+      dispatch(updateReduxUsersUponDbUpdates());
     }
   }
 }

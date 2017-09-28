@@ -1,21 +1,44 @@
-import React from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {updateScore} from '../store'
+import {updateUserScore, fetchUsers, updateReduxUsersUponDbUpdates} from '../store'
 
 /**
  * COMPONENT
  */
-export const UserInfo = (props) => {
-  const {name, email, score} = props.user
+export class UserInfo extends Component {
+  constructor(props){
+    super(props);
+  }
 
-  return (
-    <div>
-      <h3>Name: {name}</h3>
-      <h3>Email: {email}</h3>
-      <h3>Score: {score}</h3>
-    </div>
-  )
+  componentDidMount(){
+    this.props.fetchUsers()
+
+  }
+
+  //updateReduxUsersUponDbUpdates and fetchUsers
+  render() {
+    const userKeys = Object.keys(this.props.users)
+    const users = userKeys.map(key => {
+        this.props.users[key].id = key;
+      return this.props.users[key];
+
+    })
+    console.log('PROPS USERS', users)
+    return (
+      <div>
+      {
+        users.map((user) => (
+          <div key={user.id} onClick={() => {this.props.updateUserScore(user)}}>
+            <h3>Name or Username: {user.name || user.username}</h3>
+            <h3>Email: {user.email}</h3>
+            <h3>Score: {user.score}</h3>
+          </div>
+        ))
+      }
+      </div>
+    )
+  }
 }
 
 /**
@@ -23,11 +46,11 @@ export const UserInfo = (props) => {
  */
 const mapState = (state) => {
   return {
-    user: state.user
+    users: state.userInfo
   }
 }
 
-const mapDispatch = {updateScore}
+const mapDispatch = {updateUserScore, fetchUsers, updateReduxUsersUponDbUpdates}
 
 export default connect(mapState, mapDispatch)(UserInfo)
 

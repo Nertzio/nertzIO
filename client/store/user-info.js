@@ -1,13 +1,14 @@
 import axios from 'axios'
 import history from '../history'
 import firebase from 'firebase'
+import secrets from '../../secrets'
+firebase.initializeApp(secrets.firebaseConfig);
 const database = firebase.database()
-
 
 /**
  * ACTION TYPES
  */
-const CHANGE_SCORE = 'CHANGE_SCORE'
+const ADJUST_USER = 'ADJUST_USER'
 const GET_USERS = 'GET_USERS'
 
 /**
@@ -18,13 +19,13 @@ const defaultUsers = {}
 /**
  * ACTION CREATORS
  */
-const changeScore = (user) => ({type: CHANGE_SCORE, user})
+const adjustUser = (users) => ({type: ADJUST_USER, users})
 const getUsers = (users) => ({type: GET_USERS, users})
 
 /**
  * THUNK CREATORS
  */
-const fetchUsers = () =>
+export const fetchUsers = () =>
   dispatch => {
     const users = database.ref('users/');
     users.once('value')
@@ -33,13 +34,27 @@ const fetchUsers = () =>
   }
 
 
-const updateScore = (user) =>
-  dispatch => {
+export const updateUserScore = (user) =>
+  () => {
     const thunkScore = user.score + 1
-    database.ref('/users/15').update({
+    database.ref(`/users/${user.id}`).update({
       score: thunkScore
     })
+    .then(() => console.log('user updated in firebase'))
+    .catch((err) => console.error(err))
   }
+
+  /**
+ * FUNKY THUNKS
+ */
+
+  export const updateReduxUsersUponDbUpdates = () => (
+    dispatch => {
+      database.ref('users/').on('value', function(snapshot) {
+        dispatch(adjustUser(snapshot.val()))
+      });
+    }
+  )
 
 
 /**
@@ -49,8 +64,8 @@ export default function (state = defaultUsers, action) {
   switch (action.type) {
     case GET_USERS:
       return action.users
-    case CHANGE_SCORE:
-      return action.user
+    case ADJUST_USER:
+      return action.users
     default:
       return state
   }
