@@ -19,22 +19,27 @@ import secrets from '../secrets'
 
   var users = database.ref('users/');
   users.on('value', function(snapshot) {
-    createNewUser(postElement, snapshot.val());
+    console.log(snapshot.val());
   });
 
 
 
-
-  database.ref('users/' + 12).set({
+  database.ref('users/' + 15).set({
+    name: 'Bob',
     score: 3
   });
 
+  let score = 3
+
+ // document.querySelector('body').addEventListener("click", () => {
+ //    score++
+ //    database.ref('users/15').push({
+ //        score: score
+ //    })
+ //  })
+
   document.querySelector('body').addEventListener("click", () => {
-    firebase.ref().update({
-      '/users/12': {
-        score: 5
-      }
-    })
+
   })
 
 
