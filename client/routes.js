@@ -20,7 +20,7 @@ class Routes extends Component {
       <Router history={history}>
         <Main>
           <Switch>
-            <Route path="/play" component={GameArea} />
+            <Route component={GameArea} />
           </Switch>
         </Main>
       </Router>
