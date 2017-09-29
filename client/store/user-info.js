@@ -4,6 +4,7 @@ import firebase from 'firebase'
 import secrets from '../../secrets'
 firebase.initializeApp(secrets.firebaseConfig);
 const database = firebase.database()
+import firebaseInit from '../../REFERENCE';
 
 /**
  * ACTION TYPES
@@ -37,9 +38,9 @@ export const fetchUsers = () =>
 export const updateUserScore = (user) =>
   () => {
     const thunkScore = user.score + 1
-    database.ref(`/users/${user.id}`).update({
+    database.ref(/* `/users/${user.id}` */).update(firebaseInit/* {
       score: thunkScore
-    })
+    } */)
     .then(() => console.log('user updated in firebase'))
     .catch((err) => console.error(err))
   }

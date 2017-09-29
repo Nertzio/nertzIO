@@ -2,7 +2,13 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {updateUserScore, fetchUsers, updateReduxUsersUponDbUpdates} from '../store'
+import deck from 'decked';
 
+console.log(deck({ace: 'low', jokers: false})())
+const handleMouseMove = (evt) => {
+  console.log('x: ', evt.screenX, 'y: ', evt.screenY);
+}
+window.addEventListener('mousemove', handleMouseMove, true)
 /**
  * COMPONENT
  */
@@ -33,6 +39,7 @@ export class UserInfo extends Component {
             <h3>Name or Username: {user.name || user.username}</h3>
             <h3>Email: {user.email}</h3>
             <h3>Score: {user.score}</h3>
+            <h3>Card Stacks: {JSON.stringify(user.cardStacks)}</h3>
           </div>
         ))
       }
