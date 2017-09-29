@@ -5,4 +5,4 @@
  */
 export {default as Main} from './main'
 export {default as GameArea} from './GameArea';
-export {default as UserInfo} from './user-info'
+// export {default as UserInfo} from './user-info'

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {UserInfo} from '../components';
+//import {UserInfo} from '../components';
 import {Stack} from './Stack';
 
 const cards = [

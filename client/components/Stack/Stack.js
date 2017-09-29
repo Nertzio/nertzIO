@@ -1,12 +1,25 @@
 import React from 'react'
+import Card from './Card'
+
 const Stack = ({cards}) => {
   return (
     <div>
       {cards.map((card, idx) => {
-        <Card key={idx} style={{zIndex: idx}} {...card} />
+        return <Card key={idx} style={styles.card} {...card} />
       })}
     </div>
   )
+}
+
+const styles = {
+      card: {
+            border: '1px gray solid',
+            position: 'absolute',
+            width: '80px',
+            height: '105px',
+            margin: '0 auto',
+            zIndex: 2,
+      }
 }
 
 export default Stack;
