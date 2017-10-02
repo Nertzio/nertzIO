@@ -41,6 +41,7 @@ const cardSource = {
     number,
     isFaceUp,
     belongsTo,
+    stackPosition,
   }) {
     return { // accessed by DropTargetMonitor.getItem()
       suit,
@@ -48,7 +49,11 @@ const cardSource = {
       number,
       isFaceUp,
       belongsTo,
+      stackPosition,
     }
+  },
+  endDrag(props, monitor){
+    // props.fbaseRef.remove()
   }
 }
 

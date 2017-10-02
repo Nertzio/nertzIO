@@ -3,6 +3,7 @@ import {Stack} from '../../components';
 import PropTypes from 'prop-types';
 import {DropTarget} from 'react-dnd';
 import ItemTypes from '../../DragNDrop/constants';
+import {pushCardToStackByPlayer} from '../../firebase/firebase_utils';
 
 const StackSolitaire = ({cards}) => {
   const faceUpCards = cards.map(card => {
@@ -28,7 +29,7 @@ const solitaireTarget = {
     const playerKey = props.playerKey // add a playerKey to props?
     const stackKey = props.stackKey // add a stackKey to props?
     const cardData = monitor.getItem()
-    niftyFirebaseUtil.pushCardToStackByPlayer(cardData, stackKey)
+    pushCardToStackByPlayer(cardData, stackKey)
   }
 }
 

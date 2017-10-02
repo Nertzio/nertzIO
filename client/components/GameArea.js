@@ -47,6 +47,7 @@ const styles = {
 }
 
 const mapState = ({
+
   p1BigStack,
   p1DrawnStack,
   p1LittleStack,
@@ -56,7 +57,9 @@ const mapState = ({
   p1Solitaire4Stack,
 }) => ({
   p1Cards: {
-      BigStack: p1BigStack,
+      BigStack: {
+        card: p1BigStack,
+        fbaseRef:
       DrawnStack: p1DrawnStack,
       LittleStack: p1LittleStack,
       Solitaire1Stack: p1Solitaire1Stack,

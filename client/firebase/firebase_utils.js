@@ -40,7 +40,7 @@ export const initPlayerAreaByNum = (playerNum) => {
   const Solitaire2Stack = cards.slice(49, 50);
   const Solitaire3Stack = cards.slice(50, 51);
   const Solitaire4Stack = cards.slice(51);
-  const updatePlayer = playerRef.update({
+  const updatePlayer = playerRef.child('stacks').update({
     [`p${playerNum}BigStack`]: BigStack,
     [`p${playerNum}DrawnStack`]: DrawnStack,
     [`p${playerNum}LittleStack`]: LittleStack,
@@ -92,8 +92,16 @@ export const initGame = () => {
 
 
 export const pushCardToStackByPlayer = (cardData, stackKey) => {
+  const {belongsTo, belongsToStack} = cardData;
+
+  const fromStack = currentGame.child(`players/${belongsTo}/stacks/${belongsToStack}/${cardData.stackPosition}`)
+
+  cardData.belongsToStack
+  cardData.belongsToStack = stackKey;
   const stack = currentGame.child(`players/${cardData.belongsTo}/stacks/${stackKey}`)
-  stack.push(cardData)
+
+  const newKey = stack.val().length
+  stack.update({[newKey]: cardData})
 }
 
 
