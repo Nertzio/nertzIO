@@ -11,7 +11,7 @@ const gameReducer = (game = GAME, action) => {
   const {type, gameRef} = action;
   switch (type) {
     case SET_GAME_REF:
-      return {...game, gameRef};
+      return gameRef;
     default:
       return game;
   }
