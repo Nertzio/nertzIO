@@ -1,6 +1,8 @@
 import React from 'react'
 import {Stack} from '../../components';
 import PropTypes from 'prop-types';
+import {DropTarget} from 'react-dnd';
+import ItemTypes from '../../DragNDrop/constants';
 
 const StackSolitaire = ({cards}) => {
   const faceUpCards = cards.map(card => {
@@ -19,5 +21,24 @@ const StackSolitaire = ({cards}) => {
   )
 }
 
+const solitaireTarget = {
+  drop(props, monitor) {
+    // TODO: get the data from dropped card (monitor.getItem())
+    // and tell firebase to push this card onto the designated stack
+    const playerKey = props.playerKey // add a playerKey to props?
+    const stackKey = props.stackKey // add a stackKey to props?
+    const cardData = monitor.getItem()
+    niftyFirebaseUtil.pushCardToStackByPlayer(cardData, stackKey, playerKey)
+  }
+}
 
-export default StackSolitaire;
+function collect(connect, monitor) {
+  return {
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+    canDrop: monitor.canDrop(),
+  }
+}
+
+
+export default DropTarget(ItemTypes.Card, solitaireTarget, collect)(StackSolitaire);

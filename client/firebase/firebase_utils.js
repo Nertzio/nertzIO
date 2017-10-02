@@ -8,8 +8,10 @@ import store, {
   updateP1Solitaire3Stack,
   updateP1Solitaire4Stack,
 } from '../redux';
+
 const {dispatch} = store;
 import {shuffleNewDeckForPlayer} from '../gameUtils';
+import {registerUpdateListeners} from './registerUpdateListeners';
 import firebase from 'firebase';
 const db = firebase.database();
 
@@ -79,6 +81,7 @@ export const initGame = () => {
   return addNewGame()
     .then(() => setPlayersToGameRef(hardCodedPlayers))
     .then(() => initPlayerAreaByNum(1))
+    .then(() => registerUpdateListeners())
     .catch(console.error.bind(console))
       // add players
       // generate player area stacks

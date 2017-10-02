@@ -1,26 +1,7 @@
 import React from 'react';
 import { CardFront, CardBack } from '../Stack';
 import { DragSource } from 'react-dnd'
-
-const cardSource = {
-  beginDrag(props) {
-    return {}
-  }
-}
-
-const ItemTypes = {
-    CARD: 'card'
-}
-
-
-function collect(connect, monitor) {
-  return {
-    connectDragSource: connect.dragSource(),
-    connectDragPreview: connect.dragPreview(),
-    isDragging: monitor.isDragging(),
-  }
-}
-
+import ItemTypes from '../../DragNDrop/constants';
 
 const Card = (props) => {
   const {
@@ -53,6 +34,31 @@ const Card = (props) => {
   )
 }
 
+const cardSource = {
+  beginDrag({
+    suit,
+    name,
+    number,
+    isFaceUp,
+    belongsTo,
+  }) {
+    return { // accessed by DropTargetMonitor.getItem()
+      suit,
+      name,
+      number,
+      isFaceUp,
+      belongsTo,
+    }
+  }
+}
+
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    connectDragPreview: connect.dragPreview(),
+    isDragging: monitor.isDragging(),
+  }
+}
 
 export default DragSource(ItemTypes.CARD, cardSource, collect)(Card)
 

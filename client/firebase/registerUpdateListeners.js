@@ -15,19 +15,20 @@ const game = store.getState().game
 
 /*  Work in progress of creating listeners for each stack: */
 
-// db.ref(`games/${game.key}/players`).once('value')
-//   .then((playersSnapshot) => {
-//     playersSnapshot.forEach(playerSnapshot => {
-//       playerSnapshot.child('stacks').forEach(stack => {
-//           let stackId = stack.key;
-//           let actionCreator = 'update' + stackId
-
-//           stack.ref.on('value', stackSnapshot => {
-//             store.dispatch(store.actionCreator())
-//           })
-//         })
-//     })
-//   })
+export function registerUpdateListeners() {
+  db.ref(`games/${game.key}/players`).once('value')
+  .then((playersSnapshot) => {
+    playersSnapshot.forEach(playerSnapshot => {
+      const playerKey = playerSnapshop.key
+      playerSnapshot.child('stacks').forEach(stack => {
+        let stackKey = stack.key;
+        stack.ref.on('value', stackSnapshot => {
+          updateStackByPlayer(stackKey, stackSnapshot.val())
+        })
+      })
+    })
+  })
+}
 
 
 

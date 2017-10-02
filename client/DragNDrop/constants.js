@@ -1,0 +1,3 @@
+const ItemTypes = {
+  CARD: 'card'
+}
