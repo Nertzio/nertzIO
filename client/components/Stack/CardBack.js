@@ -19,6 +19,7 @@ const styles = {
   cardBack: {
     backgroundColor: 'red',
     color: 'white',
+    height: '100%',
   }
 }
 

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {withRouter, Link} from 'react-router-dom'
-import {logout} from '../store'
+import {logout} from '../redux'
 // import {UserInfo} from './index'
 
 // All other components are a child of Main.

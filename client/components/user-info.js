@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {updateUserScore, fetchUsers, updateReduxUsersUponDbUpdates} from '../store'
+import {updateUserScore, fetchUsers, updateReduxUsersUponDbUpdates} from '../redux'
 import deck from 'decked';
 
 console.log(deck({ace: 'low', jokers: false})())

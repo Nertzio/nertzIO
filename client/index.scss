@@ -1,15 +1,18 @@
 
 html {
   background-color: #63A2A7;
-  height: '100vh';
+  height: 100vh;
   box-sizing: 'border-box';
   *, *:before, *:after {
     box-sizing: inherit;
   }
   body {
     font-family: sans-serif;
-    height: '100vh';
-    position: relative;
+    height: 100vh;
+
+    #app {
+      height: 100vh;
+    }
 
     a {
       text-decoration: none;

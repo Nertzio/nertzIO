@@ -1,10 +1,3 @@
-// import CardFront and CardBack
-/* if card.isFaceUp
-      then render CardFront
-   else
-      render CardBack
- */
-
 import React from 'react';
 import { CardFront, CardBack } from '../Stack';
 
@@ -15,32 +8,19 @@ const Card = (props) => {
     number,
     isFaceUp,
     belongsTo,
-    dynamicStyles,
-    x, y, z
-      } = props;
-
-
-  // const toggleListenForDragCard = function (event, on){
-  //   if (on){
-
-  //   } else {
-
-  //   }
-  // }
-  // const listenForDragCard = (event) => {
-  //   const handleMouseMove = (evt) => {
-  //     event.target.style[left] = evt.screenX;
-  //     event.target.style[top] = evt.screenY;
-  //   }
-  //   window.addEventListener('mousemove', handleMouseMove, true);
-  // }
-
-  // const stopListeningForDragCard = () => {
-  //   window.removeEventListener('mousemove', handleMouseMove)
-  // }
+    stackPosition
+   } = props;
 
   return (
-    <div style={{ ...styles.card, ...dynamicStyles }}>
+    <div style={{
+      border: '1px gray solid',
+      position: 'absolute',
+      height: '100%',
+      margin: '0 auto',
+      transform: `translate(0px, ${stackPosition * 1}px)`,
+      width: '80%',
+      zIndex: stackPosition,
+    }}>
       {isFaceUp
         ? <CardFront {...props} />
         : <CardBack {...props} />
@@ -49,24 +29,5 @@ const Card = (props) => {
   )
 }
 
-const styles = {
-  card: {
-    border: '1px gray solid',
-    position: 'absolute',
-    width: '80px',
-    height: '105px',
-    margin: '0 auto'
-  }
-}
-
-
-// const styles = {
-//  card: {
-//  border: '1px gray solid',
-//  width: '75px',
-//  height: '105px',
-//  margin: '0 auto',
-//  }
-// }
 
 export default Card;

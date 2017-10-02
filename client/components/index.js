@@ -5,4 +5,8 @@
  */
 export {default as Main} from './main'
 export {default as GameArea} from './GameArea';
+export * from './CardField';
+export * from './Player';
+export * from './Stack';
+export * from './WaitingRoom';
 // export {default as UserInfo} from './user-info'

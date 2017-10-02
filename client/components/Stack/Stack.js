@@ -1,19 +1,22 @@
 import React from 'react'
 import Card from './Card'
+import PropTypes from 'prop-types';
 
 const Stack = ({cards}) => {
 
-
+  const renderCards = () => {
+    return cards.map((cardData, idx) => {
+      return <Card key={idx} stackPosition={idx} {...cardData} />
+    })
+  }
 
   return (
-    <div>
-      {cards.map((card, idx) => {
-        const cardStyle = {
-          zIndex: idx,
-          transform: `translate(${idx * 15}px, ${idx * 15}px)`
-        }
-        return <Card key={idx} dynamicStyles={cardStyle} {...card} />
-      })}
+    <div style={{
+      height: '100%',
+      position: 'relative', // so absolute-positioned cards will stack
+      width: '100%',
+    }}>
+      {renderCards()}
     </div>
   )
 }
