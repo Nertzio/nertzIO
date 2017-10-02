@@ -1,5 +1,26 @@
 import React from 'react';
 import { CardFront, CardBack } from '../Stack';
+import { DragSource } from 'react-dnd'
+
+const cardSource = {
+  beginDrag(props) {
+    return {}
+  }
+}
+
+const ItemTypes = {
+    CARD: 'card'
+}
+
+
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    connectDragPreview: connect.dragPreview(),
+    isDragging: monitor.isDragging(),
+  }
+}
+
 
 const Card = (props) => {
   const {
@@ -11,8 +32,11 @@ const Card = (props) => {
     stackPosition
    } = props;
 
-  return (
+   const { connectDragSource, isDragging } = props
+
+  return connectDragSource(
     <div style={{
+      opacity: isDragging ? 0.5 : 1,
       border: '1px gray solid',
       position: 'absolute',
       height: '100%',
@@ -30,4 +54,5 @@ const Card = (props) => {
 }
 
 
-export default Card;
+export default DragSource(ItemTypes.CARD, cardSource, collect)(Card)
+

@@ -3,6 +3,10 @@ import {Stack} from '../../components';
 import PropTypes from 'prop-types';
 
 const StackSolitaire = ({cards}) => {
+  const faceUpCards = cards.map(card => {
+    card['isFaceUp'] = true
+    return card
+  })
 
   return (
     <div style={{
@@ -10,7 +14,7 @@ const StackSolitaire = ({cards}) => {
       height: '100%',
       flex: '1 10%'
     }}>
-      <Stack cards={cards}/>
+      <Stack cards={faceUpCards}/>
     </div>
   )
 }

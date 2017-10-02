@@ -11,6 +11,8 @@ import {
   p1Solitaire3Stack,
   p1Solitaire4Stack,
 } from '../redux';
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 
 class  GameArea extends Component {
 
@@ -66,5 +68,6 @@ const mapState = ({
 
 const mapDispatch = null;
 
-export default connect(mapState, mapDispatch)(GameArea);
+const connectedGameArea = connect(mapState, mapDispatch)(GameArea);
 
+export default DragDropContext(HTML5Backend)(connectedGameArea)
