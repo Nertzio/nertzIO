@@ -1,6 +1,6 @@
 import firebase from 'firebase'
 import secrets from '../secrets'
-firebase.initializeApp(secrets.firebase);
+firebase.initializeApp(secrets.firebaseConfig);
 firebase.database.enableLogging(message => console.log("[FIREBASE] ", message));
 const db = firebase.database();
 
