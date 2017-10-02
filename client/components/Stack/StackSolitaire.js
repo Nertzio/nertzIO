@@ -28,7 +28,7 @@ const solitaireTarget = {
     const playerKey = props.playerKey // add a playerKey to props?
     const stackKey = props.stackKey // add a stackKey to props?
     const cardData = monitor.getItem()
-    niftyFirebaseUtil.pushCardToStackByPlayer(cardData, stackKey, playerKey)
+    niftyFirebaseUtil.pushCardToStackByPlayer(cardData, stackKey)
   }
 }
 

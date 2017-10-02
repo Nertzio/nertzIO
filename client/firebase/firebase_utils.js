@@ -14,10 +14,12 @@ import {shuffleNewDeckForPlayer} from '../gameUtils';
 import {registerUpdateListeners} from './registerUpdateListeners';
 import firebase from 'firebase';
 const db = firebase.database();
+let currentGame;
 
 export const addNewGame = () => {
   const newGameRef = db.ref('games').push();
   dispatch(setGameRef(newGameRef));
+  currentGame = newGameRef
   return newGameRef;
 }
 // ^ returns thenable ref to game instance
@@ -87,3 +89,11 @@ export const initGame = () => {
       // generate player area stacks
       // set card field
 }
+
+
+export const pushCardToStackByPlayer = (cardData, stackKey) => {
+  const stack = currentGame.child(`players/${cardData.belongsTo}/stacks/${stackKey}`)
+  stack.push(cardData)
+}
+
+
