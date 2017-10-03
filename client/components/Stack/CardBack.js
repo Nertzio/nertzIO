@@ -5,14 +5,13 @@
 import React from 'react';
 
 const CardBack = (props) => {
-      const {
-           belongsTo,
-      } = props;
-      return (
-            <div style={styles.cardBack}>
-                <p>Player {belongsTo}</p>
-            </div>
-      )
+  const { belongsTo } = props;
+
+  return (
+    <div style={styles.cardBack}>
+        <p>Player {belongsTo}</p>
+    </div>
+  )
 }
 
 const styles = {

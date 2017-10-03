@@ -52,13 +52,11 @@ const cardSource = {
     }
   },
   endDrag({firebaseStackRef, stackPosition}, monitor){
-    console.log("Ended Drag!")
     if (monitor.didDrop()) {
-      console.log("Dropped per Source!")
       firebaseStackRef.once('value')
       .then(stackSnapShot => {
-        if (stackSnapShot.numChildren === 1) {
-          firebaseStackRef.set('empty');
+        if (stackSnapShot.numChildren() === 1) {
+          firebaseStackRef.set(false);
         } else {
           firebaseStackRef.child(stackPosition).remove()
         }

@@ -8,17 +8,18 @@
 import React from 'react';
 
 const CardFront = (props) => {
-      const {
-            suit,
-            name,
-            number,
-      } = props;
-      return (
-            <div style={styles.cardFront}>
-                <span>{name} </span>
-                <span>{suit}</span>
-            </div>
-      )
+  const {
+    suit,
+    name,
+    number,
+  } = props;
+
+  return (
+    <div style={styles.cardFront}>
+      <span>{name} </span>
+      <span>{suit}</span>
+    </div>
+  )
 }
 
 const styles = {

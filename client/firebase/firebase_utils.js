@@ -130,19 +130,3 @@ export const enterGame = (gameId) => {
   })
   .then(() => registerUpdateListeners())
 }
-
-
-// export const pushCardToStackByPlayer = (cardData, stackKey) => {
-//   const {belongsTo, belongsToStack} = cardData;
-
-//   const fromStack = currentGame.child(`players/${belongsTo}/stacks/${belongsToStack}/${cardData.stackPosition}`)
-
-//   cardData.belongsToStack
-//   cardData.belongsToStack = stackKey;
-//   const stack = currentGame.child(`players/${cardData.belongsTo}/stacks/${stackKey}`)
-
-//   const newKey = stack.val().length
-//   stack.update({[newKey]: cardData})
-// }
-
-

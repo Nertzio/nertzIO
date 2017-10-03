@@ -21,7 +21,8 @@ const p1LittleStackReducer = (p1LittleStack = P1_LITTLE_STACK, action) => {
       return cards;
 
     case UPDATE_P1_LITTLE_STACK:
-      return cards || P1_LITTLE_STACK;
+    return cards || P1_LITTLE_STACK;
+
 
     default:
       return p1LittleStack;

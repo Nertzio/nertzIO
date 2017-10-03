@@ -5,7 +5,7 @@ const WaitingRoom = (props) => {
   return (
     <div className={styles.waitingRoom}>
       <h1>'Waiting Room'</h1>
-      <input />>
+      <input />
     </div>
   )
 }
