@@ -58,7 +58,7 @@ const cardSource = {
       firebaseStackRef.once('value')
       .then(stackSnapShot => {
         if (stackSnapShot.numChildren === 1) {
-          firebaseStackRef.set('empty'); // need to figure out what to do w/ this
+          firebaseStackRef.set('empty');
         } else {
           firebaseStackRef.child(stackPosition).remove()
         }
