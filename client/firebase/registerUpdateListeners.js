@@ -10,7 +10,7 @@ const db = firebase.database();
 // p1Solitaire2Stack
 // p1Solitaire3Stack
 // p1Solitaire4Stack
-const game = store.getState().game
+const game = store.getState().firebaseRefs.game
 
 
 /*  Work in progress of creating listeners for each stack: */

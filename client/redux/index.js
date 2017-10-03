@@ -4,7 +4,7 @@ import thunkMiddleware from 'redux-thunk'
 import user from './user'
 import userInfo from './user-info'
 import {
-  game,
+  firebaseRefs,
   p1BigStack,
   p1DrawnStack,
   p1LittleStack,
@@ -17,7 +17,7 @@ import {
 const reducer = combineReducers({
   user,
   userInfo,
-  game,
+  firebaseRefs,
   p1BigStack,
   p1DrawnStack,
   p1LittleStack,

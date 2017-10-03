@@ -7,13 +7,14 @@ import {
 } from '../../components';
 
 function PlayerArea({
-  BigStack,
-  DrawnStack,
-  LittleStack,
-  Solitaire1Stack,
-  Solitaire2Stack,
-  Solitaire3Stack,
-  Solitaire4Stack,
+  playerNum,
+  // BigStack,
+  // DrawnStack,
+  // LittleStack,
+  // Solitaire1Stack,
+  // Solitaire2Stack,
+  // Solitaire3Stack,
+  // Solitaire4Stack,
 }) {
 
   return (
@@ -36,13 +37,13 @@ function PlayerArea({
           height: '15vh',
           justifyContent: 'space-evenly',
       }}>
-        <StackSolitaire cards={Solitaire1Stack} />
-        <StackSolitaire cards={Solitaire2Stack} />
-        <StackSolitaire cards={Solitaire3Stack} />
-        <StackSolitaire cards={Solitaire4Stack} />
-        <StackBig cards={BigStack} />
-        <StackDrawn cards={DrawnStack} />
-        <StackLittle cards={LittleStack} />
+        <StackSolitaire stackKey={`p${playerNum}Solitaire1Stack`}  />
+        <StackSolitaire stackKey={`p${playerNum}Solitaire2Stack`}  />
+        <StackSolitaire stackKey={`p${playerNum}Solitaire3Stack`}  />
+        <StackSolitaire stackKey={`p${playerNum}Solitaire4Stack`}  />
+        <StackBig stackKey={`p${playerNum}BigStack`}  />
+        <StackDrawn stackKey={`p${playerNum}DrawnStack`} />
+        <StackLittle stackKey={`p${playerNum}LittleStack`}  />
       </div>
     </section>
   )

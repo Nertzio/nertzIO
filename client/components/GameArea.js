@@ -26,7 +26,7 @@ class  GameArea extends Component {
         <div style={styles.gameArea}>
         <h1>Game Area</h1>
         <CardField />
-        <PlayerArea {...p1Cards} />
+        <PlayerArea playerNum={1} /* {...p1Cards} */ />
       </div>
     )
   }
@@ -57,9 +57,7 @@ const mapState = ({
   p1Solitaire4Stack,
 }) => ({
   p1Cards: {
-      BigStack: {
-        card: p1BigStack,
-        fbaseRef:
+      BigStack: p1BigStack,
       DrawnStack: p1DrawnStack,
       LittleStack: p1LittleStack,
       Solitaire1Stack: p1Solitaire1Stack,

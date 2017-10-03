@@ -1,5 +1,6 @@
 import store, {
   setGameRef,
+  setStackRef,
   updateP1BigStack,
   updateP1DrawnStack,
   updateP1LittleStack,
@@ -25,13 +26,13 @@ export const addNewGame = () => {
 // ^ returns thenable ref to game instance
 
 export const setPlayersToGameRef = (players) => {
-  const gameRef = store.getState().game.gameRef;
+  const gameRef = store.getState().firebaseRefs.game;
   return gameRef.set({ players: {...players} });
 }
 
 export const initPlayerAreaByNum = (playerNum) => {
-  const gameRef = store.getState().game.gameRef;
-  const playerRef = gameRef.child(`players/${playerNum}`).ref;
+  const gameRef = store.getState().firebaseRefs.game;
+  const playerRef = gameRef.child(`players/${playerNum}`);
   const cards = shuffleNewDeckForPlayer(playerNum);
   const BigStack = cards.slice(0, 35);
   const DrawnStack = [];
@@ -49,15 +50,23 @@ export const initPlayerAreaByNum = (playerNum) => {
     [`p${playerNum}Solitaire3Stack`]: Solitaire3Stack,
     [`p${playerNum}Solitaire4Stack`]: Solitaire4Stack,
   })
-  return updatePlayer.then(() => {
-    dispatch(updateP1BigStack(BigStack));
-    dispatch(updateP1DrawnStack(DrawnStack));
-    dispatch(updateP1LittleStack(LittleStack));
-    dispatch(updateP1Solitaire1Stack(Solitaire1Stack));
-    dispatch(updateP1Solitaire2Stack(Solitaire2Stack));
-    dispatch(updateP1Solitaire3Stack(Solitaire3Stack));
-    dispatch(updateP1Solitaire4Stack(Solitaire4Stack));
-  })
+
+  return updatePlayer
+    .then(() => playerRef.child('stacks').once('value'))
+    .then((stacksSnapshot) => {
+      stacksSnapshot.forEach(stack => {
+        dispatch(setStackRef({[stack.key]: stack.ref}))
+      })
+    })
+    .then(() => {
+      dispatch(updateP1BigStack(BigStack));
+      dispatch(updateP1DrawnStack(DrawnStack));
+      dispatch(updateP1LittleStack(LittleStack));
+      dispatch(updateP1Solitaire1Stack(Solitaire1Stack));
+      dispatch(updateP1Solitaire2Stack(Solitaire2Stack));
+      dispatch(updateP1Solitaire3Stack(Solitaire3Stack));
+      dispatch(updateP1Solitaire4Stack(Solitaire4Stack));
+    })
 }
 
 

@@ -2,11 +2,11 @@ import React from 'react'
 import Card from './Card'
 import PropTypes from 'prop-types';
 
-const Stack = ({cards}) => {
+const Stack = ({cards, firebaseStackRef}) => {
 
   const renderCards = () => {
     return cards.map((cardData, idx) => {
-      return <Card key={idx} stackPosition={idx} {...cardData} />
+      return <Card key={idx} stackPosition={idx} firebaseStackRef={firebaseStackRef} {...cardData} />
     })
   }
 

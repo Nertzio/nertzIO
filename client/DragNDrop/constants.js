@@ -1,3 +1,3 @@
-const ItemTypes = {
+export default {
   CARD: 'card'
 }

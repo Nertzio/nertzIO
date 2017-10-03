@@ -1,2 +1,2 @@
-export * from './Game';
+export * from './FirebaseRefs';
 export * from './P1';

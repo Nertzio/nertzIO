@@ -1,8 +1,9 @@
 import React from 'react'
+import {connect} from 'react-redux';
 import {Stack} from '../../components';
 import PropTypes from 'prop-types';
 
-const StackDrawn =  ({cards}) => {
+const StackDrawn =  ({cards, firebaseRef}) => {
 
   return (
     <div style={{
@@ -15,5 +16,12 @@ const StackDrawn =  ({cards}) => {
   )
 }
 
+const mapState = (state, {stackKey}) => ({
+  cards: state[stackKey],
+  firebaseRef: state.firebaseRefs[stackKey],
+})
 
-export default StackDrawn;
+const connectedStackDrawn = connect(mapState, null)(StackDrawn);
+
+
+export default connectedStackDrawn;

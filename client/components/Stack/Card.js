@@ -10,7 +10,8 @@ const Card = (props) => {
     number,
     isFaceUp,
     belongsTo,
-    stackPosition
+    stackPosition,
+    firebaseStackRef
    } = props;
 
    const { connectDragSource, isDragging } = props
@@ -53,7 +54,7 @@ const cardSource = {
     }
   },
   endDrag(props, monitor){
-    // props.fbaseRef.remove()
+    firebaseStackRef.child(stackPosition).remove()
   }
 }
 
@@ -64,6 +65,7 @@ function collect(connect, monitor) {
     isDragging: monitor.isDragging(),
   }
 }
+
 
 export default DragSource(ItemTypes.CARD, cardSource, collect)(Card)
 

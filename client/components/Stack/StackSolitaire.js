@@ -1,11 +1,12 @@
 import React from 'react'
+import {connect} from 'react-redux';
 import {Stack} from '../../components';
 import PropTypes from 'prop-types';
 import {DropTarget} from 'react-dnd';
 import ItemTypes from '../../DragNDrop/constants';
 import {pushCardToStackByPlayer} from '../../firebase/firebase_utils';
 
-const StackSolitaire = ({cards}) => {
+const StackSolitaire = ({cards, firebaseRef}) => {
   const faceUpCards = cards.map(card => {
     card['isFaceUp'] = true
     return card
@@ -17,7 +18,7 @@ const StackSolitaire = ({cards}) => {
       height: '100%',
       flex: '1 10%'
     }}>
-      <Stack cards={faceUpCards}/>
+      <Stack cards={faceUpCards} firebaseStackRef={firebaseRef} />
     </div>
   )
 }
@@ -41,5 +42,11 @@ function collect(connect, monitor) {
   }
 }
 
+const mapState = (state, {stackKey}) => ({
+  cards: state[stackKey],
+  firebaseRef: state.firebaseRefs.stacks[stackKey],
+})
 
-export default DropTarget(ItemTypes.Card, solitaireTarget, collect)(StackSolitaire);
+const connectedSolitaireStack = connect(mapState, null)(StackSolitaire);
+
+export default DropTarget(ItemTypes.CARD, solitaireTarget, collect)(connectedSolitaireStack);
