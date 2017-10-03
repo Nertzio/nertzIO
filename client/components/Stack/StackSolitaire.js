@@ -6,13 +6,13 @@ import {DropTarget} from 'react-dnd';
 import ItemTypes from '../../DragNDrop/constants';
 import {pushCardToStackByPlayer} from '../../firebase/firebase_utils';
 
-const StackSolitaire = ({cards, firebaseRef}) => {
+const StackSolitaire = ({cards, firebaseRef, connectDropTarget}) => {
   const faceUpCards = cards.map(card => {
     card['isFaceUp'] = true
     return card
   })
 
-  return (
+  return connectDropTarget(
     <div style={{
       border: '1px solid gray',
       height: '100%',
@@ -24,13 +24,18 @@ const StackSolitaire = ({cards, firebaseRef}) => {
 }
 
 const solitaireTarget = {
-  drop(props, monitor) {
+  drop({firebaseRef}, monitor) {
+    console.log("Dropped per Target!")
     // TODO: get the data from dropped card (monitor.getItem())
     // and tell firebase to push this card onto the designated stack
-    const playerKey = props.playerKey // add a playerKey to props?
-    const stackKey = props.stackKey // add a stackKey to props?
     const cardData = monitor.getItem()
-    pushCardToStackByPlayer(cardData, stackKey)
+    firebaseRef.once("value")
+    .then(snapshot => {
+      const numCardsInStack = snapshot.numChildren()
+      // firebaseRef.push({[numCardsInStack]: cardData})
+      firebaseRef.child(numCardsInStack).set(cardData)
+      console.log("No, really, DROPPED (pushed to stack)!")
+    })
   }
 }
 
@@ -38,7 +43,7 @@ function collect(connect, monitor) {
   return {
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver(),
-    canDrop: monitor.canDrop(),
+    // canDrop: monitor.canDrop(),
   }
 }
 
@@ -47,6 +52,12 @@ const mapState = (state, {stackKey}) => ({
   firebaseRef: state.firebaseRefs.stacks[stackKey],
 })
 
-const connectedSolitaireStack = connect(mapState, null)(StackSolitaire);
+// const connectedSolitaireStack = connect(mapState, null)(StackSolitaire);
 
-export default DropTarget(ItemTypes.CARD, solitaireTarget, collect)(connectedSolitaireStack);
+// export default DropTarget(ItemTypes.CARD, solitaireTarget, collect)(connectedSolitaireStack);
+
+const droppableSolitaireStack = DropTarget(ItemTypes.CARD, solitaireTarget, collect)(StackSolitaire);
+export default connect(mapState, null)(droppableSolitaireStack);
+
+
+

@@ -54,7 +54,11 @@ const cardSource = {
     }
   },
   endDrag(props, monitor){
-    firebaseStackRef.child(stackPosition).remove()
+    console.log("Ended Drag!")
+    if (monitor.didDrop()) {
+      console.log("Dropped per Source!")
+      props.firebaseStackRef.child(props.stackPosition).remove()
+    }
   }
 }
 

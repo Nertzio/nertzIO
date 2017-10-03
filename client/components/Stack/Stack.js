@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const Stack = ({cards, firebaseStackRef}) => {
 
   const renderCards = () => {
-    return cards.map((cardData, idx) => {
+    return cards && cards.map((cardData, idx) => {
       return <Card key={idx} stackPosition={idx} firebaseStackRef={firebaseStackRef} {...cardData} />
     })
   }

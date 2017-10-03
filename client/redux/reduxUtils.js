@@ -11,6 +11,7 @@ const {
 } = bulkActionCreators;
 
 export function updateStackByPlayer(stackKey, newState) {
-  const actionCreatorKey = `update${stackKey}`
+  const PascalCaseStackKey = stackKey[0].toUpperCase() + stackKey.slice(1);
+  const actionCreatorKey = `update${PascalCaseStackKey}`
   store.dispatch(bulkActionCreators[actionCreatorKey](newState))
 }
