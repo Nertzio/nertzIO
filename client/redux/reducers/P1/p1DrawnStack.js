@@ -21,7 +21,7 @@ const p1DrawnStackReducer = (p1DrawnStack = P1_DRAWN_STACK, action) => {
       return cards;
 
     case UPDATE_P1_DRAWN_STACK:
-      return cards;
+      return cards || P1_DRAWN_STACK;
 
     default:
       return p1DrawnStack;

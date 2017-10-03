@@ -21,7 +21,7 @@ const p1BigStackReducer = (p1BigStack = P1_BIG_STACK, action) => {
       return cards;
 
     case UPDATE_P1_BIG_STACK:
-      return cards;
+      return cards || P1_BIG_STACK;
 
     default:
       return p1BigStack;

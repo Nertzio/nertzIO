@@ -1,7 +1,7 @@
 import firebase from 'firebase'
 import secrets from '../secrets'
 firebase.initializeApp(secrets.firebaseConfig);
-firebase.database.enableLogging(message => console.log("[FIREBASE] ", message));
+// firebase.database.enableLogging(message => console.log("[FIREBASE] ", message));
 const db = firebase.database();
 
 // create new game instance

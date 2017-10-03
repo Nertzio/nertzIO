@@ -12,6 +12,7 @@ import store, {
 
 const {dispatch} = store;
 import {shuffleNewDeckForPlayer} from '../gameUtils';
+import { updateStackByPlayer } from '../redux/reduxUtils'
 import {registerUpdateListeners} from './registerUpdateListeners';
 import firebase from 'firebase';
 const db = firebase.database();
@@ -25,22 +26,34 @@ export const addNewGame = () => {
 }
 // ^ returns thenable ref to game instance
 
+const accessExistingGame = (gameId) => {
+  const existingGameRef = db.ref(`games/${gameId}`)
+  dispatch(setGameRef(existingGameRef));
+  currentGame = existingGameRef
+  return existingGameRef;
+}
+
 export const setPlayersToGameRef = (players) => {
   const gameRef = store.getState().firebaseRefs.game;
   return gameRef.set({ players: {...players} });
+}
+
+const addStackPosition = (card, index) => {
+  card.stackPosition = index;
+  return card;
 }
 
 export const initPlayerAreaByNum = (playerNum) => {
   const gameRef = store.getState().firebaseRefs.game;
   const playerRef = gameRef.child(`players/${playerNum}`);
   const cards = shuffleNewDeckForPlayer(playerNum);
-  const BigStack = cards.slice(0, 35);
+  const BigStack = cards.slice(0, 35).map(addStackPosition);
   const DrawnStack = [];
-  const LittleStack = cards.slice(35,48);
-  const Solitaire1Stack = cards.slice(48, 49);
-  const Solitaire2Stack = cards.slice(49, 50);
-  const Solitaire3Stack = cards.slice(50, 51);
-  const Solitaire4Stack = cards.slice(51);
+  const LittleStack = cards.slice(35,48).map(addStackPosition);
+  const Solitaire1Stack = cards.slice(48, 49).map(addStackPosition);
+  const Solitaire2Stack = cards.slice(49, 50).map(addStackPosition);
+  const Solitaire3Stack = cards.slice(50, 51).map(addStackPosition);
+  const Solitaire4Stack = cards.slice(51).map(addStackPosition);
   const updatePlayer = playerRef.child('stacks').update({
     [`p${playerNum}BigStack`]: BigStack,
     [`p${playerNum}DrawnStack`]: DrawnStack,
@@ -100,17 +113,36 @@ export const initGame = () => {
 }
 
 
-export const pushCardToStackByPlayer = (cardData, stackKey) => {
-  const {belongsTo, belongsToStack} = cardData;
 
-  const fromStack = currentGame.child(`players/${belongsTo}/stacks/${belongsToStack}/${cardData.stackPosition}`)
-
-  cardData.belongsToStack
-  cardData.belongsToStack = stackKey;
-  const stack = currentGame.child(`players/${cardData.belongsTo}/stacks/${stackKey}`)
-
-  const newKey = stack.val().length
-  stack.update({[newKey]: cardData})
+export const enterGame = (gameId) => {
+  const gameRef = accessExistingGame(gameId)
+  gameRef.child('players').once('value')
+  .then((playersSnapshot) => {
+    playersSnapshot.forEach(playerSnapshot => {
+      playerSnapshot.child('stacks').forEach(stack => {
+        let stackKey = stack.key;
+        dispatch(setStackRef({[stackKey]: stack.ref}))
+        stack.ref.once('value', stackSnapshot => {
+          updateStackByPlayer(stackKey, stackSnapshot.val())
+        })
+      })
+    })
+  })
+  .then(() => registerUpdateListeners())
 }
+
+
+// export const pushCardToStackByPlayer = (cardData, stackKey) => {
+//   const {belongsTo, belongsToStack} = cardData;
+
+//   const fromStack = currentGame.child(`players/${belongsTo}/stacks/${belongsToStack}/${cardData.stackPosition}`)
+
+//   cardData.belongsToStack
+//   cardData.belongsToStack = stackKey;
+//   const stack = currentGame.child(`players/${cardData.belongsTo}/stacks/${stackKey}`)
+
+//   const newKey = stack.val().length
+//   stack.update({[newKey]: cardData})
+// }
 
 

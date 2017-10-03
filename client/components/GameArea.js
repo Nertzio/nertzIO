@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {CardField, PlayerArea, Stack} from '../components';
-import {initGame} from '../firebase/firebase_utils';
+import {initGame, enterGame} from '../firebase/firebase_utils';
 import {
   p1BigStack,
   p1DrawnStack,
@@ -17,7 +17,12 @@ import HTML5Backend from 'react-dnd-html5-backend'
 class  GameArea extends Component {
 
   componentDidMount() {
-    initGame();
+    if (null){  // CREATE THIS PROP
+      initGame();
+
+    } else {
+      enterGame('-KvYe-I1vaxyX5KKNWJO');  // CREATE THIS FUNC
+    }
   }
 
   render() {
