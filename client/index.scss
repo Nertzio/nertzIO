@@ -1,21 +1,36 @@
-body {
-  font-family: sans-serif;
 
-  a {
-    text-decoration: none;
+html {
+  background-color: #63A2A7;
+  height: 100vh;
+  box-sizing: 'border-box';
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+  body {
+    font-family: sans-serif;
+    height: 100vh;
+
+    #app {
+      height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    label {
+      display: block;
+    }
+
+    nav a {
+      display: inline-block;
+      margin: 1em;
+    }
+
+    form div {
+      margin: 1em;
+      display: inline-block;
+    }
   }
 
-  label {
-    display: block;
-  }
-
-  nav a {
-    display: inline-block;
-    margin: 1em;
-  }
-
-  form div {
-    margin: 1em;
-    display: inline-block;
-  }
 }
