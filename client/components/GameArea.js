@@ -17,11 +17,11 @@ import HTML5Backend from 'react-dnd-html5-backend'
 class  GameArea extends Component {
 
   componentDidMount() {
-    if (null){  // CREATE THIS PROP
+    if (false){  // CREATE THIS PROP
       initGame();
 
     } else {
-      enterGame('-KvYe-I1vaxyX5KKNWJO');  // CREATE THIS FUNC
+      enterGame('-KvZG9HsVdJFQ_3tRHeT');  // CREATE THIS FUNC
     }
   }
 
