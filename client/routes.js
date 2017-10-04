@@ -5,7 +5,7 @@ import {Router} from 'react-router'
 import {Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
-import { GameArea, Login, Signup, UserHome} from './components'
+import {GameArea, Login, Signup, UserHome, JoinAGame, GamePending} from './components'
 import {me} from './redux'
 
 class Routes extends Component {
@@ -17,7 +17,9 @@ class Routes extends Component {
     return (
       <Router history={history}>
         <Switch>
-          <Route component={GameArea} />
+          <Route exact path='/join' component={JoinAGame} />
+          <Route exact path='/pendingGames/:gameId' component={GamePending} />
+          <Route exact path='/gamesInProgress/:gameId' component={GameArea} />
         </Switch>
       </Router>
     )
