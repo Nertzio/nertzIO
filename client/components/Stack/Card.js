@@ -52,7 +52,6 @@ const cardSource = {
     }
   },
   endDrag({firebaseStackRef, stackPosition}, monitor){
-    console.log(firebaseStackRef.key)
     if (monitor.didDrop()) {
       firebaseStackRef.once('value')
       .then(stackSnapShot => {
@@ -65,7 +64,6 @@ const cardSource = {
     }
   },
   canDrag({firebaseStackRef, stackPosition}, monitor){
-    console.log(firebaseStackRef)
     return firebaseStackRef.key.slice(2) !== 'BigStack'
   }
 }
