@@ -17,7 +17,7 @@ const StackDrawn =  ({cards, firebaseRef}) => {
 
 const mapState = (state, {stackKey}) => ({
   cards: state[stackKey],
-  firebaseRef: state.firebaseRefs[stackKey],
+  firebaseRef: state.firebaseRefs.stacks[stackKey],
 })
 
 const connectedStackDrawn = connect(mapState, null)(StackDrawn);
