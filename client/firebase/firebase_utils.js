@@ -1,6 +1,6 @@
 import {
   getFirebaseGameRefFromRedux,
-  updateReduxStackByKey,
+  updateReduxPlayerStackByKey,
 } from '../redux/reduxUtils'
 import {shuffleNewDeckForPlayer} from '../gameUtils';
 import {registerUpdateHandlersOnGameRef} from './registerUpdateHandlersOnGameRef';

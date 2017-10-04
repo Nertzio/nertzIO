@@ -1,7 +1,7 @@
 import {
   setGameRefInRedux,
   storeStackRefInReduxByKey,
-  updateReduxStackByKey,
+  updateReduxPlayerStackByKey,
 } from '../redux/reduxUtils'
 
 import {
@@ -78,7 +78,7 @@ const initPlayerAreaByPlayerNum = (playerNum) => {
     .then((snapShotOfAllStacks) => {
       snapShotOfAllStacks.forEach(stack => {
         storeStackRefInReduxByKey(stack.key, stack.ref)
-        updateReduxStackByKey(stack.key, stack.val())
+        updateReduxPlayerStackByKey(stack.key, stack.val())
       })
     })
     .catch(console.error.bind(console));

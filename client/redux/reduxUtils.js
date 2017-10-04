@@ -28,7 +28,7 @@ export const storeStackRefInReduxByKey = (stackKey, stackRef) => {
   return dispatch(setStackRef({[stackKey]: stackRef}))
 }
 
-export const updateReduxStackByKey = (stackKey, newState) => {
+export const updateReduxPlayerStackByKey = (stackKey, newState) => {
   const PascalCaseStackKey = stackKey[0].toUpperCase() + stackKey.slice(1);
   const actionCreatorKey = `update${PascalCaseStackKey}`
   store.dispatch(bulkActionCreators[actionCreatorKey](newState))
