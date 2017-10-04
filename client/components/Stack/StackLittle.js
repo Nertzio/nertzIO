@@ -4,6 +4,10 @@ import {Stack} from '../../components';
 import PropTypes from 'prop-types';
 
 const StackLittle =  ({cards, firebaseRef}) => {
+  const faceUpCards = cards.map(card => {
+    card['isFaceUp'] = true
+    return card
+  })
 
   return (
     <div style={{

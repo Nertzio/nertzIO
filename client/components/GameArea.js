@@ -17,7 +17,7 @@ import HTML5Backend from 'react-dnd-html5-backend'
 class  GameArea extends Component {
 
   componentDidMount() {
-    if (false){  // CREATE THIS PROP
+    if (true){  // CREATE THIS PROP
       initGame();
 
     } else {

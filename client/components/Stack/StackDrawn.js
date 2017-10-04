@@ -23,5 +23,4 @@ const mapState = (state, {stackKey}) => ({
 
 const connectedStackDrawn = connect(mapState, null)(StackDrawn);
 
-
 export default connectedStackDrawn;
