@@ -10,7 +10,7 @@ const StackDrawn =  ({cards, firebaseRef}) => {
       height: '100%',
       flex: '1 10%'
     }}>
-      <Stack cards={cards}/>
+      <Stack cards={cards} firebaseStackRef={firebaseRef}/>
     </div>
   )
 }
