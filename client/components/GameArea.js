@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {CardField, PlayerArea, Stack} from '../components';
-import {initGame, enterGame} from '../firebase/firebase_utils';
+import {initNewGame, initExistingGameByKey} from '../firebase';
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
@@ -10,9 +10,9 @@ class  GameArea extends Component {
 
   componentDidMount() { //currently defaults to existing game
     if (true){  // TODO: CREATE THIS PROP
-      initGame();
+      initNewGame();
     } else {
-      enterGame('-KvZSWMmjh8EJDL-pq3n');
+      initExistingGameByKey('-Kva1DwbJeviihgttvHA');
     }
   }
 
