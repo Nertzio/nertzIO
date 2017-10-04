@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {CardField, PlayerArea, Stack} from '../components';
+import {GameField, PlayerArea, Stack} from '../components';
 import {initNewGame, initExistingGameByKey} from '../firebase';
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -20,7 +20,7 @@ class  GameArea extends Component {
     return (
       <div style={styles.gameArea}>
         <h1>Game Area</h1>
-        <CardField />
+        <GameField />
         <PlayerArea playerNum={1} />
       </div>
     )

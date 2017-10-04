@@ -6,7 +6,9 @@ import {
 
 import {
   getSnapshotOfAllPlayersByGameRef,
-  registerUpdateListeners,
+  goCountAllPlayersInGame,
+  registerUpdateHandlersOnGameRef,
+  setGameRefForUtils,
   setPlayersToGameRef,
 } from '../firebase';
 
@@ -26,8 +28,19 @@ const db = firebase.database();
 
 export const addNewGame = () => {
   currentGameRef = db.ref('games').push();
+  setGameRefForUtils(currentGameRef);
   setGameRefInRedux(currentGameRef);
   return currentGameRef;
+}
+
+const set4FieldStacksPerPlayer = () => {
+  return goCountAllPlayersInGame()
+    .then(numPlayers => {
+      currentGameRef
+        .child('FieldStacks')
+        .set(new Array(numPlayers * 4)
+        .fill(false))
+    })
 }
 
 const generateStacksForPlayer = (playerNum) => {
@@ -59,8 +72,9 @@ const initPlayerAreaByPlayerNum = (playerNum) => {
 }
 
 const initAllPlayerAreas = () => {
-  return getSnapshotOfAllPlayersByGameRef(currentGameRef)
-  .then(snapshotOfAllPlayers => snapshotOfAllPlayers.numChildren())
+  // return getSnapshotOfAllPlayersByGameRef(currentGameRef)
+  // .then(snapshotOfAllPlayers => snapshotOfAllPlayers.numChildren())
+  return goCountAllPlayersInGame()
   .then(numOfPlayers => {
     const playerAreasInitializing = [];
     for (let i = 1; i <= numOfPlayers; i++) {
@@ -93,7 +107,8 @@ const hardCodedPlayers = {
 export const initNewGame = () => {
   return addNewGame()
     .then(() => setPlayersToGameRef(hardCodedPlayers, currentGameRef))
+    .then(() => set4FieldStacksPerPlayer())
     .then(() => initAllPlayerAreas())
-    .then(() => registerUpdateListeners())
+    .then(() => registerUpdateHandlersOnGameRef(currentGameRef))
     .catch(console.error.bind(console))
 }
