@@ -11,6 +11,7 @@ import {
   p1Solitaire2Stack,
   p1Solitaire3Stack,
   p1Solitaire4Stack,
+  createNFieldStackReducers,
 } from './reducers';
 
 const reducer = combineReducers({
@@ -23,6 +24,7 @@ const reducer = combineReducers({
   p1Solitaire2Stack,
   p1Solitaire3Stack,
   p1Solitaire4Stack,
+  ...createNFieldStackReducers(32),
 })
 
 const middleware = applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))

@@ -33,13 +33,26 @@ export const addNewGame = () => {
   return currentGameRef;
 }
 
+// create a function that dynamically generates a fieldStacks node, like so:
+// {
+//   fieldStack1: ...,
+//   fieldStack2: ...,
+// }
+
+const generateNFieldStackNodes = n => {
+  const fieldStacks = {};
+  for (let i = 1; i <= n; i++) {
+    fieldStacks[`fieldStack${i}`] = false;
+  }
+  return fieldStacks;
+}
+
 const set4FieldStacksPerPlayer = () => {
   return goCountAllPlayersInGame()
     .then(numPlayers => {
       currentGameRef
         .child('FieldStacks')
-        .set(new Array(numPlayers * 4)
-        .fill(false))
+        .set(generateNFieldStackNodes(numPlayers * 4))
     })
 }
 
@@ -87,20 +100,25 @@ const initAllPlayerAreas = () => {
 }
 
 const hardCodedPlayers = {
-  '1': { // all games have players 1-4
-    'uid': 6346, //  uid from firebase.auth().currentUser
-    'username': 'neatGuy',
-    'email': 'neatguy@email.com'
+  1: { // all games have players 1-4
+    uid: 6346, //  uid from firebase.auth().currentUser
+    username: 'neatGuy',
+    email: 'neatguy@email.com'
   },
-  // '2': {
+  // 2: {
   //   uid: 13451,
   //   username: 'dudebro',
   //   email: 'other@place.com',
   // },
-  // '3': {
+  // 3: {
   //   uid: 32461,
   //   username: 'yoloKid',
   //   email: 'yolo@kid.com',
+  // },
+  // 4: {
+  //   uid: 37461,
+  //   username: 'chump',
+  //   email: 'chump@chump.com',
   // }
 }
 

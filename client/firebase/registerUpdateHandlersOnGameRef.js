@@ -4,7 +4,10 @@ import {
   getSnapshotOfAllPlayersByGameRef,
 } from './firebase_utils.js';
 const db = firebase.database();
-import { updateReduxStackByKey } from '../redux/reduxUtils'
+import {
+  updateReduxStackByKey,
+  updateReduxFieldStackByKey
+} from '../redux/reduxUtils'
 
 
 const updateReduxWhenPlayerStacksUpdate = (gameRef) => {
@@ -24,8 +27,8 @@ const updateReduxWhenFieldStacksUpdate = (gameRef) => {
   return gameRef.child('FieldStacks').once('value')
     .then(allFieldStacks => allFieldStacks.forEach(stack => {
       stack.ref.on('value', stackSnapshot => {
-        const reduxStackKey = `FieldStack${stackSnapshot.key}`;
-        updateReduxStackByKey(reduxStackKey, stackSnapshot.val());
+        const stackKey = stackSnapshot.key;
+        updateReduxFieldStackByKey(stackKey, stackSnapshot.val());
       })
     }))
 }
