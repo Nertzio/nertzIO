@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux';
 import {Stack} from '../../components';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 const StackBig =  ({cards, firebaseRef}) => {
 
@@ -11,14 +11,14 @@ const StackBig =  ({cards, firebaseRef}) => {
       height: '100%',
       flex: '1 10%'
     }}>
-      <Stack cards={cards}/>
+      <Stack cards={cards} firebaseStackRef={firebaseRef}/>
     </div>
   )
 }
 
 const mapState = (state, {stackKey}) => ({
   cards: state[stackKey],
-  firebaseRef: state.firebaseRefs[stackKey],
+  firebaseRef: state.firebaseRefs.stacks[stackKey],
 })
 
 const connectedStackBig = connect(mapState, null)(StackBig);

@@ -7,10 +7,10 @@ import HTML5Backend from 'react-dnd-html5-backend'
 
 class  GameArea extends Component {
 
+
   componentDidMount() { //currently defaults to existing game
     if (true){  // TODO: CREATE THIS PROP
       initNewGame();
-
     } else {
       initExistingGameByKey('-Kva1DwbJeviihgttvHA');
     }

@@ -62,6 +62,9 @@ const cardSource = {
         }
       })
     }
+  },
+  canDrag({firebaseStackRef, stackPosition}, monitor){
+    return firebaseStackRef.key.slice(2) !== 'BigStack'
   }
 }
 
