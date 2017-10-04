@@ -1,7 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux';
 import {Stack} from '../../components';
-import PropTypes from 'prop-types';
 
 const StackDrawn =  ({cards, firebaseRef}) => {
 

@@ -21,7 +21,7 @@ const p1Solitaire4Reducer = (p1Solitaire4Stack = P1_SOLITAIRE4_STACK, action) =>
       return cards;
 
     case UPDATE_P1_SOLITAIRE4_STACK:
-      return cards || P1_SOLITAIRE4_STACK;
+    return cards || P1_SOLITAIRE4_STACK;
 
     default:
       return p1Solitaire4Stack;

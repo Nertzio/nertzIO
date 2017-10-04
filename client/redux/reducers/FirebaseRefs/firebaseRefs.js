@@ -16,17 +16,17 @@ export const setStackRef = (stackRef) => ({  // {p1BigStack: <fbaseref>}
   stackRef
 })
 
-const gameReducer = (firebaseRefs = FIREBASE_REFS, action) => {
+const firebaseRefsReducer = (firebaseRefs = FIREBASE_REFS, action) => {
   const {type, game, stackRef} = action;
   switch (type) {
     case SET_GAME_REF:
       return {...firebaseRefs, game};
     case SET_STACK_REF:
-      const stacks = Object.assign({}, firebaseRefs.stacks, stackRef)
+      const stacks = {...firebaseRefs.stacks, ...stackRef};
       return {...firebaseRefs, stacks};
     default:
       return firebaseRefs;
   }
 }
 
-export default gameReducer;
+export default firebaseRefsReducer;

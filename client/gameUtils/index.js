@@ -7,8 +7,6 @@ export function shuffleNewDeckForPlayer(playerNum) {
     const gameCardSpecs = {
       belongsTo: playerNum,
       isFaceUp: false,
-      // x: 0, // use later if making dragging visible to all clients
-      // y: 0,
     }
     return Object.assign({}, card, gameCardSpecs);
   })

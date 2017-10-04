@@ -2,7 +2,6 @@ import {createStore, combineReducers, applyMiddleware} from 'redux'
 import createLogger from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 import user from './user'
-import userInfo from './user-info'
 import {
   firebaseRefs,
   p1BigStack,
@@ -16,7 +15,6 @@ import {
 
 const reducer = combineReducers({
   user,
-  userInfo,
   firebaseRefs,
   p1BigStack,
   p1DrawnStack,
@@ -32,5 +30,4 @@ const middleware = applyMiddleware(thunkMiddleware, createLogger({collapsed: tru
 export default createStore(reducer, middleware);
 
 export * from './user'
-export * from './user-info'
 export * from './reducers';
