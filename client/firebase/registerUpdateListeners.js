@@ -1,7 +1,7 @@
 import store from '../redux'
 import firebase from 'firebase';
 const db = firebase.database();
-import { updateStackByPlayer } from '../redux/reduxUtils'
+import { updateReduxStackByKey } from '../redux/reduxUtils'
 
 
 
@@ -16,7 +16,7 @@ export function registerUpdateListeners() {
       playerSnapshot.child('stacks').forEach(stack => {
         let stackKey = stack.key;
         stack.ref.on('value', stackSnapshot => {
-          updateStackByPlayer(stackKey, stackSnapshot.val())
+          updateReduxStackByKey(stackKey, stackSnapshot.val())
         })
       })
     })
