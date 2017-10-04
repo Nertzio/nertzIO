@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import { Redirect } from 'react-router-dom';
-import {connect} from 'react-redux';
-import {initNewGame, initExistingGameByKey} from '../../firebase';
-import firebase from 'firebase';
+import {addNewGame} from '../../firebase';
+import firebase from 'firebase'
+const db = firebase.database();
 
-//TO DO: Make sure initNewGame & initExistingGameByKey adds current users' info to game as a player
 class JoinAGame extends Component {
   constructor(props){
     super(props)
     this.state = {
       gameKeyInput: '',
       redirect: false,
-      gameId: ''
+      gameId: '',
+      showJoinGameError: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.joinPrivateGame = this.joinPrivateGame.bind(this);
@@ -21,41 +21,51 @@ class JoinAGame extends Component {
 
   handleChange (event) {
     this.setState({
+      showJoinGameError: false,
       gameKeyInput: event.target.value
     });
   }
 
   joinPrivateGame (event){
-    //TO DO HERE: check to see if game has less than 4 players. If so follow code below. Else give client error msg "Game full"
-    this.setState({
-      gameId: this.state.gameKeyInput
-    })
-    initExistingGameByKey(this.state.gameKeyInput)
-    this.setState({
-      redirect: true
-    })
+    event.preventDefault();
+    const gameKey = this.state.gameKeyInput
+    let gameExists, playersNeeded;
+    db.ref(`games/${gameKey}`).once('value')
+      .then((gameSnapshot) => {
+        gameExists = gameSnapshot.exists();
+        playersNeeded = !gameSnapshot.hasChild('players');
+      })
+      .then(() => {
+        if (gameExists && playersNeeded){
+          this.setState({
+            gameId: gameKey,
+            redirect: true
+          })
+        } else {
+          this.setState({
+            showJoinGameError: true
+          })
+        }
+      })
   }
 
-  joinPublicGame (event){
-    //TODO HERE: find random public game (private attribute set to false) with less than 4 players and change gameId in state to the selected game's key/id
-    initExistingGameByKey(this.state.gameKeyInput);
+  joinPublicGame (){
+    /* TODO HERE: find random public game (ie private attribute set to
+      false) in Firebase DB that doesn't have 'players' child yet, and
+      set gameId in state to that game's key
+    */
     this.setState({
       redirect: true
     })
   }
 
   startGame(event){
-    let gameKey;
     const isPrivateGame = event.target.name === 'startPrivateGame';
-    const gameRef = initNewGame();
-    gameRef.once('value')
-      .then(gameSnapshot => {
-        gameKey = gameSnapshot.key;
-        gameSnapshot.private = isPrivateGame;
-      })
+    const gameId = addNewGame();
+    db.ref(`games/${gameId}/private`).set(isPrivateGame)
       .then(() => {
         this.setState({
-          gameId: gameKey,
+          gameId: gameId,
           redirect: true
         })
       })
@@ -63,22 +73,28 @@ class JoinAGame extends Component {
 
   render(){
     return (
-      this.state.redirect ? <Redirect to={`/pendingGames/${this.state.gameId}`} /> :
-
-      <div className={styles.JoinAGame}>
+      <div style={styles.JoinAGame}>
+        {
+          this.state.redirect && <Redirect to={`/pendingGames/${this.state.gameId}`} />
+        }
         <h1>Join A Game!</h1>
         <div>
           <h3>Start New Game</h3>
-          <button name='startPublicGame' onClick={this.startGame} >Public</button>
-          <button name='startPrivateGame' onClick={this.startGame} >Private</button>
+          <button style={styles.button}name="startPublicGame" onClick={this.startGame} >Public</button>
+          <button style={styles.button} name="startPrivateGame" onClick={this.startGame} >Private</button>
         </div>
         <div>
           <h3>Join Existing Game</h3>
-          <button onClick={this.joinPublicGame}>Join Random Game</button>
-          <form onSubmit={this.joinPrivateGame}>
-            <input placeholder="Game Key" onChange={this.handleChange}>{this.state.gameKeyValue}</input>
-            <button>Join Private Game</button>
-          </form>
+          <button style={styles.button} onClick={this.joinPublicGame}>Join Random Game</button>
+          <div>
+            <form onSubmit={this.joinPrivateGame}>
+              <input placeholder="Game Key" onChange={this.handleChange} value={this.state.gameKeyValue} />
+              <button style={styles.button}>Join Private Game</button>
+            </form>
+            {
+              this.state.showJoinGameError && <p>Game key provided does not match a playable game.</p>
+            }
+          </div>
         </div>
       </div>
     )
@@ -87,9 +103,11 @@ class JoinAGame extends Component {
 
 const styles = {
   JoinAGame: {
-    backgroundColor: '#bbb',
     alignContent: 'center',
     textAlign: 'center'
+  },
+  button: {
+    margin: '10px'
   }
 }
 

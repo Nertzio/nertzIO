@@ -97,3 +97,5 @@ export const initNewGame = () => {
     .then(() => registerUpdateListeners())
     .catch(console.error.bind(console))
 }
+
+//addNewGame() vs startNewGame('gameId')
