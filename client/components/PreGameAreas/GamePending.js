@@ -8,12 +8,6 @@ class GamePending extends Component {
     super(props)
     this.state = {
       shouldRedirectToGame: false,
-      players: [
-        {username: 'CoolPlayer1'},
-        {username: 'WooHooPlayer1'},
-        {username: 'CoolPlayer2'},
-        // {username: 'WooHooPlayer2'}
-      ]
     }
     this.gameKey = props.match.params.gameId;
     this.startGame = this.startGame.bind(this);
@@ -27,7 +21,6 @@ class GamePending extends Component {
   }
 
   render(){
-    //TODO: get player info from auth or redux or firebase or elsewhere to pass in (rather than hard coded players) either to props or state (so that component will update render as new players added) AND find appropriate place to add current user info (from firebaseAuth?) to this list (perhaps upon pushing one of the buttons that brings one here-- or possibly component did mount):
     const players = this.state.players
 
     return (
@@ -58,4 +51,10 @@ const styles = {
   }
 }
 
-export default GamePending;
+function mapStateToProps (state) {
+  return {
+    players: state.players
+  }
+}
+
+export default connect(mapStateToProps)(GamePending)

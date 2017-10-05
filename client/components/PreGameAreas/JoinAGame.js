@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Redirect } from 'react-router-dom';
-import {addNewGame} from '../../firebase';
+import {addNewGame, addNewPlayerToGame} from '../../firebase';
 import firebase from 'firebase'
 const db = firebase.database();
 
@@ -30,13 +30,16 @@ class JoinAGame extends Component {
     event.preventDefault();
     const gameKey = this.state.gameKeyInput
     let gameExists, playersNeeded;
-    db.ref(`games/${gameKey}`).once('value')
+    const privateGameRef = db.ref(`games/${gameKey}`);
+    privateGameRef.once('value')
       .then((gameSnapshot) => {
         gameExists = gameSnapshot.exists();
         playersNeeded = !gameSnapshot.hasChild('players');
       })
       .then(() => {
         if (gameExists && playersNeeded){
+          addNewPlayerToGame(privateGameRef, userInfo) //Get user info from Jessica
+          // TODO: Check to see if .then should be on this line after addNewPlayerToGame call for rest of functionality
           this.setState({
             gameId: gameKey,
             redirect: true
@@ -52,8 +55,12 @@ class JoinAGame extends Component {
   joinPublicGame (){
     /* TODO HERE: find random public game (ie private attribute set to
       false) in Firebase DB that doesn't have 'players' child yet, and
-      set gameId in state to that game's key
+      set gameId in state to that game's key (and publicGameRef in
+      following function's argument to that game's ref)
     */
+    db.ref('games')
+    addNewPlayerToGame(publicGameRef, userInfo) //Get user info from Jessica
+    // TODO: Check to see if .then should be on this line after addNewPlayerToGame call for rest of functionality
     this.setState({
       redirect: true
     })
@@ -61,11 +68,14 @@ class JoinAGame extends Component {
 
   startGame(event){
     const isPrivateGame = event.target.name === 'startPrivateGame';
-    const gameId = addNewGame();
-    db.ref(`games/${gameId}/private`).set(isPrivateGame)
+    const gameRef = addNewGame();
+    let gameKey = gameRef.key;
+    addNewPlayerToGame(gameRef, userInfo) //Get user info from Jessica
+    // TODO: Check to see if .then should be on this line after addNewPlayerToGame call for rest of functionality
+    gameRef.child('private').set(isPrivateGame)
       .then(() => {
         this.setState({
-          gameId: gameId,
+          gameId: gameKey,
           redirect: true
         })
       })
@@ -80,7 +90,7 @@ class JoinAGame extends Component {
         <h1>Join A Game!</h1>
         <div>
           <h3>Start New Game</h3>
-          <button style={styles.button}name="startPublicGame" onClick={this.startGame} >Public</button>
+          <button style={styles.button} name="startPublicGame" onClick={this.startGame} >Public</button>
           <button style={styles.button} name="startPrivateGame" onClick={this.startGame} >Private</button>
         </div>
         <div>

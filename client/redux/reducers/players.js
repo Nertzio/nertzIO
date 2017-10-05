@@ -1,9 +1,5 @@
 /**
-    MAY NOT NEED THIS FILE--
-    created in order to store players for pending games,
-    but idea not fleshed out.
-    If no longer need,
-    remember to delete references in index.js sibling
+  fill in this store according to what players are already in the firebase game instance and add event listener in addNewPlayerToGame() to update this store when new players are added
  */
 
 
@@ -25,7 +21,7 @@ export const addPlayer = user => ({type: ADD_PLAYER, user})
 /**
  * REDUCER
  */
-export default function pendingPlayersReducer (state = defaultPlayers, action) {
+export default function playersReducer (state = defaultPlayers, action) {
   switch (action.type) {
     case ADD_PLAYER:
       return [...state, action.user]
