@@ -12,7 +12,7 @@ class  GameArea extends Component {
     if (false){  // TODO: CREATE THIS PROP
       initNewGame();
     } else {
-      initExistingGameByKey('-Kvdv-m3Nb_gy9zYlB0c');
+      initExistingGameByKey('-KvgoPgJ_o7vVePxvrYm');
     }
   }
 

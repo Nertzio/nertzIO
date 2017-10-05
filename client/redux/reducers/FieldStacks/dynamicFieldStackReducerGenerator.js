@@ -4,7 +4,7 @@
   What this generateDynamicFieldStackReducerByKey function does is take a "key" (which is currently just a number) to create a redux action and reducer. It returns the reducer function, which has closure over action type.
 
 */
-  function generateDynamicFieldStackReducerByKey(key) {
+function generateDynamicFieldStackReducerByKey(key) {
   const DEFAULT_FIELD_STACK = [];
 
   const UPDATE_FIELDSTACK = `UPDATE_FIELDSTACK${key}`;
