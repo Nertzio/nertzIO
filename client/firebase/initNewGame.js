@@ -1,12 +1,13 @@
 import {
   setGameRefInRedux,
   storeStackRefInReduxByKey,
-  updateReduxStackByKey,
+  updateReduxPlayerStackByKey,
 } from '../redux/reduxUtils'
 
 import {
-  getSnapshotOfAllPlayersByGameRef,
-  registerUpdateListeners,
+  goCountAllPlayersInGame,
+  registerUpdateHandlersOnGameRef,
+  setGameRefForUtils,
   setPlayersToGameRef,
 } from '../firebase';
 
@@ -26,8 +27,33 @@ const db = firebase.database();
 
 export const addNewGame = () => {
   currentGameRef = db.ref('games').push();
+  setGameRefForUtils(currentGameRef);
   setGameRefInRedux(currentGameRef);
   return currentGameRef;
+}
+
+const generateNFieldStackNodes = num => {
+  const fieldStacks = {};
+  for (let i = 1; i <= num; i++) {
+    fieldStacks[`fieldStack${i}`] = false;
+  }
+  return fieldStacks;
+}
+
+const set4FieldStacksPerPlayer = () => {
+  return goCountAllPlayersInGame()
+    .then(numPlayers => {
+      currentGameRef
+        .child('fieldStacks')
+        .set(generateNFieldStackNodes(numPlayers * 4))
+    })
+}
+
+const storeFieldStackRefsInRedux = () => {
+  return currentGameRef.child('fieldStacks').once('value')
+    .then(fieldStacks => fieldStacks.forEach(stack => {
+      storeStackRefInReduxByKey(stack.key, stack.ref);
+    }))
 }
 
 const generateStacksForPlayer = (playerNum) => {
@@ -52,15 +78,14 @@ const initPlayerAreaByPlayerNum = (playerNum) => {
     .then((snapShotOfAllStacks) => {
       snapShotOfAllStacks.forEach(stack => {
         storeStackRefInReduxByKey(stack.key, stack.ref)
-        updateReduxStackByKey(stack.key, stack.val())
+        updateReduxPlayerStackByKey(stack.key, stack.val())
       })
     })
     .catch(console.error.bind(console));
 }
 
 const initAllPlayerAreas = () => {
-  return getSnapshotOfAllPlayersByGameRef(currentGameRef)
-  .then(snapshotOfAllPlayers => snapshotOfAllPlayers.numChildren())
+  return goCountAllPlayersInGame()
   .then(numOfPlayers => {
     const playerAreasInitializing = [];
     for (let i = 1; i <= numOfPlayers; i++) {
@@ -73,27 +98,34 @@ const initAllPlayerAreas = () => {
 }
 
 const hardCodedPlayers = {
-  '1': { // all games have players 1-4
-    'uid': 6346, //  uid from firebase.auth().currentUser
-    'username': 'neatGuy',
-    'email': 'neatguy@email.com'
+  1: { // all games have players 1-4
+    uid: 6346, //  uid from firebase.auth().currentUser
+    username: 'neatGuy',
+    email: 'neatguy@email.com'
   },
-  // '2': {
+  // 2: {
   //   uid: 13451,
   //   username: 'dudebro',
   //   email: 'other@place.com',
   // },
-  // '3': {
+  // 3: {
   //   uid: 32461,
   //   username: 'yoloKid',
   //   email: 'yolo@kid.com',
+  // },
+  // 4: {
+  //   uid: 37461,
+  //   username: 'chump',
+  //   email: 'chump@chump.com',
   // }
 }
 
 export const initNewGame = () => {
   return addNewGame()
     .then(() => setPlayersToGameRef(hardCodedPlayers, currentGameRef))
+    .then(() => set4FieldStacksPerPlayer())
+    .then(() => storeFieldStackRefsInRedux())
     .then(() => initAllPlayerAreas())
-    .then(() => registerUpdateListeners())
+    .then(() => registerUpdateHandlersOnGameRef(currentGameRef))
     .catch(console.error.bind(console))
 }

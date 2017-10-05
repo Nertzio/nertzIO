@@ -13,6 +13,7 @@ const {
   updateP1Solitaire2Stack,
   updateP1Solitaire3Stack,
   updateP1Solitaire4Stack,
+  updateFieldStackByKey,
 } = bulkActionCreators;
 
 export const getFirebaseGameRefFromRedux = () => {
@@ -27,8 +28,13 @@ export const storeStackRefInReduxByKey = (stackKey, stackRef) => {
   return dispatch(setStackRef({[stackKey]: stackRef}))
 }
 
-export function updateReduxStackByKey(stackKey, newState) {
+export const updateReduxPlayerStackByKey = (stackKey, newState) => {
   const PascalCaseStackKey = stackKey[0].toUpperCase() + stackKey.slice(1);
   const actionCreatorKey = `update${PascalCaseStackKey}`
   store.dispatch(bulkActionCreators[actionCreatorKey](newState))
+}
+
+export const updateReduxFieldStackByKey = (stackKey, newState) => {
+  const action = updateFieldStackByKey(stackKey, newState)
+  return dispatch(action);
 }
