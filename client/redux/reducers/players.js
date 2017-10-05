@@ -1,6 +1,3 @@
-/**
-  fill in this store according to what players are already in the firebase game instance and add event listener in addNewPlayerToGame() to update this store when new players are added
- */
 
 
 /**
@@ -11,12 +8,16 @@ const ADD_PLAYER = 'ADD_PLAYER'
 /**
  * INITIAL STATE
  */
-const defaultPlayers = []
+const defaultPlayers = {}
 
 /**
  * ACTION CREATORS
  */
-export const addPlayer = user => ({type: ADD_PLAYER, user})
+export const updatePlayerByKey = (playerKey, userInfo) => {
+  let user = {};
+  user['player_' + playerKey] = userInfo;
+  return ({type: ADD_PLAYER, user})
+}
 
 /**
  * REDUCER
@@ -24,7 +25,7 @@ export const addPlayer = user => ({type: ADD_PLAYER, user})
 export default function playersReducer (state = defaultPlayers, action) {
   switch (action.type) {
     case ADD_PLAYER:
-      return [...state, action.user]
+      return {...state, ...action.user}
     default:
       return state
   }
