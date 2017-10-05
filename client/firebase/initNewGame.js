@@ -9,6 +9,7 @@ import {
   registerUpdateHandlersOnGameRef,
   setGameRefForUtils,
   setPlayersToGameRef,
+  updateReduxWhenPlayersJoinGame,
 } from '../firebase';
 
 import {shuffleNewDeckForPlayer} from '../gameUtils';
@@ -30,6 +31,26 @@ export const addNewGame = () => {
   setGameRefForUtils(currentGameRef);
   setGameRefInRedux(currentGameRef);
   return currentGameRef;
+}
+
+export const goAddPlayerToGame = (playerData, gameRef) => {
+  currentGameRef = gameRef;
+  setGameRefForUtils(gameRef);
+  return gameRef.once('value')
+    .then(gameSnapshot => {
+      const playerKey = gameSnapshot.numChildren() + 1;
+      return gameRef.child(`players/${playerKey}`).set(playerData);
+    })
+    .then(() => gameRef)
+    .catch(console.error.bind(console));
+}
+
+export const addPlayerToGame = (playerData, game) => {
+  const gameRef = typeof game === 'string' ? db.ref(`games/${game}`) : game;
+  return goAddPlayerToGame(playerData, game)
+    .then(() => updateReduxWhenPlayersJoinGame(gameRef))
+    .then(() => gameRef)
+    .catch(console.error.bind(console));
 }
 
 const generateNFieldStackNodes = num => {
@@ -130,4 +151,10 @@ export const initNewGame = () => {
     .catch(console.error.bind(console))
 }
 
-//addNewGame() vs startNewGame('gameId')
+export const startGame = () => {
+  return set4FieldStacksPerPlayer()
+  .then(() => storeFieldStackRefsInRedux())
+  .then(() => initAllPlayerAreas())
+  .then(() => registerUpdateHandlersOnGameRef(currentGameRef))
+  .catch(console.error.bind(console))
+}
