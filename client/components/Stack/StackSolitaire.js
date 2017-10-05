@@ -2,12 +2,15 @@ import React from 'react'
 import {connect} from 'react-redux';
 import {Stack} from '../../components';
 import {DropTarget} from 'react-dnd';
-import ItemTypes from '../../DragNDrop/constants';
+import {
+  ItemTypes,
+  canIDropThisOnThatByStackType
+} from '../../DragNDrop';
 import {pushCardToStackByPlayer} from '../../firebase/firebase_utils';
 
 const StackSolitaire = ({cards, firebaseRef, connectDropTarget}) => {
   const faceUpCards = cards.map(card => {
-    card['isFaceUp'] = true
+    card.isFaceUp = true
     return card
   })
 
@@ -25,11 +28,18 @@ const StackSolitaire = ({cards, firebaseRef, connectDropTarget}) => {
 const solitaireTarget = {
   drop({firebaseRef}, monitor) {
     const cardData = monitor.getItem()
-    firebaseRef.once("value")
+    // TODO: use props.cards.length to determine numCardsInStack
+    firebaseRef.once('value')
     .then(snapshot => {
       const numCardsInStack = snapshot.numChildren()
       firebaseRef.child(numCardsInStack).set(cardData)
     })
+  },
+
+  canDrop({cards}, monitor) {
+    const incomingCard = monitor.getItem();
+    const topCard = cards[cards.length - 1];
+    return canIDropThisOnThatByStackType(incomingCard, topCard, 'StackSolitaire');
   }
 }
 
@@ -47,6 +57,7 @@ const mapState = (state, {stackKey}) => ({
 })
 
 const droppableSolitaireStack = DropTarget(ItemTypes.CARD, solitaireTarget, collect)(StackSolitaire);
+
 export default connect(mapState, null)(droppableSolitaireStack);
 
 

@@ -1,11 +1,15 @@
 import {
   getFirebaseGameRefFromRedux,
   storeStackRefInReduxByKey,
+  updatePlayerInReduxByKey,
   updateReduxPlayerStackByKey,
 } from '../redux/reduxUtils'
 
 import {shuffleNewDeckForPlayer} from '../gameUtils';
-import {registerUpdateHandlersOnGameRef} from './registerUpdateHandlersOnGameRef';
+import {
+  registerUpdateHandlersOnGameRef,
+  updateReduxWhenPlayersJoinGame,
+} from './registerUpdateHandlersOnGameRef';
 import firebase from 'firebase';
 const db = firebase.database();
 
@@ -17,7 +21,9 @@ const db = firebase.database();
                                  *
                                 * *
                                * * *
-   ------------------------------------------------------------------*/
+------------------------------------------------------------------*/
+
+
 export const getSnapshotOfAllPlayersByGameRef = (currentGameRef) => {
   return currentGameRef.child('players').once('value');
 }
@@ -35,8 +41,12 @@ export const setGameRefForUtils = gameRef => {
   currentGameRef = gameRef;
 }
 
+export const updatePlayerByKey = (playerNum, playerData) => {
+  return currentGameRef.child(`players/${playerNum}`).update(playerData);
+}
+
 export const updateStackByPlayerAndKey = (playerNum, stackKey, stackVal) => {
   return currentGameRef
     .child(`players/${playerNum}/stacks/${stackKey}`)
-    .set(stackVal);
+    .update(stackVal);
 }

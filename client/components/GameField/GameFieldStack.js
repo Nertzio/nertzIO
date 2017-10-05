@@ -2,7 +2,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Stack} from '../Stack';
 import {DropTarget} from 'react-dnd';
-import ItemTypes from '../../DragNDrop/constants';
+import {
+  ItemTypes,
+  canIDropThisOnThatByStackType,
+} from '../../DragNDrop';
 import {pushCardToStackByPlayer} from '../../firebase/firebase_utils';
 
 function GameFieldStack(props) {
@@ -36,6 +39,12 @@ const fieldStackTarget = {
       const numCardsInStack = snapshot.numChildren()
       firebaseRef.child(numCardsInStack).set(cardData)
     })
+  },
+
+  canDrop({cards}, monitor) {
+    const incomingCard = monitor.getItem();
+    const topCard = cards[cards.length - 1];
+    return canIDropThisOnThatByStackType(incomingCard, topCard, 'FieldStack');
   }
 }
 

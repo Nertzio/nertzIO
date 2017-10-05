@@ -1,20 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {GameField, PlayerArea, Stack} from '../components';
-import {initNewGame, initExistingGameByKey} from '../firebase';
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
 class  GameArea extends Component {
-
-
-  componentDidMount() { //currently defaults to existing game
-    if (false){  // TODO: CREATE THIS PROP
-      initNewGame();
-    } else {
-      initExistingGameByKey('-KvgoPgJ_o7vVePxvrYm');
-    }
-  }
 
   render() {
     return (
