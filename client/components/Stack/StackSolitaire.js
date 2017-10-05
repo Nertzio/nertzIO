@@ -40,7 +40,6 @@ const solitaireTarget = {
     const incomingCard = monitor.getItem();
     const topCard = cards[cards.length - 1];
     return canIDropThisOnThatByStackType(incomingCard, topCard, 'StackSolitaire');
-
   }
 }
 
