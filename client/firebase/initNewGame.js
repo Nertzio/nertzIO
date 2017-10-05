@@ -62,10 +62,10 @@ const generateStacksForPlayer = (playerNum) => {
     [`p${playerNum}BigStack`]: cards.slice(0, 35),
     [`p${playerNum}DrawnStack`]: false, // placeholder val for firebase
     [`p${playerNum}LittleStack`]: cards.slice(35,48),
-    [`p${playerNum}Solitaire1Stack`]: cards.slice(48, 49),
-    [`p${playerNum}Solitaire2Stack`]: cards.slice(49, 50),
-    [`p${playerNum}Solitaire3Stack`]: cards.slice(50, 51),
-    [`p${playerNum}Solitaire4Stack`]: cards.slice(51)
+    [`p${playerNum}SolitaireStack1`]: cards.slice(48, 49),
+    [`p${playerNum}SolitaireStack2`]: cards.slice(49, 50),
+    [`p${playerNum}SolitaireStack3`]: cards.slice(50, 51),
+    [`p${playerNum}SolitaireStack4`]: cards.slice(51)
   }
 }
 
@@ -103,21 +103,21 @@ const hardCodedPlayers = {
     username: 'neatGuy',
     email: 'neatguy@email.com'
   },
-  // 2: {
-  //   uid: 13451,
-  //   username: 'dudebro',
-  //   email: 'other@place.com',
-  // },
-  // 3: {
-  //   uid: 32461,
-  //   username: 'yoloKid',
-  //   email: 'yolo@kid.com',
-  // },
-  // 4: {
-  //   uid: 37461,
-  //   username: 'chump',
-  //   email: 'chump@chump.com',
-  // }
+  2: {
+    uid: 13451,
+    username: 'dudebro',
+    email: 'other@place.com',
+  },
+  3: {
+    uid: 32461,
+    username: 'yoloKid',
+    email: 'yolo@kid.com',
+  },
+  4: {
+    uid: 37461,
+    username: 'chump',
+    email: 'chump@chump.com',
+  }
 }
 
 export const initNewGame = () => {
