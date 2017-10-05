@@ -1,6 +1,7 @@
 import store, {
   setGameRef,
   setStackRef,
+  updatePlayerByKey, // need to create this action creator
   updatePlayerStackByKey,
   updateFieldStackByKey,
 } from '../redux';
@@ -16,6 +17,10 @@ export const setGameRefInRedux = gameRef => {
 
 export const storeStackRefInReduxByKey = (stackKey, stackRef) => {
   return dispatch(setStackRef({[stackKey]: stackRef}))
+}
+
+export const updatePlayerInReduxByKey = (playerKey, updatedPlayer) => {
+  return dispatch(updatePlayerByKey(playerKey, updatedPlayer));
 }
 
 export const updateReduxPlayerStackByKey = (stackKey, newState) => {
