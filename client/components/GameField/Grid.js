@@ -7,7 +7,7 @@ function Grid(props) {
   const renderCells = (numCells) => {
     const cells = [];
     for (let i = 1; i <= numCells; i++) {
-      const responsiveCell = (
+      const responsiveCell = ( // make this its own wrapper component?
         <div key={i} style={{flex: '1 1 auto', width: '25%'}} >
           <Cell cellId={i} />
         </div>

@@ -47,11 +47,9 @@ function collect(connect, monitor) {
   }
 }
 
-// export default GameFieldStack;
-
 const mapState = (state, {stackKey}) => ({
   cards: state[stackKey],
-  firebaseRef: state.firebaseRefs.stacks[stackKey], //TODO: add to redux
+  firebaseRef: state.firebaseRefs.stacks[stackKey],
 })
 
 const droppableFieldStack = DropTarget(ItemTypes.CARD, fieldStackTarget, collect)(GameFieldStack);

@@ -21,8 +21,9 @@ function GameField(props) {
 
 export default GameField;
 
-// TODO: CONNECT GAME FIELD TO STORE
+// TODO: CONNECT TO STORE WHEN PLAYERS ARE ADDED
 // const mapState = state => ({
+// // the number of fieldStacks depends on number of players
 //   userCount: Object.keys(state.players).length,
 // })
 

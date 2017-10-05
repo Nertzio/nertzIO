@@ -24,6 +24,7 @@ const reducer = combineReducers({
   p1Solitaire2Stack,
   p1Solitaire3Stack,
   p1Solitaire4Stack,
+  // see note in ./dynamicFieldStackReducerGenerator about this:
   ...createNFieldStackReducers(32),
 })
 
