@@ -1,3 +1,3 @@
 export * from './FirebaseRefs';
-export * from './P1';
 export * from './FieldStacks';
+export * from './PlayerStacks';

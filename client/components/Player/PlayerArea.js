@@ -30,10 +30,10 @@ function PlayerArea({
           height: '15vh',
           justifyContent: 'space-evenly',
       }}>
-        <StackSolitaire stackKey={`p${playerNum}Solitaire1Stack`}  />
-        <StackSolitaire stackKey={`p${playerNum}Solitaire2Stack`}  />
-        <StackSolitaire stackKey={`p${playerNum}Solitaire3Stack`}  />
-        <StackSolitaire stackKey={`p${playerNum}Solitaire4Stack`}  />
+        <StackSolitaire stackKey={`p${playerNum}SolitaireStack1`}  />
+        <StackSolitaire stackKey={`p${playerNum}SolitaireStack2`}  />
+        <StackSolitaire stackKey={`p${playerNum}SolitaireStack3`}  />
+        <StackSolitaire stackKey={`p${playerNum}SolitaireStack4`}  />
         <StackBig stackKey={`p${playerNum}BigStack`}  />
         <StackDrawn stackKey={`p${playerNum}DrawnStack`} />
         <StackLittle stackKey={`p${playerNum}LittleStack`}  />
