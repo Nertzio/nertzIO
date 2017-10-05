@@ -3,6 +3,7 @@ import secrets from '../secrets'
 firebase.initializeApp(secrets.firebaseConfig);
 // firebase.database.enableLogging(message => console.log("[FIREBASE] ", message));
 const db = firebase.database();
+const auth = firebase.auth();
 
 // create new game instance
 

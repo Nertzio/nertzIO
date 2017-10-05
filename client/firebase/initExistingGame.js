@@ -1,12 +1,14 @@
 import {
-  registerUpdateListeners,
+  registerUpdateHandlersOnGameRef,
+  setGameRefForUtils,
 } from '../firebase';
 import {
   setGameRefInRedux,
   storeStackRefInReduxByKey,
-  updateReduxStackByKey,
+  updateReduxFieldStackByKey,
+  updateReduxPlayerStackByKey,
 } from '../redux/reduxUtils'
-import {shuffleNewDeckForPlayer} from '../gameUtils';
+
 import firebase from 'firebase';
 const db = firebase.database();
 
@@ -22,26 +24,44 @@ const db = firebase.database();
 
 const getExistingGameRefByKey = gameKey => {
   currentGameRef = db.ref(`games/${gameKey}`)
+  setGameRefForUtils(currentGameRef);
   setGameRefInRedux(currentGameRef);
   return Promise.resolve(currentGameRef);
 }
 
-export const sendGameStateToRedux = () => {
+const sendPlayerStacksStateToRedux = () => {
   return currentGameRef.child('players').once('value')
   .then(playersSnapshot => {
     playersSnapshot.forEach(playerSnapshot => {
       playerSnapshot.child('stacks').forEach(stack => {
         storeStackRefInReduxByKey(stack.key, stack.ref);
-        updateReduxStackByKey(stack.key, stack.val())
+        updateReduxPlayerStackByKey(stack.key, stack.val())
       })
     })
   })
   .catch(console.error.bind(console))
 }
 
+const sendFieldStacksStateToRedux = () => {
+  return currentGameRef.child('fieldStacks').once('value')
+  .then(fieldStacks => {
+    fieldStacks.forEach(stack => {
+      storeStackRefInReduxByKey(stack.key, stack.ref);
+      updateReduxFieldStackByKey(stack.key, stack.val())
+    })
+  })
+  .catch(console.error.bind(console))
+}
+
+export const sendGameStateToRedux = () => {
+  return sendFieldStacksStateToRedux()
+    .then(() => sendPlayerStacksStateToRedux())
+    .catch(console.error.bind(console));
+}
+
 export const initExistingGameByKey = gameKey => {
   getExistingGameRefByKey(gameKey)
   .then(() => sendGameStateToRedux())
-  .then(() => registerUpdateListeners())
+  .then(() => registerUpdateHandlersOnGameRef(currentGameRef))
   .catch(console.error.bind(console))
 }
