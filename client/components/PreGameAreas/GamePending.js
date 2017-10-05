@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Redirect } from 'react-router-dom';
 import {connect} from 'react-redux';
-import {startNewGame} from '../../firebase';
+import {startGame} from '../../firebase';
 
 class GamePending extends Component {
   constructor(props){
@@ -10,18 +10,19 @@ class GamePending extends Component {
       shouldRedirectToGame: false,
     }
     this.gameKey = props.match.params.gameId;
-    this.startGame = this.startGame.bind(this);
+    this.startNewGame = this.startNewGame.bind(this);
   }
 
-  startGame(){
-    startNewGame(this.gameKey);
+  startNewGame(){
+    startGame(this.gameKey);
     this.setState({
       shouldRedirectToGame: true
     })
   }
 
   render(){
-    const players = this.state.players
+    console.log(this.props, 'and', this.props.players)
+    const playerKeys = Object.keys(this.props.players).sort();
 
     return (
       <div style={styles.GamePending}>
@@ -29,9 +30,9 @@ class GamePending extends Component {
         <h3>Game Key: {this.gameKey}</h3>
         <div style={{borderStyle: 'solid'}}>
           {
-            players.length === 4 ? this.startGame() :
-            players.map((player, index) => (
-              <h4 key={index} >{index + 1}. {player.username}</h4>
+            playerKeys.length === 4 ? this.startNewGame() :
+            playerKeys.map((playerKey, index) => (
+              <h4 key={playerKey} >Player {index + 1}. {this.props.players[playerKey].username}</h4>
             ))
           }
         </div>
@@ -57,4 +58,4 @@ function mapStateToProps (state) {
   }
 }
 
-export default connect(mapStateToProps)(GamePending)
+export default connect(mapStateToProps)(GamePending);

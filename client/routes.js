@@ -6,7 +6,7 @@ import {Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
 
-import {GameArea, Login, Signup, SignIn, UserHome, JoinAGame, GamePending} from './components'
+import {GameArea, Login, SignUp, SignIn, UserHome, JoinAGame, GamePending} from './components'
 
 
 import {me} from './redux'
