@@ -5,7 +5,6 @@ import {
 } from '../redux/reduxUtils'
 
 import {
-  getSnapshotOfAllPlayersByGameRef,
   goCountAllPlayersInGame,
   registerUpdateHandlersOnGameRef,
   setGameRefForUtils,
@@ -33,15 +32,9 @@ export const addNewGame = () => {
   return currentGameRef;
 }
 
-// create a function that dynamically generates a fieldStacks node, like so:
-// {
-//   fieldStack1: ...,
-//   fieldStack2: ...,
-// }
-
-const generateNFieldStackNodes = n => {
+const generateNFieldStackNodes = num => {
   const fieldStacks = {};
-  for (let i = 1; i <= n; i++) {
+  for (let i = 1; i <= num; i++) {
     fieldStacks[`fieldStack${i}`] = false;
   }
   return fieldStacks;
@@ -51,9 +44,16 @@ const set4FieldStacksPerPlayer = () => {
   return goCountAllPlayersInGame()
     .then(numPlayers => {
       currentGameRef
-        .child('FieldStacks')
+        .child('fieldStacks')
         .set(generateNFieldStackNodes(numPlayers * 4))
     })
+}
+
+const storeFieldStackRefsInRedux = () => {
+  return currentGameRef.child('fieldStacks').once('value')
+    .then(fieldStacks => fieldStacks.forEach(stack => {
+      storeStackRefInReduxByKey(stack.key, stack.ref);
+    }))
 }
 
 const generateStacksForPlayer = (playerNum) => {
@@ -85,8 +85,6 @@ const initPlayerAreaByPlayerNum = (playerNum) => {
 }
 
 const initAllPlayerAreas = () => {
-  // return getSnapshotOfAllPlayersByGameRef(currentGameRef)
-  // .then(snapshotOfAllPlayers => snapshotOfAllPlayers.numChildren())
   return goCountAllPlayersInGame()
   .then(numOfPlayers => {
     const playerAreasInitializing = [];
@@ -126,6 +124,7 @@ export const initNewGame = () => {
   return addNewGame()
     .then(() => setPlayersToGameRef(hardCodedPlayers, currentGameRef))
     .then(() => set4FieldStacksPerPlayer())
+    .then(() => storeFieldStackRefsInRedux())
     .then(() => initAllPlayerAreas())
     .then(() => registerUpdateHandlersOnGameRef(currentGameRef))
     .catch(console.error.bind(console))

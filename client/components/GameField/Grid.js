@@ -6,7 +6,7 @@ function Grid(props) {
 
   const renderCells = (numCells) => {
     const cells = [];
-    for (let i = 0; i < numCells; i++) {
+    for (let i = 1; i <= numCells; i++) {
       const responsiveCell = (
         <div key={i} style={{flex: '1 1 auto', width: '25%'}} >
           <Cell cellId={i} />
@@ -27,7 +27,7 @@ function Grid(props) {
       flexWrap: 'wrap',
       width: '100%',
     }}>
-      {renderCells(16)}
+      {renderCells(cellCount)}
     </div>
   )
 }

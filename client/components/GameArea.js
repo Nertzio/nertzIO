@@ -9,10 +9,10 @@ class  GameArea extends Component {
 
 
   componentDidMount() { //currently defaults to existing game
-    if (true){  // TODO: CREATE THIS PROP
+    if (false){  // TODO: CREATE THIS PROP
       initNewGame();
     } else {
-      initExistingGameByKey('-Kva1DwbJeviihgttvHA');
+      initExistingGameByKey('-Kvdv-m3Nb_gy9zYlB0c');
     }
   }
 

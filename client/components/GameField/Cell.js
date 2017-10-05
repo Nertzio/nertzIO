@@ -13,7 +13,7 @@ function Cell(props) {
       height: '100%',
       width: '100%',
     }}>
-      <GameFieldStack stackKey={cellId}  />
+      <GameFieldStack stackKey={`fieldStack${cellId}`}  />
     </div>
   )
 }

@@ -5,9 +5,10 @@ import {
 import {
   setGameRefInRedux,
   storeStackRefInReduxByKey,
+  updateReduxFieldStackByKey,
   updateReduxPlayerStackByKey,
 } from '../redux/reduxUtils'
-import {shuffleNewDeckForPlayer} from '../gameUtils';
+
 import firebase from 'firebase';
 const db = firebase.database();
 
@@ -42,12 +43,11 @@ const sendPlayerStacksStateToRedux = () => {
 }
 
 const sendFieldStacksStateToRedux = () => {
-  return currentGameRef.child('FieldStacks').once('value')
+  return currentGameRef.child('fieldStacks').once('value')
   .then(fieldStacks => {
     fieldStacks.forEach(stack => {
-      const reduxStackKey = `GameFieldStack${stackSnapshot.key}`;
-      storeStackRefInReduxByKey(reduxStackKey, stack.ref);
-      updateReduxPlayerStackByKey(reduxStackKey, stack.val())
+      storeStackRefInReduxByKey(stack.key, stack.ref);
+      updateReduxFieldStackByKey(stack.key, stack.val())
     })
   })
   .catch(console.error.bind(console))
