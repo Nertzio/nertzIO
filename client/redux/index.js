@@ -6,13 +6,14 @@ import user from './user'
 import {
   firebaseRefs,
   createStackReducersForNPlayers,
-  createNFieldStackReducers, players
+  createNFieldStackReducers, players, me,
 } from './reducers';
 
 const reducer = combineReducers({
   user,
   firebaseRefs,
   players,
+  me,
   ...createStackReducersForNPlayers(8),
   // see note in ./dynamicFieldStackReducerGenerator about this:
   ...createNFieldStackReducers(32),
