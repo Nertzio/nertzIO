@@ -1,7 +1,7 @@
 
 const canThisGoOnThatInSolitaire = (incoming, top) => {
-  // if (!top) top = { number: 14 } // if empty stack
-  if (top) {
+  if (!top) top = {} // if empty stack
+  if (top.number) {
     if (incoming.number !== top.number - 1) return false;
   }
   switch (top.suit) {
