@@ -7,30 +7,13 @@ class SignUp extends Component {
   constructor(props) {
     super(props)
     this.handleSignUp = this.handleSignUp.bind(this)
-    this.initAuth = this.initAuth.bind(this)
-    let displayName, email, uid;
     // Note: Form values left uncleared for now, since will be redirecting
   }
 
-    //Event listener for state changes on auth
-  initAuth() {
-    auth.onAuthStateChanged(function(user) {
-      if (user) {
-        console.log(user.email)
-        // ISSUE -> The below vals are not currently accessible, since variable names are initialized within a class without 'this'. Before assigning these to local state, need further clarity on where these values need to be passed initially (i.e. Redux vs Firebase instance)
-        // displayName = user.displayName;
-        // email = user.email;
-        // emailVerified = user.emailVerified;
-        // uid = user.uid;
-      } else {
-        // No user is signed in.
-      }
-    });
-  }
-
   handleSignUp () {
-    var email = document.getElementById('email').value;
-    var password = document.getElementById('password').value;
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
     if (email.length < 4) {
       alert('Please enter an email address.');
       return;
@@ -40,8 +23,13 @@ class SignUp extends Component {
       return;
     }
 
-    auth.createUserWithEmailAndPassword(email, password).catch(function(error) {
-      // Handle Errors here.
+    auth.createUserWithEmailAndPassword(email, password)
+    .then(user => {
+      user.updateProfile({
+        displayName: username
+      })
+    })
+    .catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
       alert(errorMessage)
@@ -53,7 +41,6 @@ class SignUp extends Component {
 
 
   render () {
-    this.initAuth()
 
     return (
       <div>
