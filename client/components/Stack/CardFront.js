@@ -26,6 +26,7 @@ const CardFront = (props) => {
     <div style={{
       alignItems: 'center',
       backgroundColor: 'white',
+      borderRadius: '2px',
       color: textColor,
       display: 'flex',
       flexDirection: 'column',

@@ -33,7 +33,7 @@ const Card = (props) => {
       opacity: isDragging ? 0 : 1,
       position: 'absolute',
       top: 0,
-      transform: `translate(0px, ${stackPosition * -1}px)`,
+      transform: `translate(0px, ${stackPosition * -1}px) perspective(50em) rotateX(20deg)`,
       width: 'calc(10vh)',
       zIndex: stackPosition,
     }}>

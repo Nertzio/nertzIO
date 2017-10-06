@@ -10,6 +10,7 @@ const CardBack = ({belongsTo, color}) => {
     <div style={{
       alignItems: 'center',
       backgroundColor: color,
+      borderRadius: '2px',
       color: 'white',
       display: 'flex',
       flexDirection: 'column',
