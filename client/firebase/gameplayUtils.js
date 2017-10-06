@@ -9,21 +9,6 @@ import {
 const getGame = () => getFirebaseGameRefFromRedux();
 
 
-export const flip3ForPlayer = (playerNum) => {
-  const reduxBigStack = getStackInStoreByKey(`p${playerNum}BigStack`);
-  const reduxDrawnStack = getStackInStoreByKey(`p${playerNum}DrawnStack`)
-  const drawnCards = reduxBigStack.slice(-3).reverse(); // maintaining LIFO
-  const remainingCards = reduxBigStack.slice(0, -3);
-  return Promise.all([
-    getStackRefByKey(`p${playerNum}BigStack`)
-      .set(remainingCards),
-    getStackRefByKey(`p${playerNum}DrawnStack`)
-      .set([...reduxDrawnStack, ...drawnCards])
-  ])
-    .catch(console.error.bind(console));
-}
-
-
 const clearDrawnStackForPlayer = (playerNum) => {
   return getGame()
     .child(`players/${playerNum}/stacks/p${playerNum}DrawnStack`)
@@ -40,5 +25,23 @@ export const restartBigStackForPlayer = (playerNum) => {
     .set([...bigStack, ...drawnStack])
     .then(() => clearDrawnStackForPlayer(playerNum))
     .catch(console.error.bind(console));
-
 }
+
+export const flip3ForPlayer = (playerNum) => {
+  const reduxBigStack = getStackInStoreByKey(`p${playerNum}BigStack`);
+  if (!reduxBigStack.length) return restartBigStackForPlayer(playerNum);
+  const reduxDrawnStack = getStackInStoreByKey(`p${playerNum}DrawnStack`)
+  const drawnCards = reduxBigStack.slice(-3).reverse(); // maintaining LIFO
+  const remainingCards = reduxBigStack.slice(0, -3);
+  return Promise.all([
+    getStackRefByKey(`p${playerNum}BigStack`)
+      .set(remainingCards),
+    getStackRefByKey(`p${playerNum}DrawnStack`)
+      .set([...reduxDrawnStack, ...drawnCards])
+  ])
+    .catch(console.error.bind(console));
+}
+
+
+
+

@@ -1,7 +1,9 @@
 
 const canThisGoOnThatInSolitaire = (incoming, top) => {
-  if (!top) top = { number: 14 } // if empty stack
-  if (incoming.number !== top.number - 1) return false;
+  if (!top) top = {} // if empty stack
+  if (top.number) {
+    if (incoming.number !== top.number - 1) return false;
+  }
   switch (top.suit) {
     case 'club':    return ['diamond', 'heart'].includes(incoming.suit);
     case 'diamond': return ['club',    'spade'].includes(incoming.suit);
