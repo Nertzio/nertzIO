@@ -1,30 +1,40 @@
 import React from 'react';
 import { CardFront, CardBack } from '../Stack';
 import { DragSource } from 'react-dnd'
-import ItemTypes from '../../DragNDrop/constants';
+import {
+  ItemTypes,
+  canIDragGivenStackKeyOwnStackAndPosition,
+} from '../../DragNDrop';
 
 const Card = (props) => {
   const {
-    suit,
+    belongsTo,
+    firebaseStackRef,
+    isFaceUp,
     name,
     number,
-    isFaceUp,
-    belongsTo,
+    ownStack,
     stackPosition,
-    firebaseStackRef
+    suit,
    } = props;
 
    const { connectDragSource, isDragging } = props
+   const borderColor = stackPosition % 2 === 1 ? 'white' : 'lightgray'
 
   return connectDragSource(
     <div style={{
-      opacity: isDragging ? 0.5 : 1,
-      border: '1px gray solid',
-      position: 'absolute',
-      height: '100%',
+      border: `1px solid ${borderColor}`,
+      borderRadius: '3px',
+      height: 'calc(15vh)',
+      left: 0,
       margin: '0 auto',
-      transform: `translate(0px, ${stackPosition * 1}px)`,
-      width: '80%',
+      maxHeight: 'calc(100vw / 5)',
+      maxWidth: '100%',
+      opacity: isDragging ? 0 : 1,
+      position: 'absolute',
+      top: 0,
+      transform: `translate(0px, ${stackPosition * -1}px)`,
+      width: 'calc(10vh)',
       zIndex: stackPosition,
     }}>
       {isFaceUp
@@ -42,6 +52,7 @@ const cardSource = {
     number,
     isFaceUp,
     belongsTo,
+    color,
   }) {
     return { // accessed by DropTargetMonitor.getItem()
       suit,
@@ -49,8 +60,10 @@ const cardSource = {
       number,
       isFaceUp,
       belongsTo,
+      color
     }
   },
+
   endDrag({firebaseStackRef, stackPosition}, monitor){
     if (monitor.didDrop()) {
       firebaseStackRef.once('value')
@@ -63,8 +76,10 @@ const cardSource = {
       })
     }
   },
-  canDrag({firebaseStackRef, stackPosition}, monitor){
-    return firebaseStackRef.key.slice(2) !== 'BigStack'
+
+  canDrag({firebaseStackRef, ownStack, stackPosition}, monitor) {
+    const key = firebaseStackRef.key;
+    return canIDragGivenStackKeyOwnStackAndPosition(key, ownStack, stackPosition)
   }
 }
 

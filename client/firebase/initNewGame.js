@@ -34,8 +34,6 @@ export const addNewGame = () => {
 }
 
 export const goAddPlayerToGame = (playerData, gameRef) => {
-  currentGameRef = gameRef;
-  setGameRefForUtils(gameRef);
   return gameRef.once('value')
     .then(gameSnapshot => {
       const playerKey = gameSnapshot.child('players').numChildren() + 1;
@@ -47,7 +45,10 @@ export const goAddPlayerToGame = (playerData, gameRef) => {
 
 export const addPlayerToGame = (playerData, game) => {
   const gameRef = typeof game === 'string' ? db.ref(`games/${game}`) : game;
-  return goAddPlayerToGame(playerData, game)
+  currentGameRef = gameRef;
+  setGameRefForUtils(gameRef);
+  setGameRefInRedux(gameRef);
+  return goAddPlayerToGame(playerData, gameRef)
     .then(() => updateReduxWhenPlayersJoinGame(gameRef))
     .then(() => gameRef)
     .catch(console.error.bind(console));

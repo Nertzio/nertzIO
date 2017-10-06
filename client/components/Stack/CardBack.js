@@ -4,22 +4,22 @@
 
 import React from 'react';
 
-const CardBack = (props) => {
-  const { belongsTo } = props;
+const CardBack = ({belongsTo, color}) => {
 
   return (
-    <div style={styles.cardBack}>
-        <p>Player {belongsTo}</p>
+    <div style={{
+      alignItems: 'center',
+      backgroundColor: color,
+      color: 'white',
+      display: 'flex',
+      flexDirection: 'column',
+      fontSize: 'calc(2.5vh)',
+      height: '100%',
+      justifyContent: 'space-around',
+    }}>
+        <p>P{belongsTo}</p>
     </div>
   )
-}
-
-const styles = {
-  cardBack: {
-    backgroundColor: 'red',
-    color: 'white',
-    height: '100%',
-  }
 }
 
 export default CardBack;

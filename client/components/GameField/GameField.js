@@ -11,8 +11,9 @@ function GameField(props) {
       border: '1px solid gray', // TODO: remove later
       color: 'white',
       display: 'flex',
-      flexGrow: 9,
-      width: '100%',
+      flexGrow: 1,
+      minHeight: `calc(15vh * ${userCount})`,
+      width: 'calc(100vh)%',
     }}>
       <Grid cellCount={userCount * 4} />
     </section>
