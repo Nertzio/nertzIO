@@ -9,7 +9,7 @@ import {
 const Card = (props) => {
   const {
     belongsTo,
-    firebaseStackRef
+    firebaseStackRef,
     isFaceUp,
     name,
     number,
@@ -28,6 +28,8 @@ const Card = (props) => {
       height: 'calc(15vh)',
       left: 0,
       margin: '0 auto',
+      maxHeight: 'calc(100vw / 5)',
+      maxWidth: '100%',
       opacity: isDragging ? 0 : 1,
       position: 'absolute',
       top: 0,
