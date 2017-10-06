@@ -4,11 +4,13 @@ export function shuffleNewDeckForPlayer(playerNum) {
   const deckGenerator = decked( {ace: 'low', jokers: false });
   const baseCards = deckGenerator();
   const gameReadyCards = baseCards.map(card => {
+    const colors = ['#85144b', '#3D9970', '#0074D9', '#001f3f', '#01FF70', '#FF4136']
     const gameCardSpecs = {
       belongsTo: playerNum,
+      color: colors[+playerNum - 1],
       isFaceUp: false,
     }
-    return Object.assign({}, card, gameCardSpecs);
+    return {...card, ...gameCardSpecs};
   })
   return shuffle(gameReadyCards);
 }

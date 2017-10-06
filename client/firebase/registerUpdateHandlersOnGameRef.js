@@ -2,6 +2,7 @@ import {
   getSnapshotOfAllPlayersByGameRef,
 } from './firebase_utils.js';
 import {
+  getPlayersInStore,
   updatePlayerInReduxByKey,
   updateReduxPlayerStackByKey,
   updateReduxFieldStackByKey
@@ -30,6 +31,7 @@ export const updateReduxWhenPlayerDataChanges = (gameRef) => {
   })
 }
 
+// TODO: this isn't quite right, it's firing whenever a players cards change, we only want this to fire when a new player joins the game.
 export const updateReduxWhenPlayersJoinGame = (gameRef) => {
   return gameRef.child('players').once('value')
     .then(allPlayers => {
@@ -38,6 +40,17 @@ export const updateReduxWhenPlayersJoinGame = (gameRef) => {
       })
     })
 }
+
+// export const updateReduxWhenPlayersJoinGame = (gameRef) => {
+//   return gameRef.child('players').on('value', playersSnapshot => {
+//     const priorPlayerKeys = Object.keys(getPlayersInStore()).map(key => +key);
+//     const allPlayerKeys = Object.keys(playersSnapshot.val()).map(key => +key);
+//     const newPlayerKey = allPlayerKeys
+//       .filter(key => !(priorPlayerKeys.includes(key)))[0]
+//     const newPlayerData = playersSnapshot.val()[newPlayerKey];
+//     return updatePlayerInReduxByKey(newPlayerKey, newPlayerData)
+//   })
+// }
 
 const updateReduxWhenPlayerStacksUpdate = (gameRef) => {
   return getSnapshotOfAllPlayersByGameRef(gameRef)

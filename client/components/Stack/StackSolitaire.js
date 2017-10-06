@@ -26,14 +26,10 @@ const StackSolitaire = ({cards, firebaseRef, connectDropTarget}) => {
 }
 
 const solitaireTarget = {
-  drop({firebaseRef}, monitor) {
+  drop({firebaseRef, cards}, monitor) {
     const cardData = monitor.getItem()
-    // TODO: use props.cards.length to determine numCardsInStack
-    firebaseRef.once('value')
-    .then(snapshot => {
-      const numCardsInStack = snapshot.numChildren()
-      firebaseRef.child(numCardsInStack).set(cardData)
-    })
+    const numCardsInStack = cards.length;
+    firebaseRef.child(numCardsInStack).set(cardData)
   },
 
   canDrop({cards}, monitor) {
@@ -59,6 +55,4 @@ const mapState = (state, {stackKey}) => ({
 const droppableSolitaireStack = DropTarget(ItemTypes.CARD, solitaireTarget, collect)(StackSolitaire);
 
 export default connect(mapState, null)(droppableSolitaireStack);
-
-
 

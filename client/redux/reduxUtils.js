@@ -11,6 +11,14 @@ export const getFirebaseGameRefFromRedux = () => {
   return store.getState().firebaseRefs.game
 }
 
+export const getPlayersInStore = () => {
+  return store.getState().players;
+}
+
+export const getStackInStoreByKey = (stackKey) => {
+  return store.getState()[stackKey]
+}
+
 export const setGameRefInRedux = gameRef => {
   dispatch(setGameRef(gameRef));
 }

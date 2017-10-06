@@ -28,6 +28,17 @@ export const getSnapshotOfAllPlayersByGameRef = (currentGameRef) => {
   return currentGameRef.child('players').once('value');
 }
 
+export const getSnapshotOfStackByKey = (stackKey) => {
+  const playerNum = stackKey[1];
+  return currentGameRef.child(`players/${playerNum}/stacks/${stackKey}`)
+    .once('value')
+}
+
+export const getStackRefByKey = (stackKey) => {
+  const playerNum = stackKey[1];
+  return currentGameRef.child(`players/${playerNum}/stacks/${stackKey}`)
+}
+
 export const goCountAllPlayersInGame = () => {
   return getSnapshotOfAllPlayersByGameRef(currentGameRef)
     .then(snapshot => snapshot.numChildren())
@@ -41,7 +52,7 @@ export const setGameRefForUtils = gameRef => {
   currentGameRef = gameRef;
 }
 
-export const updatePlayerByKey = (playerNum, playerData) => {
+export const updatePlayerInFirebaseByKey = (playerNum, playerData) => {
   return currentGameRef.child(`players/${playerNum}`).update(playerData);
 }
 

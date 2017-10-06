@@ -14,20 +14,36 @@ const CardFront = (props) => {
     number,
   } = props;
 
+  const textColor = ['spade', 'club'].includes(suit) ? 'black' : 'red';
+  const symbols = ['♥️', '♦️', '♠️', '♣️']
+  const suits = ['heart', 'diamond', 'spade', 'club']
+  const cardSymbol = symbols[suits.indexOf(suit)]
+  const formattedName = name.toString().length > 2 ?
+    name[0].toUpperCase() :
+    name.toString()
+
   return (
-    <div style={styles.cardFront}>
-      <span>{name} </span>
-      <span>{suit}</span>
+    <div style={{
+      alignItems: 'center',
+      backgroundColor: 'white',
+      color: textColor,
+      display: 'flex',
+      flexDirection: 'column',
+      fontSize: 'calc(2.5vh)',
+      height: '100%',
+      justifyContent: 'space-around',
+    }}>
+      <p>{formattedName} {cardSymbol}</p>
+
+      <p style={{
+        transform: 'rotate(180deg)'
+      }}>
+        {formattedName} {cardSymbol}
+      </p>
+
     </div>
   )
 }
 
-const styles = {
-  cardFront: {
-    backgroundColor: 'lightblue',
-    color: 'white',
-    height: '100%'
-  }
-}
 
 export default CardFront;

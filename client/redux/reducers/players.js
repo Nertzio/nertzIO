@@ -15,7 +15,8 @@ const defaultPlayers = {}
  */
 export const updatePlayerByKey = (playerKey, userInfo) => {
   let user = {};
-  user['player_' + playerKey] = userInfo;
+  // user['player_' + playerKey] = userInfo;
+  user[playerKey] = userInfo;
   return ({type: ADD_PLAYER, user})
 }
 
