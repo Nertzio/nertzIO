@@ -84,6 +84,7 @@ class JoinAGame extends Component {
     }
 
     render() {
+      console.log(this.props, 'AND', this.props.me)
       return (
         <div style={styles.JoinAGame}>
           {this.state.redirect && <Redirect to={`/pendingGames/${this.state.gameId}`}/>
