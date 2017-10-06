@@ -25,3 +25,4 @@ export default createStore(reducer, composeWithDevTools(middleware));
 
 export * from './user'
 export * from './reducers';
+export * from './reduxUtils';
