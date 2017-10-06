@@ -11,7 +11,7 @@ const auth = firebase.auth();
 
 
 
-import {GameArea, Login, SignUp, SignIn, UserHome, JoinAGame, GamePending} from './components'
+import {GameArea, Login, SignUp, SignIn, UserHome, JoinAGame, GamePending, Home} from './components'
 
 
 import {me} from './redux'
@@ -32,7 +32,7 @@ class Routes extends Component {
           <Route exact path='/gamesInProgress/:gameId' component={GameArea} />
           <Route exact path='/signup' component={SignUp}/>
           <Route exact path='/signin' component={SignIn}/>
-          <Route path='/' component={GameArea} />
+          <Route path='/' component={Home} />
         </Switch>
       </Router>
     )
