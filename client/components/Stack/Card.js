@@ -1,17 +1,21 @@
 import React from 'react';
 import { CardFront, CardBack } from '../Stack';
 import { DragSource } from 'react-dnd'
-import ItemTypes from '../../DragNDrop/constants';
+import {
+  ItemTypes,
+  canIDragGivenStackKeyOwnStackAndPosition,
+} from '../../DragNDrop';
 
 const Card = (props) => {
   const {
-    suit,
+    belongsTo,
+    firebaseStackRef
+    isFaceUp,
     name,
     number,
-    isFaceUp,
-    belongsTo,
+    ownStack,
     stackPosition,
-    firebaseStackRef
+    suit,
    } = props;
 
    const { connectDragSource, isDragging } = props
@@ -71,8 +75,9 @@ const cardSource = {
     }
   },
 
-  canDrag({firebaseStackRef, stackPosition}, monitor){
-    return firebaseStackRef.key.slice(2) !== 'BigStack'
+  canDrag({firebaseStackRef, ownStack, stackPosition}, monitor) {
+    const key = firebaseStackRef.key;
+    return canIDragGivenStackKeyOwnStackAndPosition(key, ownStack, stackPosition)
   }
 }
 
