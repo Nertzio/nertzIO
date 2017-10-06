@@ -6,7 +6,7 @@ const Stack = ({cards, firebaseStackRef}) => {
 
   const renderCards = () => {
     return cards.map((cardData, idx) => {
-      return <Card key={idx} stackPosition={idx} firebaseStackRef={firebaseStackRef} {...cardData} />
+      return <Card key={idx} ownStack={cards} stackPosition={idx} firebaseStackRef={firebaseStackRef} {...cardData} />
     })
   }
 
@@ -18,6 +18,7 @@ const Stack = ({cards, firebaseStackRef}) => {
       height: 'calc(15vh)',
       // justifyContent: 'center',
       margin: '0 auto',
+      maxWidth: 'calc(100vw / 10)',
       position: 'relative', // so absolute-positioned cards will stack
       width: 'calc(10vh)',
     }}>
