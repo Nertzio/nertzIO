@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux';
-import {Stack} from '../../components';
+import {Stack, DragHandleStacks} from '../../components';
 import {DropTarget} from 'react-dnd';
 import {
   ItemTypes,
@@ -20,7 +20,10 @@ const StackSolitaire = ({cards, firebaseRef, connectDropTarget}) => {
       height: '100%',
       flex: '1 10%'
     }}>
-      <Stack cards={faceUpCards} firebaseStackRef={firebaseRef} />
+      {/* <Stack cards={faceUpCards} firebaseStackRef={firebaseRef} /> */}
+      {cards.length > 0 &&
+        <DragHandleStacks cards={faceUpCards} firebaseStackRef={firebaseRef} />
+      }
     </div>
   )
 }
