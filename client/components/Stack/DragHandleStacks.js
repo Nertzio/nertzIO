@@ -1,44 +1,120 @@
 import React from 'react'
 import Card from './Card'
+// import StackDragHandle from './DragHandle';
+import { DragSource } from 'react-dnd'
+import {
+  ItemTypes,
+  canIDragGivenStackKeyOwnStackAndPosition,
+} from '../../DragNDrop';
 import PropTypes from 'prop-types';
 
-const DragHandleStacks = ({cards, firebaseStackRef, currentStackPosition}) => {
+const DragHandleStacks = ({
+  cards,
+  connectDragSource,
+  connectDragPreview,
+  firebaseStackRef,
+  isDragging,
+  currentStackPosition,
+}) => {
 
-  // const renderCards = () => {
-  //   return cards.map((cardData, idx) => {
-  //     return <Card key={idx} ownStack={cards} stackPosition={idx} firebaseStackRef={firebaseStackRef} {...cardData} />
-  //   })
-  // }
-
-  // const renderCards = () => {
-  //   return cards.map((cardData, idx) => {
-  //    return <DragHandleStack baseCard={idx} remainingCards={cards.}
-  //   })
-  // }
   const stackPosition = currentStackPosition || 0;
   const currentCard = cards[stackPosition];
   const thereAreMoreCards = stackPosition < cards.length - 1;
   const cssPosition = stackPosition ? 'absolute' : 'relative';
-  return (
+  return connectDragPreview(
     <div style={{
-      // alignContent: 'center',
-      // alignItems: 'center',
-      // display: 'flex',
       height: 'calc(15vh)',
-      // justifyContent: 'center',
       margin: '0 auto',
       maxWidth: 'calc(100vw / 10)',
-      position: cssPosition, // 'relative parent required for absolute stacking'
+      opacity: isDragging ? 0 : 1,
+      position: cssPosition, // 'relative' required for absolute stacking'
       width: 'calc(10vh)',
       zIndex: stackPosition,
     }}>
-      <Card ownStack={cards} stackPosition={stackPosition} firebaseStackRef={firebaseStackRef} {...currentCard} />
+      {thereAreMoreCards && connectDragSource(
+        <div style={{
+          backgroundColor: '#E8E8E8',
+          color: currentCard.textColor,
+          fontSize: '1.5vh',
+          height: '8.333%',
+          right: '0',
+          marginTop: `${8.333 * stackPosition}%`,
+          maxWidth: '15vw',
+          padding: 3,
+          position: 'absolute',
+          top: `${8.333  * stackPosition}%`,
+          width: '13vh',
+        }}>
+          {currentCard.displayName}{currentCard.symbol}
+        </div>
+      )}
+      <Card
+        ownStack={cards}
+        stackPosition={stackPosition}
+        firebaseStackRef={firebaseStackRef}
+        {...currentCard}
+      />
+
       {thereAreMoreCards &&
-        <DragHandleStacks cards={cards} currentStackPosition={stackPosition + 1} firebaseStackRef={firebaseStackRef} />
+        <DraggableDragHandleStacks
+          cards={cards}
+          currentStackPosition={stackPosition + 1}
+          firebaseStackRef={firebaseStackRef}
+          // {...{connectDragPreview}}
+          // {...{connectDragSource}}
+        />
       }
-    </div>
-  )
+    </div>,
+    {offsetX: 50}) // special dragPreview option argument
 }
 
 
-export default DragHandleStacks;
+const stackSource = {
+  beginDrag({
+    cards,
+    currentStackPosition,
+  }) {
+    const draggedStack = cards.slice(currentStackPosition);
+    return { // accessed by DropTargetMonitor.getItem()
+      draggedStack,
+    }
+  },
+
+  endDrag({firebaseStackRef, cards}, monitor){
+    const {draggedStack} = monitor.getItem();
+
+    console.log('endDrag draggedStack: ', draggedStack);
+    const remainingCards = cards.slice(0, -draggedStack.length )
+    // const cutoff = cards.length - draggedStack.length;
+    const isAllCards = remainingCards.length === 0;
+
+    if (monitor.didDrop()) {
+      if (isAllCards) {
+        console.log(firebaseStackRef.key, 'set to false');
+        firebaseStackRef.set(false).catch(console.error.bind(console));
+      } else {
+        firebaseStackRef
+          .set(remainingCards)
+          .catch(console.error.bind(console));
+      }
+    }
+  },
+
+  canDrag({cards, currentStackPosition}, monitor) {
+    const key = 'DragHandleStack';
+    return canIDragGivenStackKeyOwnStackAndPosition(key, cards, currentStackPosition)
+  }
+}
+
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    connectDragPreview: connect.dragPreview(),
+    isDragging: monitor.isDragging(),
+  }
+}
+
+
+const DraggableDragHandleStacks = DragSource(ItemTypes.STACK, stackSource, collect)(DragHandleStacks)
+
+export default DraggableDragHandleStacks;

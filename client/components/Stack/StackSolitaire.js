@@ -30,15 +30,36 @@ const StackSolitaire = ({cards, firebaseRef, connectDropTarget}) => {
 
 const solitaireTarget = {
   drop({firebaseRef, cards}, monitor) {
-    const cardData = monitor.getItem()
-    const numCardsInStack = cards.length;
-    firebaseRef.child(numCardsInStack).set(cardData)
+    const DropType = monitor.getItemType();
+    const payload = monitor.getItem()
+    if (DropType === 'card') {
+      const numCardsInStack = cards.length;
+      firebaseRef.child(numCardsInStack).set(payload)
+        .catch(console.error.bind(console));
+    } else if (DropType === 'stack') {
+      const {draggedStack} = payload;
+      const start = cards.length;
+      const cardNode = {}
+      for (let i = 0; i < draggedStack.length; i++) {
+        cardNode[start + i] = draggedStack[i];
+      }
+      firebaseRef.update(cardNode)
+        .catch(console.error.bind(console));
+    }
+
   },
 
   canDrop({cards}, monitor) {
-    const incomingCard = monitor.getItem();
-    const topCard = cards[cards.length - 1];
-    return canIDropThisOnThatByStackType(incomingCard, topCard, 'StackSolitaire');
+    const DropType = monitor.getItemType();
+    const payload = monitor.getItem();
+    const targetTopCard = cards[cards.length - 1];
+    if (DropType === 'stack') {
+      const {draggedStack} = payload;
+      // just validate bottom card of incoming stack
+      return canIDropThisOnThatByStackType(draggedStack[0], targetTopCard, 'StackSolitaire');
+    } else if (DropType === 'card') {
+      return canIDropThisOnThatByStackType(payload, targetTopCard, 'StackSolitaire');
+    }
   }
 }
 
@@ -55,7 +76,7 @@ const mapState = (state, {stackKey}) => ({
   firebaseRef: state.firebaseRefs.stacks[stackKey],
 })
 
-const droppableSolitaireStack = DropTarget(ItemTypes.CARD, solitaireTarget, collect)(StackSolitaire);
+const droppableSolitaireStack = DropTarget([ItemTypes.CARD, ItemTypes.STACK], solitaireTarget, collect)(StackSolitaire);
 
 export default connect(mapState, null)(droppableSolitaireStack);
 

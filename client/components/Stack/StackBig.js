@@ -26,7 +26,8 @@ const StackBig =  ({cards, firebaseRef, playerNum}) => {
     }}>
       <Stack cards={cards} firebaseStackRef={firebaseRef} />
 
-      <div style={{
+      {/* restart button needs to be moved outside the div with the flip3 onClick listener */}
+      {/* <div style={{
         bottom: -40,
         left: 0,
         height: 40,
@@ -36,7 +37,7 @@ const StackBig =  ({cards, firebaseRef, playerNum}) => {
         <button onClick={() => restartBigStackForPlayer(playerNum)}>
           Restart
         </button>
-      </div>
+      </div> */}
     </div>
   )
 }

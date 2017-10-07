@@ -50,17 +50,23 @@ const cardSource = {
     suit,
     name,
     number,
-    isFaceUp,
     belongsTo,
-    color,
+    backgroundColor,
+    isFaceUp,
+    textColor,
+    symbol,
+    displayName,
   }) {
     return { // accessed by DropTargetMonitor.getItem()
       suit,
       name,
       number,
-      isFaceUp,
       belongsTo,
-      color
+      backgroundColor,
+      isFaceUp,
+      textColor,
+      symbol,
+      displayName,
     }
   },
 
