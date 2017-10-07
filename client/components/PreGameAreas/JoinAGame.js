@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {addNewGame, addPlayerToGame} from '../../firebase';
 import firebase from 'firebase'
@@ -25,13 +26,6 @@ class JoinAGame extends Component {
     this.startGame = this
       .startGame
       .bind(this);
-
-    //TODO: Get actual user info from Auth rather than hardcoded Player:
-    this.userInfo = {
-      'uid': 6346, //  uid from firebase.auth().currentUser
-      'username': 'neatGuy',
-      'email': 'neatguy@email.com'
-    }
   }
 
   handleChange(event) {
@@ -52,7 +46,7 @@ class JoinAGame extends Component {
             .child('players')
             .numChildren() < 4;
           if (gameExists && playersNeeded) {
-            addPlayerToGame(this.userInfo, privateGameRef);
+            addPlayerToGame(this.props.me, privateGameRef);
             // TODO: Check to see if .then should be on this line after addPlayerToGame call
             // for rest of functionality
             this.setState({gameId: gameKey, redirect: true})
@@ -69,7 +63,7 @@ class JoinAGame extends Component {
       following function's argument to that game's ref)
     */
       db.ref('games')
-      addPlayerToGame(this.userInfo, publicGameRef);
+      addPlayerToGame(this.props.me, publicGameRef);
       // TODO: Check to see if .then should be on this line after addPlayerToGame call
       // for rest of functionality
       this.setState({redirect: true})
@@ -79,7 +73,7 @@ class JoinAGame extends Component {
       const isPrivateGame = event.target.name === 'startPrivateGame';
       const gameRef = addNewGame();
       let gameKey = gameRef.key;
-      addPlayerToGame(this.userInfo, gameRef).then(() => {
+      addPlayerToGame(this.props.me, gameRef).then(() => {
         gameRef
           .child('private')
           .set(isPrivateGame)
@@ -90,6 +84,7 @@ class JoinAGame extends Component {
     }
 
     render() {
+      console.log(this.props, 'AND', this.props.me)
       return (
         <div style={styles.JoinAGame}>
           {this.state.redirect && <Redirect to={`/pendingGames/${this.state.gameId}`}/>
@@ -131,4 +126,10 @@ class JoinAGame extends Component {
     }
   }
 
-  export default JoinAGame;
+  function mapStateToProps (state){
+    return {
+      me: state.meReducer
+    }
+  }
+
+  export default connect(mapStateToProps)(JoinAGame);

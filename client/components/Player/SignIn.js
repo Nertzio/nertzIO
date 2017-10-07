@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Redirect} from 'react-router-dom';
 import firebase from 'firebase';
 const auth = firebase.auth();
 
@@ -9,6 +10,9 @@ class SignIn extends Component {
     this.handleSignIn = this.handleSignIn.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
     // Note: Form values left uncleared for now, since will be redirecting
+    this.state = {
+      redirectSignedInUser: false
+    }
   }
 
   handleSignOut () {
@@ -38,13 +42,17 @@ class SignIn extends Component {
       alert(errorMessage);
       console.log(error);
     });
-    //TODO: Add functionality for redirect (either here, or in event listener)
+    this.setState({
+      redirectSignedInUser: true
+    })
   }
 
 
 
   render () {
-    if (auth) {
+    if (this.state.redirectSignedInUser) {
+      return <Redirect to={'/join'} />
+    }
       return (
         <div>
           {true &&
@@ -66,7 +74,6 @@ class SignIn extends Component {
 
         </div>
       )
-    }
   }
 }
 

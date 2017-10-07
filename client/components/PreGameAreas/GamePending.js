@@ -32,7 +32,7 @@ class GamePending extends Component {
           {
             playerKeys.length === 4 ? this.startNewGame() :
             playerKeys.map((playerKey, index) => (
-              <h4 key={playerKey} >Player {index + 1}. {this.props.players[playerKey].username}</h4>
+              <h4 key={playerKey} >Player {index + 1}. {this.props.players[playerKey].displayName}</h4>
             ))
           }
         </div>
