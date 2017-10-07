@@ -8,14 +8,14 @@ import {
 
 const Card = (props) => {
   const {
-    belongsTo,
-    firebaseStackRef,
+    // belongsTo,
+    // firebaseStackRef,
     isFaceUp,
-    name,
-    number,
-    ownStack,
+    // name,
+    // number,
+    // ownStack,
     stackPosition,
-    suit,
+    // suit,
    } = props;
 
    const { connectDragSource, isDragging } = props

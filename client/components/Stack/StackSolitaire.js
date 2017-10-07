@@ -6,7 +6,6 @@ import {
   ItemTypes,
   canIDropThisOnThatByStackType
 } from '../../DragNDrop';
-import {pushCardToStackByPlayer} from '../../firebase/firebase_utils';
 
 const StackSolitaire = ({cards, firebaseRef, connectDropTarget}) => {
   const faceUpCards = cards.map(card => {
@@ -20,7 +19,6 @@ const StackSolitaire = ({cards, firebaseRef, connectDropTarget}) => {
       height: '100%',
       flex: '1 10%'
     }}>
-      {/* <Stack cards={faceUpCards} firebaseStackRef={firebaseRef} /> */}
       {cards.length > 0 &&
         <DragHandleStacks cards={faceUpCards} firebaseStackRef={firebaseRef} />
       }
@@ -28,7 +26,7 @@ const StackSolitaire = ({cards, firebaseRef, connectDropTarget}) => {
   )
 }
 
-const solitaireTarget = {
+const solitaireTarget = { // TODO: extract this into firebase utils
   drop({firebaseRef, cards}, monitor) {
     const DropType = monitor.getItemType();
     const payload = monitor.getItem()
@@ -36,7 +34,7 @@ const solitaireTarget = {
       const numCardsInStack = cards.length;
       firebaseRef.child(numCardsInStack).set(payload)
         .catch(console.error.bind(console));
-    } else if (DropType === 'stack') {
+    } else if (DropType === 'stack') { // TODO: extract this into firebase utils
       const {draggedStack} = payload;
       const start = cards.length;
       const cardNode = {}
