@@ -33,6 +33,7 @@ export const addNewGame = () => {
   return currentGameRef;
 }
 
+//sets player data for game instance in db
 export const goAddPlayerToGame = (playerData, gameRef) => {
   return gameRef.once('value')
     .then(gameSnapshot => {
@@ -62,6 +63,7 @@ const generateNFieldStackNodes = num => {
   return fieldStacks;
 }
 
+//sets fieldStackNodes in db
 const set4FieldStacksPerPlayer = () => {
   return goCountAllPlayersInGame()
     .then(numPlayers => {
@@ -71,8 +73,9 @@ const set4FieldStacksPerPlayer = () => {
     })
 }
 
-const storeFieldStackRefsInRedux = () => {
-  return currentGameRef.child('fieldStacks').once('value')
+const storeFieldStackRefsInRedux = (gameInstanceRef) => {
+  const gameRef = currentGameRef || gameInstanceRef
+  return gameRef.child('fieldStacks').once('value')
     .then(fieldStacks => fieldStacks.forEach(stack => {
       storeStackRefInReduxByKey(stack.key, stack.ref);
     }))
@@ -91,27 +94,33 @@ const generateStacksForPlayer = (playerNum) => {
   }
 }
 
+const linkReduxStacksWithDbByPlayerNum = (playerNum) => {
+  const playerRef = currentGameRef.child(`players/${playerNum}`);
+  playerRef.child('stacks').once('value')
+  .then((snapShotOfAllStacks) => {
+    snapShotOfAllStacks.forEach(stack => {
+      storeStackRefInReduxByKey(stack.key, stack.ref)
+      updateReduxPlayerStackByKey(stack.key, stack.val())
+    })
+  })
+  .catch(console.error.bind(console));
+}
+
 const initPlayerAreaByPlayerNum = (playerNum) => {
   const playerRef = currentGameRef.child(`players/${playerNum}`);
   const stacksNode = generateStacksForPlayer(playerNum);
   const settingPlayersStacks = playerRef.child('stacks').set(stacksNode)
   return settingPlayersStacks
-    .then(() => playerRef.child('stacks').once('value'))
-    .then((snapShotOfAllStacks) => {
-      snapShotOfAllStacks.forEach(stack => {
-        storeStackRefInReduxByKey(stack.key, stack.ref)
-        updateReduxPlayerStackByKey(stack.key, stack.val())
-      })
-    })
-    .catch(console.error.bind(console));
+    .then(() => linkReduxStacksWithDbByPlayerNum(playerNum))
 }
 
-const initAllPlayerAreas = () => {
+const initAllPlayerAreas = (dbGameInstanceIsPreInitialized) => {
   return goCountAllPlayersInGame()
   .then(numOfPlayers => {
     const playerAreasInitializing = [];
     for (let i = 1; i <= numOfPlayers; i++) {
-      const initializingArea = initPlayerAreaByPlayerNum(i);
+      //if dbGameInstanceIsPreInitialized, skip creation of nodes in db, just set up Redux to link w/ them
+      const initializingArea = dbGameInstanceIsPreInitialized ? linkReduxStacksWithDbByPlayerNum(i) : initPlayerAreaByPlayerNum(i);
       playerAreasInitializing.push(initializingArea)
     }
     return Promise.all(playerAreasInitializing);
@@ -159,3 +168,18 @@ export const startGame = () => {
   .then(() => registerUpdateHandlersOnGameRef(currentGameRef))
   .catch(console.error.bind(console))
 }
+
+
+export const resetReduxForPendingGameInstance = (gameRef) => {
+  setGameRefForUtils(gameRef)
+  setGameRefInRedux(gameRef)
+  updateReduxWhenPlayersJoinGame(gameRef)
+}
+
+export const resetReduxForStartedDbGameInstance = (gameRef) => {
+  resetReduxForPendingGameInstance(gameRef)
+  storeFieldStackRefsInRedux(gameRef)
+  initAllPlayerAreas(true)
+  registerUpdateHandlersOnGameRef(gameRef)
+}
+

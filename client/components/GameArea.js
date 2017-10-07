@@ -3,8 +3,7 @@ import {connect} from 'react-redux';
 import {GameField, PlayerArea, Stack} from '../components';
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
-import {setGameRefInRedux} from '../redux/reduxUtils'
-import { registerUpdateHandlersOnGameRef, updateReduxWhenPlayersJoinGame, setGameRefForUtils } from '../firebase'
+import { resetReduxForStartedDbGameInstance } from '../firebase'
 import firebase from 'firebase'
 const db = firebase.database()
 
@@ -13,10 +12,7 @@ class  GameArea extends Component {
 
   componentDidMount () {
     const gameRef = db.ref(`games/${this.props.match.params.gameId}`)
-    setGameRefForUtils(gameRef)
-    setGameRefInRedux(gameRef)
-    updateReduxWhenPlayersJoinGame(gameRef)
-    registerUpdateHandlersOnGameRef(gameRef)
+    resetReduxForStartedDbGameInstance(gameRef);
   }
 
   render() {

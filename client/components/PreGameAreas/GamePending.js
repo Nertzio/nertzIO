@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import { Redirect } from 'react-router-dom';
 import {connect} from 'react-redux';
-import {startGame} from '../../firebase';
+import {startGame, resetReduxForPendingGameInstance} from '../../firebase';
+import firebase from 'firebase'
+const db = firebase.database()
 
 class GamePending extends Component {
   constructor(props){
@@ -11,6 +13,11 @@ class GamePending extends Component {
     }
     this.gameKey = props.match.params.gameId;
     this.startNewGame = this.startNewGame.bind(this);
+  }
+
+  componentDidMount(){
+    const gameRef = db.ref(`games/${this.props.match.params.gameId}`)
+    resetReduxForPendingGameInstance(gameRef);
   }
 
   startNewGame(){
