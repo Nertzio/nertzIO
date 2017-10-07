@@ -10,31 +10,28 @@ const Home = () => {
       height: '100%',
       width: '100%',
       justifyContent: 'center',
-      paddingLeft: '400',
-      paddingRight: '400',
-      paddingBottom: '500'
     }}>
       <div style={{
         borderColor: 'black',
         borderStyle: 'solid',
+        paddingBottom: '100px',
         backgroundColor: '#f90',
-        padding: '80',
         width: '100%',
         justifyContent: 'center',
         textAlign: 'center'
       }}>
         <h1 style={{
           textAlign: 'center',
-          fontSize: '70',
+          fontSize: '70px',
           color: 'white',
           fontFamily: '"Comic Sans MS", cursive, sans-serif',
-          marginBottom: '70'
+          marginBottom: '70px'
         }} >Nertz.io</h1>
         <Link
           style={{
             textAlign: 'center',
-            padding: '15',
-            margin: '30',
+            padding: '15px',
+            margin: '30px',
             borderColor: 'black',
             backgroundColor: 'white',
             color: 'black',
@@ -45,11 +42,11 @@ const Home = () => {
       </div>
       <div style={{
         justifyContent: 'center',
-        marginTop: '150',
         textAlign: 'center',
         backgroundColor: 'white',
         width: '100%',
-        padding: '50'
+        paddingTop: '30px',
+        paddingBottom: '30px'
       }}>
         <h3>How To Play Nertz</h3>
         <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/zvca2HKMW0c?rel=0&amp;showinfo=0" frameBorder="0" allowFullScreen />
