@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import firebase from 'firebase';
 import {Redirect} from 'react-router-dom'
 const auth = firebase.auth();
+import {initAuth} from '../../firebase'
+// import store, {addLocalUserInfo} from '../../redux'
+// const {dispatch} = store;
 
 class SignUp extends Component {
 
@@ -30,8 +33,10 @@ class SignUp extends Component {
     auth.createUserWithEmailAndPassword(email, password)
     .then(user => (
       user.updateProfile({
-        displayName: username
-      })))
+          displayName: username
+      })
+    ))
+    .then(() => Promise.resolve(initAuth()))
     .then(() => {   // TODO: Fix bug-- redirecting occuring before displayName updated in Redux
       this.setState({ redirectToJoinGame: true });
     })
