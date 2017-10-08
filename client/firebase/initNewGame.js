@@ -33,6 +33,16 @@ export const addNewGame = () => {
   return currentGameRef;
 }
 
+export const createPrivateGame = () => {
+  addNewGame().child('private').set(true);
+  return currentGameRef;
+}
+
+export const createPublicGame = () => {
+  addNewGame().child('private').set(false);
+  return currentGameRef;
+}
+
 export const goAddPlayerToGame = (playerData, gameRef) => {
   return gameRef.once('value')
     .then(gameSnapshot => {
@@ -43,11 +53,14 @@ export const goAddPlayerToGame = (playerData, gameRef) => {
     .catch(console.error.bind(console));
 }
 
-export const addPlayerToGame = (playerData, game) => {
+export const addPlayerToGame = (playerData, game = currentGameRef) => {
   const gameRef = typeof game === 'string' ? db.ref(`games/${game}`) : game;
-  currentGameRef = gameRef;
-  setGameRefForUtils(gameRef);
-  setGameRefInRedux(gameRef);
+  const sameGame = currentGameRef ? currentGameRef.key === gameRef.key : false;
+  if (!sameGame) {
+    currentGameRef = gameRef;
+    setGameRefForUtils(gameRef);
+    setGameRefInRedux(gameRef);
+  }
   return goAddPlayerToGame(playerData, gameRef)
     .then(() => updateReduxWhenPlayersJoinGame(gameRef))
     .then(() => gameRef)

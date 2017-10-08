@@ -1,7 +1,16 @@
 import React, {Component} from 'react';
 import { Redirect } from 'react-router-dom';
 import {connect} from 'react-redux';
-import {startGame} from '../../firebase';
+import {
+  startGame,
+  addPlayerToGame,
+} from '../../firebase';
+import {
+  getCurrentUserInRedux,
+  getPlayersInStore,
+  tellReduxImLoading,
+  tellReduxImDoneLoading,
+} from '../../redux/reduxUtils';
 
 class GamePending extends Component {
   constructor(props){
@@ -10,7 +19,43 @@ class GamePending extends Component {
       shouldRedirectToGame: false,
     }
     this.gameKey = props.match.params.gameId;
-    this.startNewGame = this.startNewGame.bind(this);
+    this.players = Object.values(this.props.players); // make array
+  }
+
+  componentWillMount() {
+    const currentUser = getCurrentUserInRedux();
+    const {players} = this;
+    // don't add player if already added
+    if (players.some(({uid}) => uid === currentUser.uid)) return;
+    if (!currentUser) return
+    tellReduxImLoading()
+    addPlayerToGame(currentUser, this.gameKey)
+      .then(() => setTimeout(() => tellReduxImDoneLoading(), 1000))
+      .catch(console.error.bind(console));
+  }
+
+  componentDidMount() {
+    const playerCount = this.players.length;
+    if (playerCount === 4) {
+      setTimeout(() => this.props.history.push(`/play/${this.gameKey}`), 1000);
+    }
+  }
+
+  componentWillUpdate() {
+    const currentUser = getCurrentUserInRedux();
+    const {players} = this;
+    // don't add player if already added
+    if (players.some(({uid}) => uid === currentUser.uid)) return;
+    if (!currentUser) return
+    tellReduxImLoading()
+    console.log(this.gameKey);
+    addPlayerToGame(currentUser, this.gameKey)
+      .then(() => setTimeout(() => tellReduxImDoneLoading(), 1000))
+      .catch(console.error.bind(console));
+  }
+
+  componentWillUnmount() {
+
   }
 
   startNewGame(){
@@ -21,24 +66,25 @@ class GamePending extends Component {
   }
 
   render(){
-    console.log(this.props, 'and', this.props.players)
-    const playerKeys = Object.keys(this.props.players).sort();
+    const {players} = this;
 
     return (
       <div style={styles.GamePending}>
+
         <h1>Waiting for Four Players...</h1>
+
         <h3>Game Key: {this.gameKey}</h3>
+
         <div style={{borderStyle: 'solid'}}>
-          {
-            playerKeys.length === 4 ? this.startNewGame() :
-            playerKeys.map((playerKey, index) => (
-              <h4 key={playerKey} >Player {index + 1}. {this.props.players[playerKey].displayName}</h4>
-            ))
-          }
+
+          {players.map((player, idx) => (
+            <h4 key={player.uid}>
+              {idx + 1}) {players[idx].displayName}
+            </h4>
+          ))}
+
         </div>
-        {
-          this.state.shouldRedirectToGame && <Redirect to={`/gamesInProgress/${this.gameKey}`} />
-        }
+
       </div>
     )
   }
@@ -54,7 +100,7 @@ const styles = {
 
 function mapStateToProps (state) {
   return {
-    players: state.players
+    players: state.players, // incoming as object
   }
 }
 

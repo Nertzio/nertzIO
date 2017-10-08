@@ -1,11 +1,24 @@
 import store, {
+  clearPlayers,
+  setCurrentUser,
+  setFirebaseAppRef,
   setGameRef,
   setStackRef,
+  setToLoading,
+  setToNotLoading,
   updatePlayerByKey, // need to create this action creator
   updatePlayerStackByKey,
   updateFieldStackByKey,
 } from '../redux';
 const {dispatch} = store;
+
+export const clearPlayersInStore = () => {
+  return dispatch(clearPlayers());
+}
+
+export const getCurrentUserInRedux = () => {
+  return store.getState().user;
+}
 
 export const getFirebaseGameRefFromRedux = () => {
   return store.getState().firebaseRefs.game
@@ -20,11 +33,27 @@ export const getStackInStoreByKey = (stackKey) => {
 }
 
 export const setGameRefInRedux = gameRef => {
-  dispatch(setGameRef(gameRef));
+  return dispatch(setGameRef(gameRef));
+}
+
+export const setCurrentUserInRedux = (currentUser) => {
+  return dispatch(setCurrentUser(currentUser));
+}
+
+export const storeFirebaseAppInRedux = (firebaseApp) => {
+  return dispatch(setFirebaseAppRef(firebaseApp));
 }
 
 export const storeStackRefInReduxByKey = (stackKey, stackRef) => {
   return dispatch(setStackRef({[stackKey]: stackRef}))
+}
+
+export const tellReduxImLoading = () => {
+  return dispatch(setToLoading());
+}
+
+export const tellReduxImDoneLoading = () => {
+  return dispatch(setToNotLoading());
 }
 
 export const updatePlayerInReduxByKey = (playerKey, updatedPlayer) => {

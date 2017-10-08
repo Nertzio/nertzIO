@@ -3,7 +3,7 @@ html {
   background-color: #63A2A7;
   height: 100vh;
   box-sizing: 'border-box';
-  *, *:before, *:after {
+  *, *::before, *::after {
     box-sizing: inherit;
   }
   body {

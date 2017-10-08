@@ -39,6 +39,11 @@ export const getStackRefByKey = (stackKey) => {
   return currentGameRef.child(`players/${playerNum}/stacks/${stackKey}`)
 }
 
+
+export const getGameRefByKey = (gameKey) => {
+  return db.ref(`games/${gameKey}`);
+}
+
 export const goCountAllPlayersInGame = () => {
   return getSnapshotOfAllPlayersByGameRef(currentGameRef)
     .then(snapshot => snapshot.numChildren())

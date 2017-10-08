@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { Link } from 'react-router-dom';
 
 
@@ -20,6 +21,7 @@ const Home = () => {
         justifyContent: 'center',
         textAlign: 'center'
       }}>
+
         <h1 style={{
           textAlign: 'center',
           fontSize: '70px',
@@ -37,7 +39,7 @@ const Home = () => {
             color: 'black',
             boxShadow: '10px 5px 5px black',
           }}
-          to={'/signin'}
+          to={'/join'}
         >Join A Game!</Link>
       </div>
       <div style={{

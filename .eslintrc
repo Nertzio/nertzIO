@@ -1,4 +1,7 @@
 {
   "extends": "fullstack",
-  "root": true
+  "root": true,
+  "rules" : {
+    "class-methods-use-this": 0
+  }
 }

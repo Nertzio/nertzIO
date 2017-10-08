@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
-import {addNewGame, addPlayerToGame} from '../../firebase';
+import {clearPlayersInStore} from '../../redux/reduxUtils';
+import {createPrivateGame, addPlayerToGame} from '../../firebase';
 import firebase from 'firebase'
 const db = firebase.database();
 
@@ -26,6 +27,11 @@ class JoinAGame extends Component {
     this.startGame = this
       .startGame
       .bind(this);
+  }
+
+  componentWillMount() {
+    // important for GamePending to determine if current user is new player
+    return clearPlayersInStore();
   }
 
   handleChange(event) {
@@ -83,29 +89,54 @@ class JoinAGame extends Component {
       })
     }
 
+    startNewPrivateGame() {
+      const gameKey = createPrivateGame().key;
+      this.props.history.push(`/pending-game/${gameKey}`)
+    }
+
     render() {
       console.log(this.props, 'AND', this.props.me)
       return (
         <div style={styles.JoinAGame}>
-          {this.state.redirect && <Redirect to={`/pendingGames/${this.state.gameId}`}/>
+          {this.state.redirect && <Redirect to={`/pending-game/${this.state.gameId}`}/>
 }
-          <h1>Join A Game!</h1>
+          <h1>Let's Play Nertz!</h1>
+
           <div>
-            <h3>Start New Game</h3>
-            <button style={styles.button} name="startPublicGame" onClick={this.startGame}>Public</button>
-            <button style={styles.button} name="startPrivateGame" onClick={this.startGame}>Private</button>
+            <h3>Start An Invite-Only Game</h3>
+
+            <button
+              style={styles.button}
+              name="startPrivateGame"
+              onClick={() => this.startNewPrivateGame()}
+            >
+              Start
+            </button>
+
           </div>
+
           <div>
-            <h3>Join Existing Game</h3>
-            <button style={styles.button} onClick={this.joinPublicGame}>Join Random Game</button>
+            <h3>Join A Public Game</h3>
+
+            <button style={styles.button}
+              onClick={this.joinPublicGame}
+            >
+              Join
+            </button>
+
+            <h3>Join Your Friends!</h3>
+
             <div>
               <form onSubmit={this.joinPrivateGame}>
                 <input
                   placeholder="Game Key"
                   onChange={this.handleChange}
                   value={this.state.gameKeyValue}
-                  autoFocus/>
-                <button style={styles.button}>Join Private Game</button>
+                  autoFocus
+                />
+
+                <button style={styles.button}>Join</button>
+
               </form>
               {this.state.showJoinGameError && <p>Game key provided does not match a playable game.</p>
 }
@@ -128,7 +159,7 @@ class JoinAGame extends Component {
 
   function mapStateToProps (state){
     return {
-      me: state.meReducer
+      me: state.user,
     }
   }
 

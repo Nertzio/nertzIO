@@ -1,39 +1,97 @@
-import './firebase/initFirebase';
+import './firebase/initFirebase'; // starts firebase app/auth/database
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Router} from 'react-router';
-import {Route, Switch} from 'react-router-dom';
+// import {Router} from 'react-router';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import history from './history';
-import firebase from 'firebase';
-import {initAuth} from './firebase'
-const auth = firebase.auth();
+import {
+  ProtectedRoute,
+  SignedOutRoute,
+} from './Routing';
+// import history from './history';
+// import firebase from 'firebase/app';
+// import 'firebase/auth';
+// import 'firebase/database';
+// import {initAuth} from './firebase'
+// const auth = firebase.auth();
+
+import {
+  GameArea,
+  GamePending,
+  Home,
+  JoinAGame,
+  LoadingSpinner,
+  Login,
+  LoggingOut,
+  MainLayout,
+  SignIn,
+  SignUp,
+  UserHome,
+} from './components'
 
 
-
-import {GameArea, Login, SignUp, SignIn, UserHome, JoinAGame, GamePending, Home} from './components'
-
-
-import {me} from './redux'
+// import {me} from './redux'
 
 class Routes extends Component {
+  constructor(props) {
+    super(props)
+  }
+
   componentDidMount () {
-    this.props.loadInitialData()
-    initAuth()
+    // this.props.loadInitialData()
+    // initAuth()
   }
 
 
   render () {
+    const {isLoggedIn, somethingIsLoading} = this.props;
+    if (somethingIsLoading) return <LoadingSpinner />
+
     return (
-      <Router history={history}>
-        <Switch>
-          <Route exact path='/join' component={JoinAGame} />
-          <Route exact path='/pendingGames/:gameId' component={GamePending} />
-          <Route exact path='/gamesInProgress/:gameId' component={GameArea} />
-          <Route exact path='/signup' component={SignUp}/>
-          <Route exact path='/signin' component={SignIn}/>
-          <Route path='/' component={Home} />
-        </Switch>
+      <Router /*history={history}*/ >
+        <MainLayout>
+          <Switch>
+
+            <ProtectedRoute
+              {...{isLoggedIn}}
+              exact path="/join"
+              component={JoinAGame}
+            />
+
+            <ProtectedRoute
+              {...{isLoggedIn}}
+              exact path="/pending-game/:gameId"
+              component={GamePending}
+            />
+
+            <ProtectedRoute
+              {...{isLoggedIn}}
+              exact path="/play/:gameId"
+              component={GameArea}
+            />
+
+            <ProtectedRoute
+              {...{isLoggedIn}}
+              exact path="/logout"
+              component={LoggingOut}
+            />
+
+            {/* <SignedOutRoute
+              {...{isLoggedIn}}
+              exact path="/signup"
+              component={SignUp}
+            /> */}
+
+            <SignedOutRoute
+              {...{isLoggedIn}}
+              exact path="/login"
+              component={SignIn}
+            />
+
+            <Route component={Home} />
+
+          </Switch>
+        </MainLayout>
       </Router>
     )
   }
@@ -42,22 +100,25 @@ class Routes extends Component {
 /**
  * CONTAINER
  */
-const mapState = null;
-
-const mapDispatch = (dispatch) => {
-  return {
-    loadInitialData () {
-      dispatch(me());
-    }
-  }
-}
+const mapState = state => ({
+  isLoggedIn: state.user,
+  somethingIsLoading: state.somethingIsLoading,
+})
+const mapDispatch = null;
+// const mapDispatch = (dispatch) => {
+//   return {
+//     loadInitialData () {
+//       dispatch(me());
+//     }
+//   }
+// }
 
 export default connect(mapState, mapDispatch)(Routes)
 
 /**
  * PROP TYPES
  */
-Routes.propTypes = {
-  loadInitialData: PropTypes.func.isRequired,
-  // isLoggedIn: PropTypes.bool.isRequired
-}
+// Routes.propTypes = {
+//   loadInitialData: PropTypes.func.isRequired,
+//   // isLoggedIn: PropTypes.bool.isRequired
+// }
