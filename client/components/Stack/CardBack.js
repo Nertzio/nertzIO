@@ -4,12 +4,13 @@
 
 import React from 'react';
 
-const CardBack = ({belongsTo, color}) => {
+const CardBack = ({belongsTo, backgroundColor}) => {
 
   return (
     <div style={{
       alignItems: 'center',
-      backgroundColor: color,
+      backgroundColor: backgroundColor,
+      borderRadius: '2px',
       color: 'white',
       display: 'flex',
       flexDirection: 'column',

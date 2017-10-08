@@ -1,12 +1,11 @@
 import React from 'react'
 import {connect} from 'react-redux';
-import {Stack} from '../../components';
+import {Stack, DragHandleStacks} from '../../components';
 import {DropTarget} from 'react-dnd';
 import {
   ItemTypes,
   canIDropThisOnThatByStackType
 } from '../../DragNDrop';
-import {pushCardToStackByPlayer} from '../../firebase/firebase_utils';
 
 const StackSolitaire = ({cards, firebaseRef, connectDropTarget}) => {
   const faceUpCards = cards.map(card => {
@@ -20,22 +19,45 @@ const StackSolitaire = ({cards, firebaseRef, connectDropTarget}) => {
       height: '100%',
       flex: '1 10%'
     }}>
-      <Stack cards={faceUpCards} firebaseStackRef={firebaseRef} />
+      {cards.length > 0 &&
+        <DragHandleStacks cards={faceUpCards} firebaseStackRef={firebaseRef} />
+      }
     </div>
   )
 }
 
-const solitaireTarget = {
+const solitaireTarget = { // TODO: extract this into firebase utils
   drop({firebaseRef, cards}, monitor) {
-    const cardData = monitor.getItem()
-    const numCardsInStack = cards.length;
-    firebaseRef.child(numCardsInStack).set(cardData)
+    const DropType = monitor.getItemType();
+    const payload = monitor.getItem()
+    if (DropType === 'card') {
+      const numCardsInStack = cards.length;
+      firebaseRef.child(numCardsInStack).set(payload)
+        .catch(console.error.bind(console));
+    } else if (DropType === 'stack') { // TODO: extract this into firebase utils
+      const {draggedStack} = payload;
+      const start = cards.length;
+      const cardNode = {}
+      for (let i = 0; i < draggedStack.length; i++) {
+        cardNode[start + i] = draggedStack[i];
+      }
+      firebaseRef.update(cardNode)
+        .catch(console.error.bind(console));
+    }
+
   },
 
   canDrop({cards}, monitor) {
-    const incomingCard = monitor.getItem();
-    const topCard = cards[cards.length - 1];
-    return canIDropThisOnThatByStackType(incomingCard, topCard, 'StackSolitaire');
+    const DropType = monitor.getItemType();
+    const payload = monitor.getItem();
+    const targetTopCard = cards[cards.length - 1];
+    if (DropType === 'stack') {
+      const {draggedStack} = payload;
+      // just validate bottom card of incoming stack
+      return canIDropThisOnThatByStackType(draggedStack[0], targetTopCard, 'StackSolitaire');
+    } else if (DropType === 'card') {
+      return canIDropThisOnThatByStackType(payload, targetTopCard, 'StackSolitaire');
+    }
   }
 }
 
@@ -52,7 +74,7 @@ const mapState = (state, {stackKey}) => ({
   firebaseRef: state.firebaseRefs.stacks[stackKey],
 })
 
-const droppableSolitaireStack = DropTarget(ItemTypes.CARD, solitaireTarget, collect)(StackSolitaire);
+const droppableSolitaireStack = DropTarget([ItemTypes.CARD, ItemTypes.STACK], solitaireTarget, collect)(StackSolitaire);
 
 export default connect(mapState, null)(droppableSolitaireStack);
 
