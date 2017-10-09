@@ -9,7 +9,7 @@ import {
 function PlayerArea({
   playerNum,
 }) {
-  console.log('PLAYER AREA STACK KEY=', playerNum); //SARA
+
   return (
     <section style={{
       alignItems: 'center', // sets vertical alignment

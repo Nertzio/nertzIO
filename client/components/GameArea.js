@@ -17,29 +17,23 @@ class  GameArea extends Component {
 
   render() {
     return (
-      <div style={styles.gameArea}>
+      <div >
         <h1>Game Area</h1>
-        <PlayerArea playerNum={1} />
-        <GameField />
-        <PlayerArea playerNum={2} />
-        <PlayerArea playerNum={3} />
-        <PlayerArea playerNum={4} />
+        <div id="gameArea" >
+          <div id="firstRow" className="container">
+            <PlayerArea playerNum={1} />
+          </div>
+          <div id="secondRow" className="container">
+            <PlayerArea playerNum={2} />
+            <GameField />
+            <PlayerArea playerNum={3} />
+          </div>
+          <div id="thirdRow" className="container">
+           <PlayerArea playerNum={4} />
+          </div>
+        </div>
       </div>
     )
-  }
-}
-
-const styles = {
-  gameArea: {
-    alignContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ccc',
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100vh',
-    justifyContent: 'space-evenly',
-    margin: '0 auto',
-    width: '90%',
   }
 }
 

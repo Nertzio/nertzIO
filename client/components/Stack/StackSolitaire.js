@@ -10,9 +10,8 @@ import {
 const StackSolitaire = ({cards, firebaseRef, connectDropTarget, stackKey}) => {
   const faceUpCards = cards.map(card => {
     card.isFaceUp = true
-    return card
+    return card;
   })
-  console.log('STACK SOLITAIRE STACK KEY=', stackKey); //SARA
   return connectDropTarget(
     <div style={{
       border: '1px solid gray',

@@ -31,6 +31,20 @@ html {
       margin: 1em;
       display: inline-block;
     }
+
+    #gameArea {
+      .container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        align-content: center;
+        height: '100vh';
+        justify-content: 'space-evenly';
+        margin: '10px auto';
+        width: '90%';
+      }
+    }
   }
 
 }
