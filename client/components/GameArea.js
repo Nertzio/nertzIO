@@ -16,6 +16,9 @@ class  GameArea extends Component {
   }
 
   render() {
+    const {user, players} = this.props;
+    const currentUserPlayerNum = getUserPlayerNum(user, players);
+
     return (
       <div >
         <h1>Game Area</h1>
@@ -37,4 +40,13 @@ class  GameArea extends Component {
   }
 }
 
-export default DragDropContext(HTML5Backend)(GameArea)
+function mapStateToProps (state) {
+  return {
+    players: state.players,
+    user: state.meReducer
+  }
+}
+
+const dragContextGameArea = DragDropContext(HTML5Backend)(GameArea)
+
+export default connect(mapStateToProps)(dragContextGameArea);

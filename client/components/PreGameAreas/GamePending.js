@@ -28,7 +28,6 @@ class GamePending extends Component {
   }
 
   render(){
-    console.log(this.props, 'and', this.props.players)
     const playerKeys = Object.keys(this.props.players).sort();
 
     return (
