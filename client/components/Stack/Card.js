@@ -110,7 +110,7 @@ function collect(connect, monitor) {
 const draggableCards = DragSource(ItemTypes.CARD, cardSource, collect)(Card)
 
 const mapState = state => ({
-  user: state.meReducer,
+  user: state.user,
   players: state.players,
 })
 

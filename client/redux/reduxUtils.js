@@ -1,3 +1,6 @@
+import {
+  findCurrentUserInPlayers,
+} from '../vanillaUtils';
 import store, {
   setGameRef,
   setStackRef,
@@ -6,6 +9,10 @@ import store, {
   updateFieldStackByKey,
 } from '../redux';
 const {dispatch} = store;
+
+// export const currentUserPlayerCanCallNertz = () => {
+//   const {}
+// }
 
 export const getCurrentUserInRedux = () => {
   return store.getState().playerReducer;

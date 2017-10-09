@@ -24,10 +24,10 @@ class Routes extends Component {
     super(props)
   }
 
-  componentDidMount () {
-    this.props.loadInitialData()
-    initAuth()
-  }
+  // componentDidMount () {
+  //   this.props.loadInitialData()
+  //   initAuth()
+  // }
 
 
   render () {
@@ -88,23 +88,16 @@ class Routes extends Component {
  * CONTAINER
  */
 const mapState = state => ({
-  isLoggedIn: state.meReducer.uid
+  isLoggedIn: state.user.uid
 });
 
-const mapDispatch = (dispatch) => {
-  return {
-    loadInitialData () {
-      dispatch(me());
-    }
-  }
-}
+// const mapDispatch = (dispatch) => {
+//   return {
+//     loadInitialData () {
+//       dispatch(me());
+//     }
+//   }
+// }
 
-export default connect(mapState, mapDispatch)(Routes)
+export default connect(mapState, null)(Routes)
 
-/**
- * PROP TYPES
- */
-Routes.propTypes = {
-  loadInitialData: PropTypes.func.isRequired,
-  // isLoggedIn: PropTypes.bool.isRequired
-}

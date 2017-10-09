@@ -29,7 +29,7 @@ export const removeLocalUser = () => {
 /**
  * REDUCER
  */
-export default function meReducer (state = defaultMe, action) {
+export default function user (state = defaultMe, action) {
   switch (action.type) {
     case ADD_LOCAL_USER_INFO:
       return action.user
