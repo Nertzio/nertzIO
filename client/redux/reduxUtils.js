@@ -7,6 +7,10 @@ import store, {
 } from '../redux';
 const {dispatch} = store;
 
+export const getCurrentUserInRedux = () => {
+  return store.getState().playerReducer;
+}
+
 export const getFirebaseGameRefFromRedux = () => {
   return store.getState().firebaseRefs.game
 }
