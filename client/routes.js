@@ -47,13 +47,13 @@ class Routes extends Component {
 
             <ProtectedRoute
               {...{isLoggedIn}}
-              exact path="/pending-game/:gameId"
+              exact path="/pendingGames/:gameId"
               component={GamePending}
             />
 
             <ProtectedRoute
               {...{isLoggedIn}}
-              exact path="/play/:gameId"
+              exact path="/gamesInProgress/:gameId"
               component={GameArea}
             />
 
