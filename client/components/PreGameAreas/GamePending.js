@@ -2,60 +2,45 @@ import React, {Component} from 'react';
 import { Redirect } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {
+  addUserToCurrentGame,
+  getGameRefByKey,
+  postUserToGameAsPlayerAndUpdateReduxAsPlayersJoin,
   startGame,
-  addPlayerToGame,
 } from '../../firebase';
 import {
   getCurrentUserInRedux,
-  getPlayersInStore,
+  getPlayersInRedux,
+  setGameRefInRedux,
   tellReduxImLoading,
   tellReduxImDoneLoading,
 } from '../../redux/reduxUtils';
+import {
+  checkIfUserIsAmongPlayers,
+  thereAreNo,
+} from '../../vanillaUtils';
 
 class GamePending extends Component {
   constructor(props){
     super(props)
-    this.state = {
-      shouldRedirectToGame: false,
-    }
-    this.gameKey = props.match.params.gameId;
-    this.players = Object.values(this.props.players); // make array
+     this.gameKey = props.match.params.gameId;
   }
 
   componentWillMount() {
-    const currentUser = getCurrentUserInRedux();
-    const {players} = this;
-    // don't add player if already added
-    if (players.some(({uid}) => uid === currentUser.uid)) return;
-    if (!currentUser) return
-    tellReduxImLoading()
-    addPlayerToGame(currentUser, this.gameKey)
-      .then(() => setTimeout(() => tellReduxImDoneLoading(), 1000))
-      .catch(console.error.bind(console));
+    this.initializePendingGame()
   }
 
   componentDidMount() {
-    const playerCount = this.players.length;
+    const playerCount = Object.values(this.props.players).length;
     if (playerCount === 4) {
       setTimeout(() => this.props.history.push(`/play/${this.gameKey}`), 1000);
     }
   }
 
-  componentWillUpdate() {
-    const currentUser = getCurrentUserInRedux();
-    const {players} = this;
-    // don't add player if already added
-    if (players.some(({uid}) => uid === currentUser.uid)) return;
-    if (!currentUser) return
-    tellReduxImLoading()
-    console.log(this.gameKey);
-    addPlayerToGame(currentUser, this.gameKey)
-      .then(() => setTimeout(() => tellReduxImDoneLoading(), 1000))
-      .catch(console.error.bind(console));
-  }
-
-  componentWillUnmount() {
-
+  componentDidUpdate() {
+    const playerCount = Object.values(this.props.players).length;
+    if (playerCount === 4) {
+      setTimeout(() => this.props.history.push(`/play/${this.gameKey}`), 1000);
+    }
   }
 
   startNewGame(){
@@ -65,8 +50,31 @@ class GamePending extends Component {
     })
   }
 
+  initializePendingGame() {
+    setGameRefInRedux(getGameRefByKey(this.gameKey))
+    const playersInRedux = this.props.players;
+
+    // either you're 1st or firebase is still loading
+    if (thereAreNo(playersInRedux)) {
+      tellReduxImLoading()
+      return addUserToCurrentGame()
+      .then(() => setTimeout(() => tellReduxImDoneLoading(), 1000))
+      .catch(console.error.bind(console));
+
+    } else { // there are players in Redux
+      const userIsAlreadyInGame = checkIfUserIsAmongPlayers(playersInRedux);
+      // don't add player if already added
+      if (userIsAlreadyInGame) return;
+
+      tellReduxImLoading()
+      return addUserToCurrentGame()
+        .then(() => setTimeout(() => tellReduxImDoneLoading(), 1000))
+        .catch(console.error.bind(console));
+    }
+  }
+
   render(){
-    const {players} = this;
+    const players = Object.values(this.props.players);
 
     return (
       <div style={styles.GamePending}>
@@ -100,6 +108,7 @@ const styles = {
 
 function mapStateToProps (state) {
   return {
+    currentUser: state.user,
     players: state.players, // incoming as object
   }
 }

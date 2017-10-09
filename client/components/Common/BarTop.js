@@ -5,7 +5,6 @@ const BarTop = (props) => {
   const determineAlignment = () => {
     const {alignLeft, alignRight, alignCenter} = props;
     const choices = [alignLeft, alignRight, alignCenter]
-    console.log(choices);
     return ['flex-start', 'flex-end', 'center'][choices.indexOf(true)];
   }
 

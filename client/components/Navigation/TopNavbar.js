@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom';
 import {BarTop, BarBufferInPx} from '../Common';
 
 const TopNavbar = ({userIsLoggedIn}) => {
-  console.log('TopNavbar')
   return (
     <div>
       <div style={{

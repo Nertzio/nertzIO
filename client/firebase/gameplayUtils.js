@@ -1,12 +1,12 @@
 import {
-  getFirebaseGameRefFromRedux,
+  getReduxGameRef,
   getStackInStoreByKey
 } from '../redux/reduxUtils';
 import {
   getStackRefByKey,
 } from './firebase_utils';
 
-const getGame = () => getFirebaseGameRefFromRedux();
+const getGame = () => getReduxGameRef();
 
 const clearDrawnStackForPlayer = (playerNum) => {
   const gameRef = getGame();

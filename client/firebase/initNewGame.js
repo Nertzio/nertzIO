@@ -1,4 +1,10 @@
 import {
+  checkIfUserIsAmongPlayers,
+} from '../vanillaUtils';
+
+import {
+  getCurrentUserInRedux,
+  getReduxGameRef,
   setGameRefInRedux,
   storeStackRefInReduxByKey,
   updateReduxPlayerStackByKey,
@@ -6,10 +12,11 @@ import {
 
 import {
   goCountAllPlayersInGame,
+  markGameAsInProgress,
   registerUpdateHandlersOnGameRef,
   setGameRefForUtils,
   setPlayersToGameRef,
-  updateReduxWhenPlayersJoinGame,
+  updateReduxForEachPlayerAddedToGame,
 } from '../firebase';
 
 import {shuffleNewDeckForPlayer} from '../gameUtils';
@@ -26,44 +33,49 @@ const db = firebase.database();
                                * * *
    ------------------------------------------------------------------*/
 
-export const addNewGame = () => {
-  currentGameRef = db.ref('games').push();
-  setGameRefForUtils(currentGameRef);
-  setGameRefInRedux(currentGameRef);
-  return currentGameRef;
+export const postNewGameStoreInRedux = () => {
+  const gameRef = db.ref('games').push({
+    players: false,
+    fieldStacks: false,
+    isInProgress: false,
+  });
+  // setGameRefForUtils(gameRef);
+  setGameRefInRedux(gameRef);
+  return gameRef;
 }
 
-export const createPrivateGame = () => {
-  addNewGame().child('private').set(true);
-  return currentGameRef;
+export const postNewPrivateGameStoreInRedux = () => {
+  console.log('postNewPrivateGameStoreInRedux()')
+  postNewGameStoreInRedux().child('private').set(true);
+  return getReduxGameRef();
 }
 
-export const createPublicGame = () => {
-  addNewGame().child('private').set(false);
-  return currentGameRef;
+export const postNewPublicGameStoreInRedux = () => {
+  postNewGameStoreInRedux().child('private').set(false);
+  return getReduxGameRef();
 }
 
-export const goAddPlayerToGame = (playerData, gameRef) => {
-  return gameRef.once('value')
-    .then(gameSnapshot => {
-      const playerKey = gameSnapshot.child('players').numChildren() + 1;
-      return gameRef.child(`players/${playerKey}`).set(playerData);
-    })
-    .then(() => gameRef)
-    .catch(console.error.bind(console));
-}
-
-export const addPlayerToGame = (playerData, game = currentGameRef) => {
-  const gameRef = typeof game === 'string' ? db.ref(`games/${game}`) : game;
-  const sameGame = currentGameRef ? currentGameRef.key === gameRef.key : false;
-  if (!sameGame) {
-    currentGameRef = gameRef;
-    setGameRefForUtils(gameRef);
-    setGameRefInRedux(gameRef);
+export const dressUpAsPlayer = (user) => {
+  const playerProps = {
+    isListeningForUpdates: false,
+    stacks: false,
+    score: 0
   }
-  return goAddPlayerToGame(playerData, gameRef)
-    .then(() => updateReduxWhenPlayersJoinGame(gameRef))
-    .then(() => gameRef)
+  return {...user, ...playerProps}
+}
+
+export const addUserToCurrentGame = () => {
+  const gameRef = getReduxGameRef();
+  return gameRef.child('players').once('value')
+    .then(players => {
+      const userIsAlreadyInGame = checkIfUserIsAmongPlayers(players.val());
+      if (!userIsAlreadyInGame) {
+        const newKey = players.numChildren() + 1;
+        const player = dressUpAsPlayer(getCurrentUserInRedux());
+        return players.child(newKey).ref.set(player);
+      }
+    })
+    .then(() => updateReduxForEachPlayerAddedToGame())
     .catch(console.error.bind(console));
 }
 
@@ -78,16 +90,16 @@ const generateNFieldStackNodes = num => {
 const set4FieldStacksPerPlayer = () => {
   return goCountAllPlayersInGame()
     .then(numPlayers => {
-      currentGameRef
+      return getReduxGameRef()
         .child('fieldStacks')
         .set(generateNFieldStackNodes(numPlayers * 4))
     })
 }
 
 const storeFieldStackRefsInRedux = () => {
-  return currentGameRef.child('fieldStacks').once('value')
+  return getReduxGameRef().child('fieldStacks').once('value')
     .then(fieldStacks => fieldStacks.forEach(stack => {
-      storeStackRefInReduxByKey(stack.key, stack.ref);
+      return storeStackRefInReduxByKey(stack.key, stack.ref);
     }))
 }
 
@@ -105,21 +117,25 @@ const generateStacksForPlayer = (playerNum) => {
 }
 
 const initPlayerAreaByPlayerNum = (playerNum) => {
-  const playerRef = currentGameRef.child(`players/${playerNum}`);
+  console.log(`initPlayerAreaByPlayerNum(${playerNum})`)
+  const playerRef = getReduxGameRef().child(`players/${playerNum}`);
   const stacksNode = generateStacksForPlayer(playerNum);
   const settingPlayersStacks = playerRef.child('stacks').set(stacksNode)
   return settingPlayersStacks
-    .then(() => playerRef.child('stacks').once('value'))
-    .then((snapShotOfAllStacks) => {
-      snapShotOfAllStacks.forEach(stack => {
-        storeStackRefInReduxByKey(stack.key, stack.ref)
-        updateReduxPlayerStackByKey(stack.key, stack.val())
-      })
-    })
+  // THIS NEEDS TO HAPPEN ON ALL CLIENTS, NOT JUST P1
+  // .then(() => playerRef.child('stacks').once('value'))
+    // .then((snapShotOfAllStacks) => {
+    //   return snapShotOfAllStacks.forEach(stack => {
+    //     console.log('storing stack ref for ', stack.key);
+    //     return storeStackRefInReduxByKey(stack.key, stack.ref)
+    //     // updateReduxPlayerStackByKey(stack.key, stack.val())
+    //   })
+    // })
     .catch(console.error.bind(console));
 }
 
 const initAllPlayerAreas = () => {
+  console.log('initAllPlayerAreas()')
   return goCountAllPlayersInGame()
   .then(numOfPlayers => {
     const playerAreasInitializing = [];
@@ -156,7 +172,7 @@ const hardCodedPlayers = {
 }
 
 export const initNewGame = () => {
-  return addNewGame()
+  return postNewGameStoreInRedux()
     .then(() => setPlayersToGameRef(hardCodedPlayers, currentGameRef))
     .then(() => set4FieldStacksPerPlayer())
     .then(() => storeFieldStackRefsInRedux())
@@ -166,9 +182,10 @@ export const initNewGame = () => {
 }
 
 export const startGame = () => {
-  return set4FieldStacksPerPlayer()
-  .then(() => storeFieldStackRefsInRedux())
+  return markGameAsInProgress()
+  .then(() => set4FieldStacksPerPlayer())
+  // .then(() => storeFieldStackRefsInRedux())
   .then(() => initAllPlayerAreas())
-  .then(() => registerUpdateHandlersOnGameRef(currentGameRef))
+  // .then(() => registerUpdateHandlersOnGameRef())
   .catch(console.error.bind(console))
 }

@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {clearPlayersInStore} from '../../redux/reduxUtils';
-import {createPrivateGame, addPlayerToGame} from '../../firebase';
+import {
+  postNewPrivateGameStoreInRedux,
+  addUserToCurrentGame
+} from '../../firebase';
 import firebase from 'firebase'
 const db = firebase.database();
 
@@ -52,8 +55,8 @@ class JoinAGame extends Component {
             .child('players')
             .numChildren() < 4;
           if (gameExists && playersNeeded) {
-            addPlayerToGame(this.props.me, privateGameRef);
-            // TODO: Check to see if .then should be on this line after addPlayerToGame call
+            addUserToCurrentGame(this.props.me, privateGameRef);
+            // TODO: Check to see if .then should be on this line after addUserToCurrentGame call
             // for rest of functionality
             this.setState({gameId: gameKey, redirect: true})
           } else {
@@ -69,17 +72,17 @@ class JoinAGame extends Component {
       following function's argument to that game's ref)
     */
       db.ref('games')
-      addPlayerToGame(this.props.me, publicGameRef);
-      // TODO: Check to see if .then should be on this line after addPlayerToGame call
+      addUserToCurrentGame(this.props.me, publicGameRef);
+      // TODO: Check to see if .then should be on this line after addUserToCurrentGame call
       // for rest of functionality
       this.setState({redirect: true})
     }
 
     startGame(event) {
       const isPrivateGame = event.target.name === 'startPrivateGame';
-      const gameRef = addNewGame();
+      const gameRef = postNewGameStoreInRedux();
       let gameKey = gameRef.key;
-      addPlayerToGame(this.props.me, gameRef).then(() => {
+      addUserToCurrentGame(this.props.me, gameRef).then(() => {
         gameRef
           .child('private')
           .set(isPrivateGame)
@@ -90,12 +93,12 @@ class JoinAGame extends Component {
     }
 
     startNewPrivateGame() {
-      const gameKey = createPrivateGame().key;
+      console.log('JoinAGame - startNewPrivateGame()')
+      const gameKey = postNewPrivateGameStoreInRedux().key;
       this.props.history.push(`/pending-game/${gameKey}`)
     }
 
     render() {
-      console.log(this.props, 'AND', this.props.me)
       return (
         <div style={styles.JoinAGame}>
           {this.state.redirect && <Redirect to={`/pending-game/${this.state.gameId}`}/>

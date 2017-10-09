@@ -7,7 +7,6 @@ const SignedOutRoute = ({component: Component, isLoggedIn, ...otherProps}) => {
   const whereYouCameFrom = youWereRedirectedHere ?
     youWereRedirectedHere.from.pathname :
     '/';
-  console.log(whereYouCameFrom);
   return (
     <Route
       {...otherProps}

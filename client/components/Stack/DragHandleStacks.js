@@ -92,14 +92,12 @@ const stackSource = {
   endDrag({firebaseStackRef, cards}, monitor){
     const {draggedStack} = monitor.getItem();
 
-    console.log('endDrag draggedStack: ', draggedStack);
     const remainingCards = cards.slice(0, -draggedStack.length )
     // const cutoff = cards.length - draggedStack.length;
     const isAllCards = remainingCards.length === 0;
 
     if (monitor.didDrop()) {
       if (isAllCards) {
-        console.log(firebaseStackRef.key, 'set to false');
         firebaseStackRef.set(false).catch(console.error.bind(console));
       } else {
         firebaseStackRef

@@ -1,8 +1,15 @@
+import {
+  checkIfUserIsAmongPlayers,
+  getUserPlayerNum
+} from '../vanillaUtils';
+
 import store, {
   clearPlayers,
   setCurrentUser,
   setFirebaseAppRef,
   setGameRef,
+  setReduxGameInProgress,
+  setReduxGameNotInProgress,
   setStackRef,
   setToLoading,
   setToNotLoading,
@@ -12,6 +19,10 @@ import store, {
 } from '../redux';
 const {dispatch} = store;
 
+export const checkForUserInReduxPlayers = () => {
+  return checkIfUserIsAmongPlayers(store.getState().players);
+}
+
 export const clearPlayersInStore = () => {
   return dispatch(clearPlayers());
 }
@@ -20,11 +31,16 @@ export const getCurrentUserInRedux = () => {
   return store.getState().user;
 }
 
-export const getFirebaseGameRefFromRedux = () => {
+export const getCurrentUserAsPlayerInRedux = () => {
+  const {user, players} = store.getState();
+  return players[getUserPlayerNum(user, players)];
+}
+
+export const getReduxGameRef = () => {
   return store.getState().firebaseRefs.game
 }
 
-export const getPlayersInStore = () => {
+export const getPlayersInRedux = () => {
   return store.getState().players;
 }
 
@@ -33,7 +49,14 @@ export const getStackInStoreByKey = (stackKey) => {
 }
 
 export const setGameRefInRedux = gameRef => {
-  return dispatch(setGameRef(gameRef));
+  // avoid unnecessary rerenders if same game:
+  if (gameRef.key === getReduxGameRef.key) return;
+  else return dispatch(setGameRef(gameRef));
+}
+
+export const setReduxGameProgressStatus = isInProgress => {
+  if (isInProgress) return dispatch(setReduxGameInProgress());
+  else return dispatch(setReduxGameNotInProgress());
 }
 
 export const setCurrentUserInRedux = (currentUser) => {
