@@ -24,79 +24,56 @@ class JoinAGame extends Component {
     this.joinPrivateGame = this
       .joinPrivateGame
       .bind(this);
-    this.joinPublicGame = this
-      .joinPublicGame
-      .bind(this);
-    this.startGame = this
-      .startGame
-      .bind(this);
+
   }
 
-  componentWillMount() {
-    // important for GamePending to determine if current user is new player
-    return clearPlayersInStore();
-  }
-
-  handleChange(event) {
-    this.setState({showJoinGameError: false, gameKeyInput: event.target.value});
-  }
-
-  joinPrivateGame(event) {
-    event.preventDefault();
-    const gameKey = this.state.gameKeyInput
-      let gameExists,
-        playersNeeded;
-      const privateGameRef = db.ref(`games/${gameKey}`);
-      privateGameRef
-        .once('value')
-        .then((gameSnapshot) => {
-          gameExists = gameSnapshot.exists();
-          playersNeeded = gameSnapshot
-            .child('players')
-            .numChildren() < 4;
-          if (gameExists && playersNeeded) {
-            addUserToCurrentGame(this.props.me, privateGameRef);
-            // TODO: Check to see if .then should be on this line after addUserToCurrentGame call
-            // for rest of functionality
-            this.setState({gameId: gameKey, redirect: true})
-          } else {
-            this.setState({showJoinGameError: true})
-          }
-        })
-    }
-
-    joinPublicGame() {
-      /* TODO HERE: find random public game (ie private attribute set to
-      false) in Firebase DB that has less than 4 'players', and
-      set gameId in state to that game's key (and publicGameRef in
-      following function's argument to that game's ref)
-    */
-      db.ref('games')
-      addUserToCurrentGame(this.props.me, publicGameRef);
-      // TODO: Check to see if .then should be on this line after addUserToCurrentGame call
-      // for rest of functionality
-      this.setState({redirect: true})
-    }
-
-    startGame(event) {
-      const isPrivateGame = event.target.name === 'startPrivateGame';
-      const gameRef = postNewGameStoreInRedux();
-      let gameKey = gameRef.key;
-      addUserToCurrentGame(this.props.me, gameRef).then(() => {
-        gameRef
-          .child('private')
-          .set(isPrivateGame)
-          .then(() => {
-            this.setState({gameId: gameKey, redirect: true})
-          })
-      })
+    componentDidMount() {
+      // important for GamePending to determine if current user is new player
+      return clearPlayersInStore();
     }
 
     startNewPrivateGame() {
-      console.log('JoinAGame - startNewPrivateGame()')
       const gameKey = postNewPrivateGameStoreInRedux().key;
       this.props.history.push(`/pending-game/${gameKey}`)
     }
+
+    joinPublicGame() {
+    // TODO: create getKeyForNextOpenPublicGame
+      // const gameKey = getKeyForNextOpenPublicGame()
+      // this.props.history.push(`/pending-game/${gameKey}`)
+    }
+
+    joinPrivateGameByKey() {
+
+    }
+
+    handleChange(event) {
+      this.setState({showJoinGameError: false, gameKeyInput: event.target.value});
+    }
+
+    joinPrivateGame(event) {
+      event.preventDefault();
+      const gameKey = this.state.gameKeyInput
+        let gameExists,
+          playersNeeded;
+        const privateGameRef = db.ref(`games/${gameKey}`);
+        privateGameRef
+          .once('value')
+          .then((gameSnapshot) => {
+            gameExists = gameSnapshot.exists();
+            playersNeeded = gameSnapshot
+              .child('players')
+              .numChildren() < 4;
+            if (gameExists && playersNeeded) {
+              addUserToCurrentGame(this.props.me, privateGameRef);
+              // TODO: Check to see if .then should be on this line after addUserToCurrentGame call
+              // for rest of functionality
+              this.setState({gameId: gameKey, redirect: true})
+            } else {
+              this.setState({showJoinGameError: true})
+            }
+          })
+      }
 
     render() {
       return (
@@ -122,7 +99,7 @@ class JoinAGame extends Component {
             <h3>Join A Public Game</h3>
 
             <button style={styles.button}
-              onClick={this.joinPublicGame}
+              onClick={() => this.joinPublicGame()}
             >
               Join
             </button>
