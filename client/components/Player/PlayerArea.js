@@ -13,15 +13,6 @@ class PlayerArea extends Component {
     const {playerNum, players} = this.props;
 
     return (
-      <div style={{
-        alignItems: 'center', // sets vertical alignment
-        border: '1px solid gray', // TODO: remove later
-        display: 'flex',
-        flexGrow: 3,
-        justifyContent: 'space-evenly',
-        width: '100%',
-      }}>
-        <h2>{players[playerNum] && players[playerNum].displayName}</h2>
         <section style={{
           alignItems: 'center', // sets vertical alignment
           backgroundColor: 'tomato',
@@ -32,6 +23,7 @@ class PlayerArea extends Component {
           justifyContent: 'space-evenly',
           width: '100%',
         }}>
+          <h2>{players[playerNum] && players[playerNum].displayName}</h2>
           <div
             className="stack-area"
             style={{
@@ -51,7 +43,6 @@ class PlayerArea extends Component {
             <StackLittle stackKey={`p${playerNum}LittleStack`}  />
           </div>
         </section>
-      </div>
     )
   }
 }

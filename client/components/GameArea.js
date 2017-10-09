@@ -20,25 +20,26 @@ class  GameArea extends Component {
     const {user, players} = this.props;
     const currentUserPlayerNum = getUserPlayerNum(user, players);
     const otherPlayerNums = Object.keys(players).filter(playerNum => playerNum !== currentUserPlayerNum);
+    console.log('players', players, 'otherPlayerNums', otherPlayerNums);
 
     return (
       <div >
         <h1>Game Area</h1>
         <div id="gameArea" >
           <div id="firstRow" className="container">
-            <PlayerArea playerNum={otherPlayerNums[0]} />
+            <PlayerArea playerNum={1} />
           </div>
           <div id="secondRow" className="container">
             <PlayerArea
               style={{transform: 'rotate(270deg)'}}
-              playerNum={otherPlayerNums[1]} />
+              playerNum={2} />
             <GameField />
             <PlayerArea
               style={{transform: 'rotate(90deg)'}}
-              playerNum={otherPlayerNums[2]} />
+              playerNum={3} />
           </div>
           <div id="thirdRow" className="container">
-           <PlayerArea playerNum={currentUserPlayerNum} />
+           <PlayerArea playerNum={4} />
           </div>
         </div>
       </div>
