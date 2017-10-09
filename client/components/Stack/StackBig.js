@@ -2,20 +2,27 @@ import React from 'react'
 import {connect} from 'react-redux';
 import {Stack} from '../../components';
 import {
+  getUserPlayerNum,
+} from '../../vanillaUtils';
+import {
   flip3ForPlayer,
   // restartBigStackForPlayer // being buggy
 } from '../../firebase/gameplayUtils';
 
-const StackBig =  ({cards, firebaseRef, playerNum}) => {
+const StackBig =  ({cards, firebaseRef, playerNum, user, players}) => {
 
   const faceDownCards = cards.map(card => {
     card.isFaceUp = false;
     return card
   })
 
+  const flip3IfPlayerIsCurrentUser = () => {
+    if (players[playerNum].uid === user.uid) return flip3ForPlayer(playerNum);
+  }
+
   return (
     <div
-      onClick={() => flip3ForPlayer(playerNum)}
+      onClick={() => flip3IfPlayerIsCurrentUser()}
       style={{
         border: '1px solid gray',
         height: '100%',
@@ -44,6 +51,8 @@ const mapState = (state, {stackKey}) => ({
   cards: state[stackKey],
   firebaseRef: state.firebaseRefs.stacks[stackKey],
   playerNum: +stackKey[1], // e.g. p1BigStack
+  players: state.players,
+  user: state.meReducer,
 })
 
 const connectedStackBig = connect(mapState, null)(StackBig);

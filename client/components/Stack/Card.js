@@ -1,10 +1,15 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import { CardFront, CardBack } from '../Stack';
 import { DragSource } from 'react-dnd'
 import {
   ItemTypes,
   canIDragGivenStackKeyOwnStackAndPosition,
+  iOwnThisCard,
 } from '../../DragNDrop';
+import {
+  getUserPlayerNum,
+} from '../../vanillaUtils';
 
 const Card = (props) => {
   const {
@@ -83,9 +88,13 @@ const cardSource = {
     }
   },
 
-  canDrag({firebaseStackRef, ownStack, stackPosition}, monitor) {
+  canDrag({firebaseStackRef, ownStack, stackPosition, user, players}, monitor) {
     const key = firebaseStackRef.key;
-    return canIDragGivenStackKeyOwnStackAndPosition(key, ownStack, stackPosition)
+    const playerNum = getUserPlayerNum(user, players);
+    return (
+      iOwnThisCard(playerNum, ownStack[stackPosition])
+      && canIDragGivenStackKeyOwnStackAndPosition(key, ownStack, stackPosition)
+    )
   }
 }
 
@@ -98,5 +107,12 @@ function collect(connect, monitor) {
 }
 
 
-export default DragSource(ItemTypes.CARD, cardSource, collect)(Card)
+const draggableCards = DragSource(ItemTypes.CARD, cardSource, collect)(Card)
+
+const mapState = state => ({
+  user: state.meReducer,
+  players: state.players,
+})
+
+export default connect(mapState)(draggableCards);
 
