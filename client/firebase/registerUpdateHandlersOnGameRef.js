@@ -14,7 +14,9 @@ import {
   storeStackRefInReduxByKey,
   updatePlayerInReduxByKey,
   updateReduxPlayerStackByKey,
-  updateReduxFieldStackByKey
+  updateReduxFieldStackByKey,
+  updatePlayerScoreInReduxByKey,
+  updatePlayerListeningStatusInReduxByKey,
 } from '../redux/reduxUtils'
 
 
@@ -51,11 +53,28 @@ const updateReduxWhenGameStatusChanges = () => {
 // LIFTED LISTENER UP TO PARENT NODE TO WATCH FOR CHILD CHANGES
 export const updateReduxWhenPlayerDataChanges = () => {
   console.log('updateReduxWhenPlayerDataChanges()')
-  return getReduxGameRef().child('players')
-    // .once('value')
-    .on('child_changed', updatedPlayer => {
-      return updatePlayerInReduxByKey(updatedPlayer.key, updatedPlayer.val())
+  return getReduxGameRef().child('players').once('value')
+    .then(players => {
+      players.forEach(player => {
+
+        player.child('isListeningForUpdates').ref
+          .on('value', listeningStatus => {
+            const status = listeningStatus.val();
+            return updatePlayerListeningStatusInReduxByKey(player.key, status);
+          })
+
+        player.child('score').ref
+          .on('value', score => {
+            return updatePlayerScoreInReduxByKey(player.key, score.val());
+          })
+      })
     })
+
+    // .on('child_changed', updatedPlayer => {
+    //   return updatePlayerInReduxByKey(updatedPlayer.key, updatedPlayer.val())
+    // })
+
+  // .once('value')
   // .then(allPlayers => {
   //   return allPlayers.forEach(player => {
   //     return player.ref.on('child_changed', updatedPlayer => {
@@ -76,9 +95,9 @@ export const updateReduxWhenPlayerDataChanges = () => {
 // }
 
 export const updateReduxForEachPlayerAddedToGame = () => {
-  console.log('updateReduxForEachPlayerAddedToGame')
   return getReduxGameRef().child('players')
-    .on('child_added', (player, prevPlayerKey) => {
+  .on('child_added', (player, prevPlayerKey) => {
+    console.log('updateReduxForEachPlayerAddedToGame')
       console.log('child_added handler')
       if (player) {
         return updatePlayerInReduxByKey(player.key, player.val())

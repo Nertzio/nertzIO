@@ -13,9 +13,11 @@ import store, {
   setStackRef,
   setToLoading,
   setToNotLoading,
-  updatePlayerByKey, // need to create this action creator
+  updatePlayerByKey,
   updatePlayerStackByKey,
   updateFieldStackByKey,
+  updatePlayerScoreByKey,
+  updatePlayerListeningStatusByKey,
 } from '../redux';
 const {dispatch} = store;
 
@@ -81,6 +83,14 @@ export const tellReduxImDoneLoading = () => {
 
 export const updatePlayerInReduxByKey = (playerKey, updatedPlayer) => {
   return dispatch(updatePlayerByKey(playerKey, updatedPlayer));
+}
+
+export const updatePlayerScoreInReduxByKey = (key, score) => {
+  return dispatch(updatePlayerScoreByKey(key, score));
+}
+
+export const updatePlayerListeningStatusInReduxByKey = (key, status) => {
+  return dispatch(updatePlayerListeningStatusByKey(key, status));
 }
 
 export const updateReduxPlayerStackByKey = (stackKey, newState) => {
