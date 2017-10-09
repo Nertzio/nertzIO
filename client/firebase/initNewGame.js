@@ -94,8 +94,8 @@ const generateStacksForPlayer = (playerNum) => {
   }
 }
 
-const linkReduxStacksWithDbByPlayerNum = (playerNum) => {
-  const playerRef = currentGameRef.child(`players/${playerNum}`);
+const linkReduxStacksWithDbByPlayerNum = (playerNum, gameRef) => {
+  const playerRef = gameRef.child(`players/${playerNum}`);
   playerRef.child('stacks').once('value')
   .then((snapShotOfAllStacks) => {
     snapShotOfAllStacks.forEach(stack => {
@@ -111,16 +111,17 @@ const initPlayerAreaByPlayerNum = (playerNum) => {
   const stacksNode = generateStacksForPlayer(playerNum);
   const settingPlayersStacks = playerRef.child('stacks').set(stacksNode)
   return settingPlayersStacks
-    .then(() => linkReduxStacksWithDbByPlayerNum(playerNum))
+    .then(() => linkReduxStacksWithDbByPlayerNum(playerNum, currentGameRef))
 }
 
-const initAllPlayerAreas = (dbGameInstanceIsPreInitialized) => {
+
+const initAllPlayerAreas = (dbGameInstanceIsPreInitialized, gameRef) => {
   return goCountAllPlayersInGame()
   .then(numOfPlayers => {
     const playerAreasInitializing = [];
     for (let i = 1; i <= numOfPlayers; i++) {
       //if dbGameInstanceIsPreInitialized, skip creation of nodes in db, just set up Redux to link w/ them
-      const initializingArea = dbGameInstanceIsPreInitialized ? linkReduxStacksWithDbByPlayerNum(i) : initPlayerAreaByPlayerNum(i);
+      const initializingArea = dbGameInstanceIsPreInitialized ? linkReduxStacksWithDbByPlayerNum(i, gameRef) : initPlayerAreaByPlayerNum(i);
       playerAreasInitializing.push(initializingArea)
     }
     return Promise.all(playerAreasInitializing);
@@ -179,7 +180,7 @@ export const resetReduxForPendingGameInstance = (gameRef) => {
 export const resetReduxForStartedDbGameInstance = (gameRef) => {
   resetReduxForPendingGameInstance(gameRef)
   storeFieldStackRefsInRedux(gameRef)
-  initAllPlayerAreas(true)
+  initAllPlayerAreas(true, gameRef)
   registerUpdateHandlersOnGameRef(gameRef)
 }
 
