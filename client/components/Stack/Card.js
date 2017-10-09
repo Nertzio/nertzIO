@@ -8,14 +8,14 @@ import {
 
 const Card = (props) => {
   const {
-    belongsTo,
-    firebaseStackRef,
+    // belongsTo,
+    // firebaseStackRef,
     isFaceUp,
-    name,
-    number,
-    ownStack,
+    // name,
+    // number,
+    // ownStack,
     stackPosition,
-    suit,
+    // suit,
    } = props;
 
    const { connectDragSource, isDragging } = props
@@ -33,7 +33,7 @@ const Card = (props) => {
       opacity: isDragging ? 0 : 1,
       position: 'absolute',
       top: 0,
-      transform: `translate(0px, ${stackPosition * -1}px)`,
+      transform: `translate(0px, ${stackPosition * -1}px) perspective(50em) rotateX(20deg)`,
       width: 'calc(10vh)',
       zIndex: stackPosition,
     }}>
@@ -50,17 +50,23 @@ const cardSource = {
     suit,
     name,
     number,
-    isFaceUp,
     belongsTo,
-    color,
+    backgroundColor,
+    isFaceUp,
+    textColor,
+    symbol,
+    displayName,
   }) {
     return { // accessed by DropTargetMonitor.getItem()
       suit,
       name,
       number,
-      isFaceUp,
       belongsTo,
-      color
+      backgroundColor,
+      isFaceUp,
+      textColor,
+      symbol,
+      displayName,
     }
   },
 
