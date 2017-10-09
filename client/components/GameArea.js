@@ -9,7 +9,7 @@ import firebase from 'firebase'
 const db = firebase.database()
 
 
-class  GameArea extends Component {
+class GameArea extends Component {
 
   componentDidMount () {
     const gameRef = db.ref(`games/${this.props.match.params.gameId}`)
@@ -19,31 +19,32 @@ class  GameArea extends Component {
   render() {
     const {user, players} = this.props;
     const currentUserPlayerNum = getUserPlayerNum(user, players);
-    const otherPlayerNums = Object.keys(players).filter(playerNum => playerNum !== currentUserPlayerNum);
+    const otherPlayerNums = Object.keys(players).filter(playerNum => +playerNum !== +currentUserPlayerNum).map(num => +num);
     console.log('players', players, 'otherPlayerNums', otherPlayerNums);
-
-    return (
-      <div >
-        <h1>Game Area</h1>
-        <div id="gameArea" >
-          <div id="firstRow" className="container">
-            <PlayerArea playerNum={1} />
-          </div>
-          <div id="secondRow" className="container">
-            <PlayerArea
-              style={{transform: 'rotate(270deg)'}}
-              playerNum={2} />
-            <GameField />
-            <PlayerArea
-              style={{transform: 'rotate(90deg)'}}
-              playerNum={3} />
-          </div>
-          <div id="thirdRow" className="container">
-           <PlayerArea playerNum={4} />
+      return (
+        <div>
+          <h1>Game Area</h1>
+          <div id="gameArea" >
+            <div id="firstRow" className="container">
+              <PlayerArea playerNum={otherPlayerNums[0] || 1} />
+            </div>
+            <div id="secondRow" className="container">
+              <div style={{transform: 'rotate(270deg)'}}>
+              <PlayerArea
+                playerNum={otherPlayerNums[1] || 2} />
+                </div>
+              <GameField />
+                <div style={{transform: 'rotate(90deg)'}}>
+                  <PlayerArea
+                    playerNum={otherPlayerNums[2] || 3} />
+                </div>
+            </div>
+            <div id="thirdRow" className="container">
+            <PlayerArea playerNum={currentUserPlayerNum || 4} />
+            </div>
           </div>
         </div>
-      </div>
-    )
+      )
   }
 }
 

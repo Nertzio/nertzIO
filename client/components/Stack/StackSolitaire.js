@@ -8,17 +8,19 @@ import {
 } from '../../DragNDrop';
 
 const StackSolitaire = ({cards, firebaseRef, connectDropTarget, stackKey}) => {
-  const faceUpCards = cards.map(card => {
+  let faceUpCards
+  if (cards){
+    faceUpCards = cards.map(card => {
     card.isFaceUp = true
     return card;
-  })
+  })}
   return connectDropTarget(
     <div style={{
       border: '1px solid gray',
       height: '100%',
       flex: '1 10%'
     }}>
-      {cards.length > 0 &&
+      {cards && cards.length > 0 &&
         <DragHandleStacks cards={faceUpCards} firebaseStackRef={firebaseRef} />
       }
     </div>
