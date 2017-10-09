@@ -3,9 +3,8 @@ import {connect} from 'react-redux';
 import {Stack} from '../../components';
 import {
   flip3ForPlayer,
-  restartBigStackForPlayer
+  // restartBigStackForPlayer // being buggy
 } from '../../firebase/gameplayUtils';
-// import PropTypes from 'prop-types';
 
 const StackBig =  ({cards, firebaseRef, playerNum}) => {
 
@@ -13,7 +12,6 @@ const StackBig =  ({cards, firebaseRef, playerNum}) => {
     card.isFaceUp = false;
     return card
   })
-
 
   return (
     <div
@@ -24,9 +22,10 @@ const StackBig =  ({cards, firebaseRef, playerNum}) => {
         flex: '1 10%',
         position: 'relative',
     }}>
-      <Stack cards={cards} firebaseStackRef={firebaseRef} />
+      <Stack cards={faceDownCards} firebaseStackRef={firebaseRef} />
 
-      <div style={{
+      {/* restart button needs to be moved outside the div with the flip3 onClick listener */}
+      {/* <div style={{
         bottom: -40,
         left: 0,
         height: 40,
@@ -36,7 +35,7 @@ const StackBig =  ({cards, firebaseRef, playerNum}) => {
         <button onClick={() => restartBigStackForPlayer(playerNum)}>
           Restart
         </button>
-      </div>
+      </div> */}
     </div>
   )
 }
