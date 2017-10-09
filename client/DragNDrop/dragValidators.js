@@ -7,11 +7,15 @@ const iAmADraggableStack = (stackKey) => {
   return stackKey === 'DragHandleStack'
 }
 
+export const iOwnThisCard = (playerNum, card) => {
+  return +playerNum === +card.belongsTo;
+}
+
 export const canIDragGivenStackKeyOwnStackAndPosition = (
   stackKey,
   ownStack,
   stackPosition
 ) => {
-  return iAmNotInBigStack(stackKey) &&
-    ( iAmTopCard(ownStack, stackPosition) || iAmADraggableStack(stackKey) )
+  return iAmNotInBigStack(stackKey)
+    && ( iAmTopCard(ownStack, stackPosition) || iAmADraggableStack(stackKey) )
 }
