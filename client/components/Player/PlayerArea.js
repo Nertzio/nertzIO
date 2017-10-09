@@ -11,7 +11,6 @@ class PlayerArea extends Component {
 
   render(){
     const {playerNum, players} = this.props;
-    console.log('players', players, 'playerNum', playerNum)
 
     return (
       <div style={{

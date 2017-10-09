@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {GameField, PlayerArea, Stack} from '../components';
 import { DragDropContext } from 'react-dnd'
+import {getUserPlayerNum} from '../vanillaUtils'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { resetReduxForStartedDbGameInstance } from '../firebase'
 import firebase from 'firebase'
@@ -18,21 +19,26 @@ class  GameArea extends Component {
   render() {
     const {user, players} = this.props;
     const currentUserPlayerNum = getUserPlayerNum(user, players);
+    const otherPlayerNums = Object.keys(players).filter(playerNum => playerNum !== currentUserPlayerNum);
 
     return (
       <div >
         <h1>Game Area</h1>
         <div id="gameArea" >
           <div id="firstRow" className="container">
-            <PlayerArea playerNum={1} />
+            <PlayerArea playerNum={otherPlayerNums[0]} />
           </div>
           <div id="secondRow" className="container">
-            <PlayerArea playerNum={2} />
+            <PlayerArea
+              style={{transform: 'rotate(270deg)'}}
+              playerNum={otherPlayerNums[1]} />
             <GameField />
-            <PlayerArea playerNum={3} />
+            <PlayerArea
+              style={{transform: 'rotate(90deg)'}}
+              playerNum={otherPlayerNums[2]} />
           </div>
           <div id="thirdRow" className="container">
-           <PlayerArea playerNum={4} />
+           <PlayerArea playerNum={currentUserPlayerNum} />
           </div>
         </div>
       </div>
