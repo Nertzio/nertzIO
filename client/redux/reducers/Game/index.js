@@ -1,2 +1,2 @@
-export {default as game} from './Gauser';
-export * from './Gauser';
+export {default as game} from './GameReducer';
+export * from './GameReducer';
