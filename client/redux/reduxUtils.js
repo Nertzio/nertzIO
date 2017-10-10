@@ -12,6 +12,7 @@ import store, {
   setRoundOver,
   startNewRound,
   setScoreLimit,
+  setUserPlayerNum,
   startLoading,
   stopLoading,
   updatePlayerByKey, // need to create this action creator
@@ -54,6 +55,10 @@ export const getStackInStoreByKey = (stackKey) => {
 
 export const setGameOverInRedux = () => {
   return dispatch(setGameOver());
+}
+
+export const setUserPlayerNumInRedux = (num) => {
+  return dispatch(setUserPlayerNum(num));
 }
 
 export const startNewGameInRedux = () => {

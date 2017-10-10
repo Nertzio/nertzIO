@@ -1,5 +1,6 @@
 import {
   setGameRefInRedux,
+  setUserPlayerNumInRedux,
   storeStackRefInReduxByKey,
   updateReduxPlayerStackByKey,
 } from '../redux/reduxUtils'
@@ -38,6 +39,7 @@ export const goAddPlayerToGame = (playerData, gameRef) => {
   return gameRef.once('value')
     .then(gameSnapshot => {
       const playerKey = gameSnapshot.child('players').numChildren() + 1;
+      setUserPlayerNumInRedux(+playerKey);
       return gameRef.child(`players/${playerKey}`).set(playerData);
     })
     .then(() => gameRef)
