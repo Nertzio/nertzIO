@@ -29,5 +29,5 @@ export function initAuth () {
       console.log("Not signed in yet / signed out")
     }
   }))
-  .then(() => console.log("I listened"));
+  .then(() => console.log("Auth listener completed updates to redux user state"));
 }
