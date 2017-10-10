@@ -34,7 +34,7 @@ export const setScoreLimit = limit => ({
 })
 
 
-const gauser = (game = DEFAULT_GAME, action) => {
+const gameReducer = (game = DEFAULT_GAME, action) => {
   const {type, limit} = action;
   switch (type) {
     case GAME_START:
@@ -52,4 +52,4 @@ const gauser = (game = DEFAULT_GAME, action) => {
   }
 }
 
-export default gauser;
+export default gameReducer;
