@@ -10,7 +10,7 @@ import {
 class PlayerArea extends Component {
 
   render(){
-    const {playerNum, players} = this.props;
+    const {playerNum, players, side} = this.props;
 
     return (
         <section style={{
@@ -23,6 +23,7 @@ class PlayerArea extends Component {
           justifyContent: 'space-evenly',
           width: '100%',
         }}>
+
           <h2>{players[playerNum] && players[playerNum].displayName}</h2>
           <div
             className="stack-area"

@@ -17,15 +17,35 @@ const db = firebase.database()
 
 class GameArea extends Component {
 
-  componentDidMount () {
+  constructor(props) {
+    super(props)
+    this.leftColumnPlayers = [];
+    this.rightColumnPlayers = [];
+    this.topRowPlayers = [];
+
+    const {userPlayerNum, players} = this.props;
+    const otherPlayerNums = players.filter(playerNum => +playerNum !== +userPlayerNum).map(num => +num);
+    console.log('players', players, 'otherPlayerNums', otherPlayerNums);
+
+    otherPlayerNums.forEach(num => {
+      if (num % 2 === 0) {
+        if (this.leftColumnPlayers.length > this.rightColumnPlayers.length) {
+          this.rightColumnPlayers.push(<PlayerArea playerNum={num} side="right"/>)
+        } else {
+          this.leftColumnPlayers.push(<PlayerArea playerNum={num} side="left" />)
+        }
+      } else {
+        this.topRowPlayers.push(<PlayerArea playerNum={num} side="top" />)
+      }
+    })
+  }
+
+  componentWillMount () {
     const gameRef = db.ref(`games/${this.props.match.params.gameId}`)
     resetReduxForStartedDbGameInstance(gameRef);
   }
 
   render() {
-    const {userPlayerNum, players} = this.props;
-    const otherPlayerNums = players.filter(playerNum => +playerNum !== +userPlayerNum).map(num => +num);
-    console.log('players', players, 'otherPlayerNums', otherPlayerNums);
 
     return (
         <div>
@@ -35,14 +55,14 @@ class GameArea extends Component {
 
             <div className="player-left-container">
               <div className="rotate-270">
-                <PlayerArea playerNum={otherPlayerNums[0] || 1} />
+                {this.leftColumnPlayers}
               </div>
             </div>
 
             <div className="game-area-middle-column">
 
               <div className="player-top-container">
-                <PlayerArea playerNum={otherPlayerNums[1] || 2} />
+                {this.topRowPlayers}
               </div>
 
               <div className="game-field-container">
@@ -50,14 +70,14 @@ class GameArea extends Component {
               </div>
 
               <div className="player-bottom-container">
-                <PlayerArea playerNum={userPlayerNum || 4} />
+                <PlayerArea playerNum={this.props.userPlayerNum} side="bottom"/>
               </div>
 
             </div>
 
             <div className="player-right-container">
               <div className="rotate-90">
-                <PlayerArea playerNum={otherPlayerNums[2] || 3} />
+               {this.rightColumnPlayers}
               </div>
             </div>
 
@@ -101,3 +121,4 @@ export default DragDropContext(HTML5Backend)(reduxifiedGameArea)
 <div id="thirdRow" className="container">
 <PlayerArea playerNum={currentUserPlayerNum || 4} />
 </div> */}
+
