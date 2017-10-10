@@ -38,6 +38,7 @@ export const goAddPlayerToGame = (playerData, gameRef) => {
   return gameRef.once('value')
     .then(gameSnapshot => {
       const playerKey = gameSnapshot.child('players').numChildren() + 1;
+      playerData.playerNum = +playerKey;
       return gameRef.child(`players/${playerKey}`).set(playerData);
     })
     .then(() => gameRef)
