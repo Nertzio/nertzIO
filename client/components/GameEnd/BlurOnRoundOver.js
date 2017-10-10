@@ -5,7 +5,7 @@ import {Blur} from '../Common';
 const BlurOnRoundOver = ({ children, isRoundOver }) => {
 
   return (
-    <Blur isActive={isRoundOver} strength={4}>
+    <Blur isActive={isRoundOver} strength={10}>
       {() => children}
     </Blur>
   )
