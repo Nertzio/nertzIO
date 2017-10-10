@@ -9,7 +9,7 @@ const REMOVE_LOCAL_USER = 'REMOVE_LOCAL_USER'
 /**
  * INITIAL STATE
  */
-const defaultMe = {}
+const defaultUser = {}
 
 /**
  * ACTION CREATORS
@@ -29,12 +29,12 @@ export const removeLocalUser = () => {
 /**
  * REDUCER
  */
-export default function meReducer (state = defaultMe, action) {
+export default function userReducer (state = defaultUser, action) {
   switch (action.type) {
     case ADD_LOCAL_USER_INFO:
       return action.user
     case REMOVE_LOCAL_USER:
-      return defaultMe;
+      return defaultUser;
     default:
       return state
   }

@@ -14,7 +14,19 @@ const auth = firebase.auth();
 
 
 
-import {GameArea, LoadingSpinner, MainLayout, SignUp, SignIn, SignOut, UserHome, JoinAGame, GamePending, Home} from './components'
+import {
+  BlurWhenActionRequired,
+  GameArea,
+  GamePending,
+  Home,
+  JoinAGame,
+  LoadingSpinner,
+  MainLayout,
+  SignOut,
+  SignUp,
+  SignIn,
+  UserHome,
+} from './components'
 
 
 import {me} from './redux'
@@ -85,7 +97,7 @@ class Routes extends Component {
  * CONTAINER
  */
 const mapState = state => ({
-  isLoggedIn: state.meReducer.uid
+  isLoggedIn: state.user.uid
 });
 
 export default connect(mapState)(Routes);

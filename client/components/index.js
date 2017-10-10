@@ -1,5 +1,6 @@
 
 export {default as GameArea} from './GameArea';
+export * from './GameEnd';
 export * from './GameField';
 export * from './Player';
 export * from './Stack';

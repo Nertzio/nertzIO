@@ -52,7 +52,7 @@ const mapState = (state, {stackKey}) => ({
   firebaseRef: state.firebaseRefs.stacks[stackKey],
   playerNum: +stackKey[1], // e.g. p1BigStack
   players: state.players,
-  user: state.meReducer,
+  user: state.user,
 })
 
 const connectedStackBig = connect(mapState, null)(StackBig);

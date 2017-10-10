@@ -1,11 +1,15 @@
 import React from 'react';
 import {TopNavbar} from '../Navigation';
+import {BlurWhenActionRequired} from '../AppStateFeedback';
+
 
 const MainLayout = ({children}) => {
   return (
     <div>
       <TopNavbar />
-      {children}
+      <BlurWhenActionRequired>
+        {() => children}
+      </BlurWhenActionRequired>
     </div>
   )
 }
