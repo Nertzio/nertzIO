@@ -25,6 +25,32 @@ class GameArea extends Component {
         <div>
           <h1>Game Area</h1>
           <div id="gameArea" >
+
+            <div className="player-left-container">
+              <PlayerArea playerNum={otherPlayerNums[0] || 1} />
+            </div>
+
+            <div className="game-area-middle-column">
+
+              <div className="player-top-container">
+                <PlayerArea playerNum={otherPlayerNums[1] || 2} />
+              </div>
+
+              <div className="game-field-container">
+
+              </div>
+
+              <div className="player-bottom-container">
+                <PlayerArea playerNum={currentUserPlayerNum || 4} />
+              </div>
+
+            </div>
+
+            <div className="player-right-container">
+              <PlayerArea playerNum={otherPlayerNums[2] || 3} />
+            </div>
+
+
             <div id="firstRow" className="container">
               <PlayerArea playerNum={otherPlayerNums[0] || 1} />
             </div>
@@ -58,3 +84,22 @@ function mapStateToProps (state) {
 const dragContextGameArea = DragDropContext(HTML5Backend)(GameArea)
 
 export default connect(mapStateToProps)(dragContextGameArea);
+
+
+{/* <div id="firstRow" className="container">
+<PlayerArea playerNum={otherPlayerNums[0] || 1} />
+</div>
+<div id="secondRow" className="container">
+<div style={{transform: 'rotate(270deg)'}}>
+<PlayerArea
+  playerNum={otherPlayerNums[1] || 2} />
+  </div>
+<GameField />
+  <div style={{transform: 'rotate(90deg)'}}>
+    <PlayerArea
+      playerNum={otherPlayerNums[2] || 3} />
+  </div>
+</div>
+<div id="thirdRow" className="container">
+<PlayerArea playerNum={currentUserPlayerNum || 4} />
+</div> */}
