@@ -29,6 +29,8 @@ const db = firebase.database();
 
 export const addNewGame = () => {
   currentGameRef = db.ref('games').push();
+  currentGameRef.child('nertzHasBeenCalled').set(false);
+  currentGameRef.child('numOfPlayerWhoCalledNertz').set(false);
   setGameRefForUtils(currentGameRef);
   setGameRefInRedux(currentGameRef);
   return currentGameRef;
@@ -88,7 +90,8 @@ const generateStacksForPlayer = (playerNum) => {
   return {
     [`p${playerNum}BigStack`]: cards.slice(0, 35),
     [`p${playerNum}DrawnStack`]: false, // placeholder val for firebase
-    [`p${playerNum}LittleStack`]: cards.slice(35,48),
+    // [`p${playerNum}LittleStack`]: cards.slice(35,48),
+    [`p${playerNum}LittleStack`]: [],
     [`p${playerNum}SolitaireStack1`]: cards.slice(48, 49),
     [`p${playerNum}SolitaireStack2`]: cards.slice(49, 50),
     [`p${playerNum}SolitaireStack3`]: cards.slice(50, 51),
@@ -115,7 +118,6 @@ const initPlayerAreaByPlayerNum = (playerNum) => {
   return settingPlayersStacks
     .then(() => linkReduxStacksWithDbByPlayerNum(playerNum, currentGameRef))
 }
-
 
 const initAllPlayerAreas = (dbGameInstanceIsPreInitialized, gameRef) => {
   return goCountAllPlayersInGame()

@@ -10,6 +10,7 @@ import {
   getStackInStoreByKey,
   setPlayerNumWhoCalledNertzInRedux
 } from '../../redux/reduxUtils';
+import {updateDbWithNertzCall} from '../../firebase'
 
 const TopNavbar = ({userIsLoggedIn, currentUser, players}) => {
   // TODO: remove when done testing modal
@@ -21,7 +22,8 @@ const TopNavbar = ({userIsLoggedIn, currentUser, players}) => {
   const playerNum = getUserPlayerNum(currentUser, players);
 
   const callNertz = () => {
-    setPlayerNumWhoCalledNertzInRedux(playerNum)
+    // setPlayerNumWhoCalledNertzInRedux(playerNum)
+    updateDbWithNertzCall(playerNum);
     return setRoundOverInRedux();
   }
 
