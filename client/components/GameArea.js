@@ -62,7 +62,6 @@ function mapStateToProps (state) {
     players: state.players,
     user: state.user,
     isRoundOver: state.game.isRoundOver,
-
   }
 }
 
