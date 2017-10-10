@@ -25,10 +25,8 @@ class Routes extends Component {
   }
 
   componentDidMount () {
-    this.props.loadInitialData()
     initAuth()
   }
-
 
   render () {
     const {isLoggedIn, somethingIsLoading} = this.props;
@@ -75,7 +73,6 @@ class Routes extends Component {
               component={SignIn}
             />
 
-
             <Route component={Home} />
           </Switch>
         </MainLayout>
@@ -91,20 +88,5 @@ const mapState = state => ({
   isLoggedIn: state.meReducer.uid
 });
 
-const mapDispatch = (dispatch) => {
-  return {
-    loadInitialData () {
-      dispatch(me());
-    }
-  }
-}
+export default connect(mapState)(Routes);
 
-export default connect(mapState, mapDispatch)(Routes)
-
-/**
- * PROP TYPES
- */
-Routes.propTypes = {
-  loadInitialData: PropTypes.func.isRequired,
-  // isLoggedIn: PropTypes.bool.isRequired
-}
