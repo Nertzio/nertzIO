@@ -1,4 +1,6 @@
+export * from './App';
 export * from './FirebaseRefs';
+export * from './Game';
 export * from './players.js';
 export * from './User';
 

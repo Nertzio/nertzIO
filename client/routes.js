@@ -14,7 +14,18 @@ const auth = firebase.auth();
 
 
 
-import {GameArea, LoadingSpinner, MainLayout, SignUp, SignIn, UserHome, JoinAGame, GamePending, Home} from './components'
+import {
+  BlurWhenActionRequired,
+  GameArea,
+  GamePending,
+  Home,
+  JoinAGame,
+  LoadingSpinner,
+  MainLayout,
+  SignUp,
+  SignIn,
+  UserHome,
+} from './components'
 
 
 import {me} from './redux'
@@ -24,10 +35,10 @@ class Routes extends Component {
     super(props)
   }
 
-  // componentDidMount () {
-  //   this.props.loadInitialData()
-  //   initAuth()
-  // }
+  componentDidMount () {
+    // this.props.loadInitialData()
+    initAuth()
+  }
 
 
   render () {
@@ -74,7 +85,6 @@ class Routes extends Component {
               exact path="/signin"
               component={SignIn}
             />
-
 
             <Route component={Home} />
           </Switch>

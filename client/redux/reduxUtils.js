@@ -1,21 +1,30 @@
 import {
   findCurrentUserInPlayers,
+  getUserPlayerNum,
 } from '../vanillaUtils';
 import store, {
   setGameRef,
   setStackRef,
+  userActionTaken,
+  requireUserAction,
+  startLoading,
+  stopLoading,
   updatePlayerByKey, // need to create this action creator
   updatePlayerStackByKey,
   updateFieldStackByKey,
 } from '../redux';
 const {dispatch} = store;
 
-// export const currentUserPlayerCanCallNertz = () => {
-//   const {}
-// }
+export const countCardsInUserLittleStackInRedux = () => {
+  const {user, players} = store.getState();
+  const currentUserPlayer = findCurrentUserInPlayers(user, players);
+  const playerNum = getUserPlayerNum(user, players);
+  const littleStack = currentUserPlayer.stacks[`p${playerNum}LittleStack`];
+  return littleStack.length === 0;
+}
 
 export const getCurrentUserInRedux = () => {
-  return store.getState().playerReducer;
+  return store.getState().user;
 }
 
 export const getFirebaseGameRefFromRedux = () => {
@@ -36,6 +45,22 @@ export const setGameRefInRedux = gameRef => {
 
 export const storeStackRefInReduxByKey = (stackKey, stackRef) => {
   return dispatch(setStackRef({[stackKey]: stackRef}))
+}
+
+export const tellReduxModalIsClosed = () => {
+  return dispatch(userActionTaken());
+}
+
+export const tellReduxModalIsOpen = () => {
+  return dispatch(requireUserAction());
+}
+
+export const tellReduxImLoading = () => {
+  return dispatch(startLoading());
+}
+
+export const tellReduxImDoneLoading = () => {
+  return dispatch(stopLoading());
 }
 
 export const updatePlayerInReduxByKey = (playerKey, updatedPlayer) => {

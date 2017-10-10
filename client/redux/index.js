@@ -4,13 +4,19 @@ import createLogger from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 
 import {
-  firebaseRefs,
+  app,
+  createNFieldStackReducers,
   createStackReducersForNPlayers,
-  createNFieldStackReducers, players, user,
+  firebaseRefs,
+  game,
+  players,
+  user,
 } from './reducers';
 
 const reducer = combineReducers({
+  app,
   firebaseRefs,
+  game,
   players,
   user,
   ...createStackReducersForNPlayers(8),

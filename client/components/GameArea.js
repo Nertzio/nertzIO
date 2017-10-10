@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {GameField, PlayerArea, Stack} from '../components';
+import {
+  BlurOnRoundOver,
+  GameEndModal,
+  GameField,
+  PlayerArea,
+  Stack,
+} from '../components';
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { resetReduxForStartedDbGameInstance } from '../firebase'
@@ -16,14 +22,22 @@ class  GameArea extends Component {
   }
 
   render() {
+
     return (
-      <div style={styles.gameArea}>
-        <h1>Game Area</h1>
-        <PlayerArea playerNum={1} />
-        <GameField />
-        <PlayerArea playerNum={2} />
-        <PlayerArea playerNum={3} />
-        <PlayerArea playerNum={4} />
+      <div>
+        <BlurOnRoundOver >
+          <div style={styles.gameArea}>
+
+              <h1>Game Area</h1>
+              <PlayerArea playerNum={1} />
+              <GameField />
+              <PlayerArea playerNum={2} />
+              <PlayerArea playerNum={3} />
+              <PlayerArea playerNum={4} />
+
+          </div>
+        </BlurOnRoundOver>
+        <GameEndModal />
       </div>
     )
   }
@@ -43,4 +57,9 @@ const styles = {
   }
 }
 
-export default DragDropContext(HTML5Backend)(GameArea)
+const mapState = state => ({
+  isRoundOver: state.game.isRoundOver,
+})
+
+const reduxifiedGameArea = connect(mapState)(GameArea);
+export default DragDropContext(HTML5Backend)(reduxifiedGameArea)
