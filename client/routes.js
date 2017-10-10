@@ -14,7 +14,7 @@ const auth = firebase.auth();
 
 
 
-import {GameArea, LoadingSpinner, MainLayout, SignUp, SignIn, UserHome, JoinAGame, GamePending, Home} from './components'
+import {GameArea, LoadingSpinner, MainLayout, SignUp, SignIn, SignOut, UserHome, JoinAGame, GamePending, Home} from './components'
 
 
 import {me} from './redux'
@@ -57,11 +57,11 @@ class Routes extends Component {
               component={GameArea}
             />
 
-            {/*<ProtectedRoute
+            {<ProtectedRoute
               {...{isLoggedIn}}
-              exact path="/logout"
-              component={LoggingOut}
-            />*/}
+              exact path="/signout"
+              component={SignOut}
+            />}
 
             <UnprotectedRoute
               {...{isLoggedIn}}

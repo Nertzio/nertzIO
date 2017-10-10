@@ -8,15 +8,10 @@ class SignIn extends Component {
   constructor(props) {
     super(props)
     this.handleSignIn = this.handleSignIn.bind(this);
-    this.handleSignOut = this.handleSignOut.bind(this);
     // Note: Form values left uncleared for now, since will be redirecting
     this.state = {
       redirectSignedInUser: false
     }
-  }
-
-  handleSignOut () {
-    auth.signOut()
   }
 
 
@@ -55,7 +50,6 @@ class SignIn extends Component {
     }
       return (
         <div>
-          {true &&
           <div>
             <div>
               <h1>Sign In To This AWESOME Game</h1>
@@ -70,15 +64,6 @@ class SignIn extends Component {
               <Link style={styles.btn} to={'/signup'}>Sign Up Here</Link>
             </div>
           </div>
-          }
-
-          {false &&
-          <div>
-            <h1>Hi there, {this.state.displayName}!</h1>
-            <button className="signout-button" id="quickstart-sign-out" onClick={this.handleSignOut} name="signout">Sign Out</button>
-          </div>
-          }
-
         </div>
       )
   }

@@ -8,7 +8,7 @@ import store, {
 const {dispatch} = store;
 
 export const getCurrentUserInRedux = () => {
-  return store.getState().playerReducer;
+  return store.getState().meReducer;
 }
 
 export const getFirebaseGameRefFromRedux = () => {

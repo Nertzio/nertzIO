@@ -1,3 +1,4 @@
+const iAmNotAFieldStack = stackKey => stackKey.slice(0, 10) !== 'fieldStack'
 
 const iAmNotInBigStack = stackKey => stackKey.slice(2) !== 'BigStack';
 
@@ -16,6 +17,7 @@ export const canIDragGivenStackKeyOwnStackAndPosition = (
   ownStack,
   stackPosition
 ) => {
-  return iAmNotInBigStack(stackKey)
+  return iAmNotInBigStack(stackKey) && iAmNotAFieldStack(stackKey)
     && ( iAmTopCard(ownStack, stackPosition) || iAmADraggableStack(stackKey) )
 }
+
