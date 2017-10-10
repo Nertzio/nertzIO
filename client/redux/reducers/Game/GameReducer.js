@@ -4,7 +4,7 @@ const DEFAULT_GAME = {
   isRoundOver: false,
   // isGameOver: false,
   // playingTo: 0,
-  whoCalledNertz: '',
+  playerNumWhoCalledNertz: null, // initialized to null to avoid potential complications with player associations
   userPlayerNum: false,
 };
 const GAME_START = 'GAME_START';
@@ -13,6 +13,7 @@ const ROUND_OVER = 'ROUND_OVER';
 const ROUND_START = 'ROUND_START';
 const SET_SCORE_LIMIT = 'SET_SCORE_LIMIT';
 const SET_USER_PLAYER_NUM = 'SET_USER_PLAYER_NUM';
+const SET_PLAYER_NUM_WHO_CALLED_NERTZ = 'SET_PLAYER_NUM_WHO_CALLED_NERTZ';
 
 export const setGameOver = () => ({
   type: GAME_OVER,
@@ -40,6 +41,11 @@ export const setUserPlayerNum = userPlayerNum => ({
   userPlayerNum
 })
 
+export const setPlayerNumWhoCalledNertz = playerNumWhoCalledNertz => ({
+  type: SET_PLAYER_NUM_WHO_CALLED_NERTZ,
+  playerNumWhoCalledNertz
+})
+
 
 const gameReducer = (game = DEFAULT_GAME, action) => {
   const {type, limit, userPlayerNum} = action;
@@ -56,6 +62,8 @@ const gameReducer = (game = DEFAULT_GAME, action) => {
       return {...game, scoreLimit: limit}
     case SET_USER_PLAYER_NUM:
       return {...game, userPlayerNum};
+    case SET_PLAYER_NUM_WHO_CALLED_NERTZ:
+      return {...game, playerNumWhoCalledNertz};
     default:
       return game;
   }

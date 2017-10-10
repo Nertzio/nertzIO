@@ -7,7 +7,8 @@ import {
   roundIsOverInRedux,
   setRoundOverInRedux,
   startNewRoundInRedux,
-  getStackInStoreByKey
+  getStackInStoreByKey,
+  setPlayerNumWhoCalledNertzInRedux
 } from '../../redux/reduxUtils';
 
 const TopNavbar = ({userIsLoggedIn, currentUser, players}) => {
@@ -17,12 +18,14 @@ const TopNavbar = ({userIsLoggedIn, currentUser, players}) => {
     else return setRoundOverInRedux();
   }
 
+  const playerNum = getUserPlayerNum(currentUser, players);
+
   const callNertz = () => {
+    setPlayerNumWhoCalledNertzInRedux(playerNum)
     return setRoundOverInRedux();
   }
 
   const ableToCallNertz = () => {
-    const playerNum = getUserPlayerNum(currentUser, players);
     const nertzPile = getStackInStoreByKey(`p${playerNum}LittleStack`);
     return nertzPile && !nertzPile.length;
   }

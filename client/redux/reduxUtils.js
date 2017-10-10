@@ -3,6 +3,7 @@ import {
   getUserPlayerNum,
 } from '../vanillaUtils';
 import store, {
+  setPlayerNumWhoCalledNertz,
   setGameRef,
   setStackRef,
   // userActionTaken,
@@ -37,6 +38,10 @@ export const roundIsOverInRedux = () => {
   return store.getState().game.isRoundOver;
 }
 
+export const playerNumWhoCalledNertzInRedux = () => {
+  return store.getState().game.playerNumWhoCalledNertz;
+}
+
 export const getCurrentUserInRedux = () => {
   return store.getState().user;
 }
@@ -59,6 +64,10 @@ export const setGameOverInRedux = () => {
 
 export const setUserPlayerNumInRedux = (num) => {
   return dispatch(setUserPlayerNum(num));
+}
+
+export const setPlayerNumWhoCalledNertzInRedux = () => {
+  return dispatch(setPlayerNumWhoCalledNertz());
 }
 
 export const startNewGameInRedux = () => {
