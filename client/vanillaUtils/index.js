@@ -21,7 +21,7 @@ export const getUserPlayerNum = (user, players) => {
       if (players[key].uid === user.uid) return +key;
     }
   } else {
-    throw new TypeError(`getUserPlayerNum() accepts players as an array or an object, but you passed an ${Object.getPrototypeOf(players)}`)
+    throw new TypeError(`getUserPlayerNum() accepts players as an array or an \n object, but you passed an ${Object.getPrototypeOf(players)}`)
   }
 }
 

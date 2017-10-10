@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {GameField, PlayerArea, Stack} from '../components';
+import {
+  BlurOnRoundOver,
+  GameEndModal,
+  GameField,
+  PlayerArea,
+  Stack,
+} from '../components';
 import { DragDropContext } from 'react-dnd'
 import {getUserPlayerNum} from '../vanillaUtils'
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -23,6 +29,7 @@ class GameArea extends Component {
     console.log('players', players, 'otherPlayerNums', otherPlayerNums);
       return (
         <div>
+        <BlurOnRoundOver >
           <h1>Game Area</h1>
           <div id="gameArea" >
             <div id="firstRow" className="container">
@@ -43,6 +50,8 @@ class GameArea extends Component {
             <PlayerArea playerNum={currentUserPlayerNum || 4} />
             </div>
           </div>
+          </BlurOnRoundOver>
+        <GameEndModal />
         </div>
       )
   }
@@ -51,10 +60,11 @@ class GameArea extends Component {
 function mapStateToProps (state) {
   return {
     players: state.players,
-    user: state.meReducer
+    user: state.user,
+    isRoundOver: state.game.isRoundOver,
   }
 }
 
-const dragContextGameArea = DragDropContext(HTML5Backend)(GameArea)
 
-export default connect(mapStateToProps)(dragContextGameArea);
+const reduxifiedGameArea = connect(mapStateToProps)(GameArea);
+export default DragDropContext(HTML5Backend)(reduxifiedGameArea)

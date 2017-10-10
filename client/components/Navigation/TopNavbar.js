@@ -2,8 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
 import {BarTop, BarBufferInPx} from '../Common';
+import {
+  roundIsOverInRedux,
+  setRoundOverInRedux,
+  startNewRoundInRedux,
+} from '../../redux/reduxUtils';
 
 const TopNavbar = ({userIsLoggedIn}) => {
+  // TODO: remove when done testing modal
+  const toggleRound = () => {
+    if (roundIsOverInRedux()) return startNewRoundInRedux();
+    else return setRoundOverInRedux();
+  }
+
   return (
     <div>
       <div style={{
@@ -14,6 +25,7 @@ const TopNavbar = ({userIsLoggedIn}) => {
         position: 'absolute',
         top: 0,
         width: '100%',
+        zIndex: 100 * 1000,
       }}>
         <BarTop alignLeft>
           <Link to="/">Nertz.io</Link>
@@ -23,6 +35,8 @@ const TopNavbar = ({userIsLoggedIn}) => {
         </BarTop>
 
         <BarTop alignRight>
+        {/* TODO: remove this after testing modal */}
+          <button onClick={() => toggleRound()}>Toggle Round</button>
           {userIsLoggedIn && <Link to="/join">Play</Link>}
           {userIsLoggedIn && <Link to="/account">Account</Link>}
           {userIsLoggedIn && <Link to="/signout">Sign Out</Link>}

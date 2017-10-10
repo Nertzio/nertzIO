@@ -128,7 +128,7 @@ class JoinAGame extends Component {
 
   function mapStateToProps (state){
     return {
-      me: state.meReducer
+      me: state.user
     }
   }
 
