@@ -32,6 +32,44 @@ html {
       display: inline-block;
     }
 
+    .game-area {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      align-content: center;
+      height: '100vh';
+      justify-content: 'space-evenly';
+      margin: '10px auto';
+      width: '90%';
+
+      .player-left-container {
+
+      }
+
+      .player-right-container {
+
+      }
+
+      .game-area-middle-column {
+
+        .player-top-container {
+
+        }
+
+        .game-field-container {
+
+        }
+
+        .player-bottom-container {
+
+        }
+
+      }
+
+
+    }
+
     #gameArea {
       .container {
         display: flex;

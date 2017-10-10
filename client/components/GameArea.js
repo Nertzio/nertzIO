@@ -23,15 +23,15 @@ class GameArea extends Component {
   }
 
   render() {
-    const {user, players} = this.props;
-    const currentUserPlayerNum = getUserPlayerNum(user, players);
-    const otherPlayerNums = Object.keys(players).filter(playerNum => +playerNum !== +currentUserPlayerNum).map(num => +num);
+    const {userPlayerNum, players} = this.props;
+    const otherPlayerNums = players.filter(playerNum => +playerNum !== +userPlayerNum).map(num => +num);
     console.log('players', players, 'otherPlayerNums', otherPlayerNums);
-      return (
+
+    return (
         <div>
         <BlurOnRoundOver >
           <h1>Game Area</h1>
-          <div id="gameArea" >
+          <div id="gameArea" className="game-area">
 
             <div className="player-left-container">
               <PlayerArea playerNum={otherPlayerNums[0] || 1} />
@@ -44,11 +44,11 @@ class GameArea extends Component {
               </div>
 
               <div className="game-field-container">
-
+                <GameField />
               </div>
 
               <div className="player-bottom-container">
-                <PlayerArea playerNum={currentUserPlayerNum || 4} />
+                <PlayerArea playerNum={userPlayerNum || 4} />
               </div>
 
             </div>
@@ -57,24 +57,6 @@ class GameArea extends Component {
               <PlayerArea playerNum={otherPlayerNums[2] || 3} />
             </div>
 
-
-            <div id="firstRow" className="container">
-              <PlayerArea playerNum={otherPlayerNums[0] || 1} />
-            </div>
-            <div id="secondRow" className="container">
-              <div style={{transform: 'rotate(270deg)'}}>
-              <PlayerArea
-                playerNum={otherPlayerNums[1] || 2} />
-                </div>
-              <GameField />
-                <div style={{transform: 'rotate(90deg)'}}>
-                  <PlayerArea
-                    playerNum={otherPlayerNums[2] || 3} />
-                </div>
-            </div>
-            <div id="thirdRow" className="container">
-            <PlayerArea playerNum={currentUserPlayerNum || 4} />
-            </div>
           </div>
           </BlurOnRoundOver>
         <GameEndModal />
@@ -85,9 +67,10 @@ class GameArea extends Component {
 
 function mapStateToProps (state) {
   return {
-    players: state.players,
+    players: Object.keys(state.players),
     user: state.user,
     isRoundOver: state.game.isRoundOver,
+    userPlayerNum: state.game.userPlayerNum,
   }
 }
 
