@@ -2,17 +2,29 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
 import {BarTop, BarBufferInPx} from '../Common';
+import {getUserPlayerNum} from '../../vanillaUtils'
 import {
   roundIsOverInRedux,
   setRoundOverInRedux,
   startNewRoundInRedux,
+  getStackInStoreByKey
 } from '../../redux/reduxUtils';
 
-const TopNavbar = ({userIsLoggedIn}) => {
+const TopNavbar = ({userIsLoggedIn, currentUser, players}) => {
   // TODO: remove when done testing modal
   const toggleRound = () => {
     if (roundIsOverInRedux()) return startNewRoundInRedux();
     else return setRoundOverInRedux();
+  }
+
+  const callNertz = () => {
+    return setRoundOverInRedux();
+  }
+
+  const ableToCallNertz = () => {
+    const playerNum = getUserPlayerNum(currentUser, players);
+    const nertzPile = getStackInStoreByKey(`p${playerNum}LittleStack`);
+    return !nertzPile;
   }
 
   return (
@@ -35,6 +47,10 @@ const TopNavbar = ({userIsLoggedIn}) => {
         </BarTop>
 
         <BarTop alignRight>
+        {
+          ableToCallNertz() &&
+          <button onClick={callNertz}>CALL NERTZ!!</button>
+        }
         {/* TODO: remove this after testing modal */}
           <button onClick={() => toggleRound()}>Toggle Round</button>
           {userIsLoggedIn && <Link to="/join">Play</Link>}
@@ -53,7 +69,9 @@ const TopNavbar = ({userIsLoggedIn}) => {
 }
 
 const mapState = state => ({
-  userIsLoggedIn: state.user,
+  userIsLoggedIn: state.user.email,
+  currentUser: state.user,
+  players: state.players
 })
 
 export default connect(mapState, null)(TopNavbar);
