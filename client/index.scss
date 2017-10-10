@@ -34,20 +34,28 @@ html {
 
     .game-area {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       flex-wrap: nowrap;
       align-items: center;
       align-content: center;
       height: '100vh';
       justify-content: 'space-evenly';
-      margin: '10px auto';
-      width: '90%';
+      // margin: '10px auto';
+      width: '100%';
 
       .player-left-container {
+
+        .rotate-270 {
+          transform: rotate(270deg);
+        }
 
       }
 
       .player-right-container {
+
+        .rotate-90 {
+          transform: rotate(90deg);
+        }
 
       }
 
@@ -70,18 +78,18 @@ html {
 
     }
 
-    #gameArea {
-      .container {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: center;
-        align-content: center;
-        height: '100vh';
-        justify-content: 'space-evenly';
-        margin: '10px auto';
-        width: '90%';
-      }
-    }
+    // #gameArea {
+    //   .container {
+    //     display: flex;
+    //     flex-direction: row;
+    //     flex-wrap: nowrap;
+    //     align-items: center;
+    //     align-content: center;
+    //     height: '100vh';
+    //     justify-content: 'space-evenly';
+    //     margin: '10px auto';
+    //     width: '90%';
+    //   }
+    // }
   }
 }

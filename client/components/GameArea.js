@@ -34,7 +34,9 @@ class GameArea extends Component {
           <div id="gameArea" className="game-area">
 
             <div className="player-left-container">
-              <PlayerArea playerNum={otherPlayerNums[0] || 1} />
+              <div className="rotate-270">
+                <PlayerArea playerNum={otherPlayerNums[0] || 1} />
+              </div>
             </div>
 
             <div className="game-area-middle-column">
@@ -54,7 +56,9 @@ class GameArea extends Component {
             </div>
 
             <div className="player-right-container">
-              <PlayerArea playerNum={otherPlayerNums[2] || 3} />
+              <div className="rotate-90">
+                <PlayerArea playerNum={otherPlayerNums[2] || 3} />
+              </div>
             </div>
 
           </div>
