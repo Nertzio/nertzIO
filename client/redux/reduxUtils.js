@@ -66,8 +66,8 @@ export const setUserPlayerNumInRedux = (num) => {
   return dispatch(setUserPlayerNum(num));
 }
 
-export const setPlayerNumWhoCalledNertzInRedux = () => {
-  return dispatch(setPlayerNumWhoCalledNertz());
+export const setPlayerNumWhoCalledNertzInRedux = (playerNumWhoCalledNertz) => {
+  return dispatch(setPlayerNumWhoCalledNertz(playerNumWhoCalledNertz));
 }
 
 export const startNewGameInRedux = () => {
