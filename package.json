@@ -26,7 +26,6 @@
     "express-session": "^1.15.1",
     "firebase": "^4.4.0",
     "history": "^4.6.3",
-    "inline-style-prefixer": "^3.0.8",
     "morgan": "^1.8.1",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",

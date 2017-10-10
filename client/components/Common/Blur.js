@@ -1,6 +1,4 @@
 import React from 'react';
-import prefixAll from 'inline-style-prefixer/static'
-console.log(prefixAll);
 
 const Blur = ({ children, isActive, strength }) => {
 
@@ -13,13 +11,13 @@ const Blur = ({ children, isActive, strength }) => {
     : 'none';
 
   return (
-    <div style={prefixAll({
+    <div style={{
       filter: filter,
       transform: transform,
       transition: `all 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55)`,
       width: '100%',
       // zIndex: 100,
-    })}>
+    }}>
     {children()}
     </div>
   )
