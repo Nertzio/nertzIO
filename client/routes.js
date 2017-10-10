@@ -22,6 +22,7 @@ import {
   JoinAGame,
   LoadingSpinner,
   MainLayout,
+  SignOut,
   SignUp,
   SignIn,
   UserHome,
@@ -36,10 +37,8 @@ class Routes extends Component {
   }
 
   componentDidMount () {
-    // this.props.loadInitialData()
     initAuth()
   }
-
 
   render () {
     const {isLoggedIn, somethingIsLoading} = this.props;
@@ -68,11 +67,11 @@ class Routes extends Component {
               component={GameArea}
             />
 
-            {/*<ProtectedRoute
+            {<ProtectedRoute
               {...{isLoggedIn}}
-              exact path="/logout"
-              component={LoggingOut}
-            />*/}
+              exact path="/signout"
+              component={SignOut}
+            />}
 
             <UnprotectedRoute
               {...{isLoggedIn}}
@@ -101,13 +100,5 @@ const mapState = state => ({
   isLoggedIn: state.user.uid
 });
 
-// const mapDispatch = (dispatch) => {
-//   return {
-//     loadInitialData () {
-//       dispatch(me());
-//     }
-//   }
-// }
-
-export default connect(mapState, null)(Routes)
+export default connect(mapState)(Routes);
 

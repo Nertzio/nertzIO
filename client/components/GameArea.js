@@ -8,13 +8,14 @@ import {
   Stack,
 } from '../components';
 import { DragDropContext } from 'react-dnd'
+import {getUserPlayerNum} from '../vanillaUtils'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { resetReduxForStartedDbGameInstance } from '../firebase'
 import firebase from 'firebase'
 const db = firebase.database()
 
 
-class  GameArea extends Component {
+class GameArea extends Component {
 
   componentDidMount () {
     const gameRef = db.ref(`games/${this.props.match.params.gameId}`)
@@ -22,44 +23,49 @@ class  GameArea extends Component {
   }
 
   render() {
-
-    return (
-      <div>
+    const {user, players} = this.props;
+    const currentUserPlayerNum = getUserPlayerNum(user, players);
+    const otherPlayerNums = Object.keys(players).filter(playerNum => +playerNum !== +currentUserPlayerNum).map(num => +num);
+    console.log('players', players, 'otherPlayerNums', otherPlayerNums);
+      return (
+        <div>
         <BlurOnRoundOver >
-          <div style={styles.gameArea}>
-
-              <h1>Game Area</h1>
-              <PlayerArea playerNum={1} />
+          <h1>Game Area</h1>
+          <div id="gameArea" >
+            <div id="firstRow" className="container">
+              <PlayerArea playerNum={otherPlayerNums[0] || 1} />
+            </div>
+            <div id="secondRow" className="container">
+              <div style={{transform: 'rotate(270deg)'}}>
+              <PlayerArea
+                playerNum={otherPlayerNums[1] || 2} />
+                </div>
               <GameField />
-              <PlayerArea playerNum={2} />
-              <PlayerArea playerNum={3} />
-              <PlayerArea playerNum={4} />
-
+                <div style={{transform: 'rotate(90deg)'}}>
+                  <PlayerArea
+                    playerNum={otherPlayerNums[2] || 3} />
+                </div>
+            </div>
+            <div id="thirdRow" className="container">
+            <PlayerArea playerNum={currentUserPlayerNum || 4} />
+            </div>
           </div>
-        </BlurOnRoundOver>
+          </BlurOnRoundOver>
         <GameEndModal />
-      </div>
-    )
+        </div>
+      )
   }
 }
 
-const styles = {
-  gameArea: {
-    alignContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ccc',
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100vh',
-    justifyContent: 'space-evenly',
-    margin: '0 auto',
-    width: '90%',
+function mapStateToProps (state) {
+  return {
+    players: state.players,
+    user: state.user,
+    isRoundOver: state.game.isRoundOver,
+
   }
 }
 
-const mapState = state => ({
-  isRoundOver: state.game.isRoundOver,
-})
 
-const reduxifiedGameArea = connect(mapState)(GameArea);
+const reduxifiedGameArea = connect(mapStateToProps)(GameArea);
 export default DragDropContext(HTML5Backend)(reduxifiedGameArea)

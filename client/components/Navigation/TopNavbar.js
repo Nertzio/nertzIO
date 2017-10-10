@@ -39,7 +39,7 @@ const TopNavbar = ({userIsLoggedIn}) => {
           <button onClick={() => toggleRound()}>Toggle Round</button>
           {userIsLoggedIn && <Link to="/join">Play</Link>}
           {userIsLoggedIn && <Link to="/account">Account</Link>}
-          {userIsLoggedIn && <Link to="/logout">Sign Out</Link>}
+          {userIsLoggedIn && <Link to="/signout">Sign Out</Link>}
           {!userIsLoggedIn && <Link to="/sigin">Sign In</Link>}
           {!userIsLoggedIn && <Link to="/signup">Sign Up</Link>}
         </BarTop>
