@@ -1,8 +1,10 @@
 
 const DEFAULT_GAME = {
-  isRoundOver: true,
-  isGameOver: false,
-  playingTo: 0,
+  // playerCanCallNertz
+  isRoundOver: false,
+  // isGameOver: false,
+  // playingTo: 0,
+  whoCalledNertz: '',
 };
 const GAME_START = 'GAME_START';
 const GAME_OVER = 'GAME_OVER';
@@ -22,7 +24,7 @@ export const setRoundOver = () => ({
   type: ROUND_OVER,
 });
 
-export const setNewRound = () => ({
+export const startNewRound = () => ({
   type: ROUND_START,
 });
 

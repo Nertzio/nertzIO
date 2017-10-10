@@ -1,4 +1,5 @@
 import decked from 'decked';
+import store from '../redux';
 
 const suits = ['heart', 'diamond', 'spade', 'club']
 const symbols = ['♥️', '♦️', '♠️', '♣️']
@@ -39,5 +40,21 @@ export const shuffleNewDeckForPlayer = (playerNum) => {
   const baseCards = deckGenerator();
   const gameReadyCards = generateGameReadyCardsForPlayer(playerNum, baseCards);
   return shuffle(gameReadyCards);
+}
+
+export const calculatePlayerScores = () => {
+  const scores = {};
+  const fieldStacks = [];
+  const state = store.getState();
+  for (let key in state) {
+    if (key.includes('field')) fieldStacks.push(state[key]);
+  }
+  fieldStacks.forEach(stack => {
+    stack.forEach(({belongsTo}) => (
+      scores[belongsTo] = scores[belongsTo]
+        ? scores[belongsTo] + 1
+        : 1
+    ))
+  })
 }
 

@@ -5,8 +5,13 @@ import {
 import store, {
   setGameRef,
   setStackRef,
-  userActionTaken,
-  requireUserAction,
+  // userActionTaken,
+  // requireUserAction,
+  setGameOver,
+  startNewGame,
+  setRoundOver,
+  startNewRound,
+  setScoreLimit,
   startLoading,
   stopLoading,
   updatePlayerByKey, // need to create this action creator
@@ -21,6 +26,14 @@ export const countCardsInUserLittleStackInRedux = () => {
   const playerNum = getUserPlayerNum(user, players);
   const littleStack = currentUserPlayer.stacks[`p${playerNum}LittleStack`];
   return littleStack.length === 0;
+}
+
+export const gameIsOverInRedux = () => {
+  return store.getState().game.isGameOver;
+}
+
+export const roundIsOverInRedux = () => {
+  return store.getState().game.isRoundOver;
 }
 
 export const getCurrentUserInRedux = () => {
@@ -39,6 +52,26 @@ export const getStackInStoreByKey = (stackKey) => {
   return store.getState()[stackKey]
 }
 
+export const setGameOverInRedux = () => {
+  return dispatch(setGameOver());
+}
+
+export const startNewGameInRedux = () => {
+  return dispatch(startNewGame());
+}
+
+export const setRoundOverInRedux = () => {
+  return dispatch(setRoundOver());
+}
+
+export const startNewRoundInRedux = () => {
+  return dispatch(startNewRound());
+}
+
+export const setScoreLimitInRedux = (limit) => {
+  return dispatch(setScoreLimit(limit));
+}
+
 export const setGameRefInRedux = gameRef => {
   dispatch(setGameRef(gameRef));
 }
@@ -47,13 +80,13 @@ export const storeStackRefInReduxByKey = (stackKey, stackRef) => {
   return dispatch(setStackRef({[stackKey]: stackRef}))
 }
 
-export const tellReduxModalIsClosed = () => {
-  return dispatch(userActionTaken());
-}
+// export const tellReduxModalIsClosed = () => {
+//   return dispatch(userActionTaken());
+// }
 
-export const tellReduxModalIsOpen = () => {
-  return dispatch(requireUserAction());
-}
+// export const tellReduxModalIsOpen = () => {
+//   return dispatch(requireUserAction());
+// }
 
 export const tellReduxImLoading = () => {
   return dispatch(startLoading());
