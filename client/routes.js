@@ -40,8 +40,9 @@ class Routes extends Component {
   }
 
   componentWillMount () {
+    tellReduxImLoading()
     initAuth();
-    this.forceUpdate();
+    setTimeout(() => tellReduxImDoneLoading(), 1000);
   }
 
   render () {
