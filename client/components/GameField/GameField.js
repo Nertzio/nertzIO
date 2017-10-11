@@ -6,15 +6,17 @@ function GameField(props) {
   // const {userCount} = props; // coming in from connect()
   const userCount = 4; // remove this after component connected to store
   return (
-    <section style={{
-      backgroundColor: 'purple',
-      border: '1px solid gray', // TODO: remove later
-      color: 'white',
-      display: 'flex',
-      flexGrow: 1,
-      minHeight: `calc(15vh * ${userCount})`,
-      width: 'calc(100vh)%',
-    }}>
+    <section
+      className="game-field-outer"
+      style={{
+        // backgroundColor: 'purple',
+        // border: '1px solid gray', // TODO: remove later
+        // color: 'white',
+        // display: 'flex',
+        // flexGrow: 1,
+        // minHeight: `calc(15vh * ${userCount})`,
+        // width: 'calc(100vh)%',
+      }}>
       <Grid cellCount={userCount * 4} />
     </section>
   )

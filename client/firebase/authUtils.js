@@ -10,7 +10,9 @@ const auth = firebase.auth();
 
   //Event listener for state changes on auth
 export function initAuth () {
+  tellReduxImLoading();
   return Promise.resolve(auth.onAuthStateChanged(user => {
+    tellReduxImLoading()
     if (user) {
       console.log("User inside initAuth: ", user.email)
       let localUser = {
@@ -19,9 +21,9 @@ export function initAuth () {
       // emailVerified: user.emailVerified,
         uid: user.uid,
       }
-      tellReduxImLoading();
+
       dispatch(addLocalUserInfo(localUser));
-      setTimeout(() => tellReduxImDoneLoading(), 1000);
+      setTimeout(() => tellReduxImDoneLoading(), 1500);
     } else {
       // No user is signed in.
       let localUser = {
@@ -30,9 +32,9 @@ export function initAuth () {
       // emailVerified: user.emailVerified,
         uid: '',
       }
-      tellReduxImLoading();
+
       dispatch(addLocalUserInfo(localUser));
-      setTimeout(() => tellReduxImDoneLoading(), 1000);
+      setTimeout(() => tellReduxImDoneLoading(), 1500);
       console.log("Not signed in yet / signed out")
     }
   }))

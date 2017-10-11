@@ -25,22 +25,6 @@ class GameArea extends Component {
     this.leftColumnPlayers = [];
     this.rightColumnPlayers = [];
     this.topRowPlayers = [];
-
-    const {userPlayerNum, players} = this.props;
-    const otherPlayerNums = players.filter(playerNum => +playerNum !== +userPlayerNum).map(num => +num);
-    console.log('players', players, 'otherPlayerNums', otherPlayerNums);
-
-    otherPlayerNums.forEach(num => {
-      if (num % 2 === 0) {
-        if (this.leftColumnPlayers.length > this.rightColumnPlayers.length) {
-          this.rightColumnPlayers.push(num);
-        } else {
-          this.leftColumnPlayers.push(num);
-        }
-      } else {
-        this.topRowPlayers.push(num);
-      }
-    })
   }
 
   componentWillMount () {
@@ -50,43 +34,65 @@ class GameArea extends Component {
 
       tellReduxImLoading();
       return resetReduxForStartedDbGameInstance(gameRef)
-      .then(() => tellReduxImDoneLoading())
+      .then(() => setTimeout(tellReduxImDoneLoading(), 0))
+      .catch(console.error.bind(console));
     }
   }
 
-  renderLeftColumnPlayers() {
-    if (!this.leftColumnPlayers.length) return null;
-    return this.leftColumnPlayers.map(playerNum => {
+  renderLeftColumnPlayers(playerNums) {
+    if (!playerNums.length) return null;
+    return playerNums.map(playerNum => {
       return <PlayerArea key={playerNum} playerNum={playerNum} side="left" />
     })
   }
 
-  renderRightColumnPlayers() {
-    if (!this.rightColumnPlayers.length) return null;
-    return this.leftColumnPlayers.map(playerNum => {
+  renderRightColumnPlayers(playerNums) {
+    if (!playerNums.length) return null;
+    return playerNums.map(playerNum => {
       return <PlayerArea key={playerNum} playerNum={playerNum} side="right" />
     })
   }
 
-  renderTopRowPlayers() {
-    if (!this.topRowPlayers.length) return null;
-    return this.leftColumnPlayers.map(playerNum => {
+  renderTopRowPlayers(playerNums) {
+    if (!playerNums.length) return null;
+    return playerNums.map(playerNum => {
       return <PlayerArea key={playerNum} playerNum={playerNum} side="top" />
     })
   }
 
+  sortPlayersNumsIntoAreas(players) {
+    const areas = {top: [], left: [], right: []};
+    players.forEach(num => {
+      if (num % 2 !== 0) {
+        if (areas.left.length >= areas.right.length) {
+          areas.right.push(num);
+        } else {
+          areas.left.push(num);
+        }
+      } else {
+        areas.top.push(num);
+      }
+    })
+    return areas;
+  }
+
   render() {
+    if (!this.props.otherPlayerNums.length) return null;
+    const {userPlayerNum, otherPlayerNums} = this.props;
+    console.log('otherPlayerNums', otherPlayerNums);
+
+    const areas = this.sortPlayersNumsIntoAreas(otherPlayerNums)
+
 
     return (
-        <div>
+        <div className="game-area-wrapper">
         <BlurOnRoundOver >
-          <h1>Game Area</h1>
           <div id="gameArea" className="game-area">
 
 {/* ------------------ COLUMN ONE -------------------------- */}
             <div className="player-left-container">
-              <div className="rotate-270">
-                {this.renderLeftColumnPlayers()}
+              <div>
+                {this.renderLeftColumnPlayers(areas.left)}
               </div>
             </div>
 
@@ -94,7 +100,7 @@ class GameArea extends Component {
             <div className="game-area-middle-column">
 
               <div className="player-top-container">
-                {this.renderTopRowPlayers()}
+                {this.renderTopRowPlayers(areas.top)}
               </div>
 
               <div className="game-field-container">
@@ -102,15 +108,15 @@ class GameArea extends Component {
               </div>
 
               <div className="player-bottom-container">
-                <PlayerArea playerNum={this.props.userPlayerNum} side="bottom"/>
+                <PlayerArea playerNum={userPlayerNum} side="bottom" />
               </div>
 
             </div>
 
 {/* --------------------- COLUMN THREE --------------------------- */}
             <div className="player-right-container">
-              <div className="rotate-90">
-               {this.renderRightColumnPlayers()}
+              <div>
+               {this.renderRightColumnPlayers(areas.right)}
               </div>
             </div>
 
@@ -125,10 +131,10 @@ class GameArea extends Component {
 function mapStateToProps (state) {
   return {
     game: state.game,
-    players: Object.keys(state.players),
     user: state.user,
     isRoundOver: state.game.isRoundOver,
     userPlayerNum: state.game.userPlayerNum,
+    otherPlayerNums: Object.keys(state.players).filter(num => +num !== +state.game.userPlayerNum).map(num => +num)
   }
 }
 

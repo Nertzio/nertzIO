@@ -27,20 +27,13 @@ const Card = (props) => {
    const borderColor = stackPosition % 2 === 1 ? 'white' : 'lightgray'
 
   return connectDragSource(
-    <div style={{
-      border: `1px solid ${borderColor}`,
-      borderRadius: '3px',
-      height: 'calc(15vh)',
-      left: 0,
-      margin: '0 auto',
-      maxHeight: 'calc(100vw / 5)',
-      maxWidth: '100%',
-      opacity: isDragging ? 0 : 1,
-      position: 'absolute',
-      top: 0,
-      transform: `translate(0px, ${stackPosition * -1}px) perspective(50em) rotateX(20deg)`,
-      width: 'calc(10vh)',
-      zIndex: stackPosition,
+    <div
+      className="card-wrapper"
+      style={{
+        border: `1px solid ${borderColor}`,
+        opacity: isDragging ? 0 : 1,
+        transform: `translate(0px, ${stackPosition * -1}px) perspective(50em) rotateX(20deg)`,
+        zIndex: stackPosition,
     }}>
       {isFaceUp
         ? <CardFront {...props} />

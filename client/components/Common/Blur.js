@@ -16,6 +16,7 @@ const Blur = ({ children, isActive, strength }) => {
       transform: transform,
       transition: `all 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55)`,
       width: '100%',
+      maxWidth: '100%',
       // zIndex: 100,
     }}>
     {children()}
