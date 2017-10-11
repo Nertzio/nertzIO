@@ -54,7 +54,7 @@ export const setNertzHasBeenCalled = (isNertzCalled) => ({
 })
 
 const gameReducer = (game = DEFAULT_GAME, action) => {
-  const {type, limit, userPlayerNum} = action;
+  const {type, limit, userPlayerNum, isNertzCalled, playerNumWhoCalledNertz} = action;
   switch (type) {
     // case GAME_START:
     //   return {...game, isGameOver: false};

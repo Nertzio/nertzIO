@@ -11,16 +11,26 @@ import {
 } from '../redux/reduxUtils'
 
 export const updateReduxWhenNertzIsCalled = gameRef => {
-  return gameRef.child('nertzHasBeenCalled').on('value', snapshot => {
-     setNertzHasBeenCalledInRedux(snapshot.val())
-  })
+  console.log('Hitting updateReduxWhenNertzIsCalled')
+  Promise.resolve(gameRef.child('nertzHasBeenCalled').on('value', snapshot => {
+    console.log('updateReduxWhenNertzIsCalled event listener fired')
+    console.log('snapshot val from nertz called', snapshot.val())
+    setNertzHasBeenCalledInRedux(snapshot.val())
+  }))
+  .then(() => {console.log('nertzHasBeenCalled has been changed')})
+  .catch(err => console.error(err));
 
 }
 
 export const updateReduxWithPlayerNumWhoCalledNertz = gameRef => {
-  return gameRef.child('numOfPlayerWhoCalledNertz').on('value', snapshot => {
-     setPlayerNumWhoCalledNertzInRedux(snapshot.val())
-  })
+  console.log('Hitting updateReduxWithPlayerNumWhoCalledNertz')
+  Promise.resolve(gameRef.child('numOfPlayerWhoCalledNertz').on('value', snapshot => {
+    console.log('updateReduxWithPlayerNumWhoCalledNertz event listener fired')
+    console.log('snapshot val from nertz player who called', snapshot.val())
+    setPlayerNumWhoCalledNertzInRedux(snapshot.val())
+  }))
+  .then(() => {console.log('numOfPlayerWhoCalledNertz has been changed')})
+  .catch(err => console.error(err));
 }
 
 

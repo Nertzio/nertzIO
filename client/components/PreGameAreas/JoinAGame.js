@@ -71,16 +71,19 @@ class JoinAGame extends Component {
 
     startGame(event) {
       const isPrivateGame = event.target.name === 'startPrivateGame';
-      const gameRef = addNewGame();
-      let gameKey = gameRef.key;
-      addPlayerToGame(this.props.me, gameRef).then(() => {
-        gameRef
-          .child('private')
-          .set(isPrivateGame)
-          .then(() => {
-            this.setState({gameId: gameKey, redirect: true})
-          })
-      })
+      let gameRef
+      Promise.resolve(addNewGame())
+        .then(currentGameRef => {
+          gameRef = currentGameRef;
+          addPlayerToGame(this.props.me, gameRef)
+        })
+        .then(() => {
+          gameRef.child('private').set(isPrivateGame)
+        })
+        .then(() => {
+          let gameKey = gameRef.key;
+          this.setState({gameId: gameKey, redirect: true})
+        })
     }
 
     render() {

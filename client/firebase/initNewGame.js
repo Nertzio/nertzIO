@@ -30,12 +30,16 @@ const db = firebase.database();
                                * * *
    ------------------------------------------------------------------*/
 
-export const addNewGame = () => {
-  currentGameRef = db.ref('games').push();
-  currentGameRef.child('nertzHasBeenCalled').set(false);
-  currentGameRef.child('numOfPlayerWhoCalledNertz').set(false);
-  setGameRefForUtils(currentGameRef);
-  setGameRefInRedux(currentGameRef);
+  const initalizeNewGameForUtils = (gameRef) => {
+  Promise.resolve(gameRef.child('nertzHasBeenCalled').set(false))
+    .then(() => Promise.resolve(gameRef.child('numOfPlayerWhoCalledNertz').set(false)))
+    .then(() => Promise.resolve(setGameRefForUtils(gameRef)))
+    .then(() => Promise.resolve(setGameRefInRedux(gameRef)))
+  }
+
+  export const addNewGame = () => {
+  currentGameRef = db.ref('games').push()
+  initalizeNewGameForUtils(currentGameRef)
   return currentGameRef;
 }
 
@@ -136,51 +140,17 @@ const initAllPlayerAreas = (dbGameInstanceIsPreInitialized, gameRef) => {
   .catch(console.error.bind(console));
 }
 
-const hardCodedPlayers = {
-  1: { // all games have players 1-4
-    uid: 6346, //  uid from firebase.auth().currentUser
-    username: 'neatGuy',
-    email: 'neatguy@email.com'
-  },
-  2: {
-    uid: 13451,
-    username: 'dudebro',
-    email: 'other@place.com',
-  },
-  3: {
-    uid: 32461,
-    username: 'yoloKid',
-    email: 'yolo@kid.com',
-  },
-  4: {
-    uid: 37461,
-    username: 'chump',
-    email: 'chump@chump.com',
-  }
-}
-
-export const initNewGame = () => {
-  return addNewGame()
-    .then(() => setPlayersToGameRef(hardCodedPlayers, currentGameRef))  // TODO: Refactor this to negate the need to reference hardcoded player info.
-    .then(() => set4FieldStacksPerPlayer())
-    .then(() => storeFieldStackRefsInRedux())
-    .then(() => initAllPlayerAreas())
-    .then(() => registerUpdateHandlersOnGameRef(currentGameRef))
-    .then(() => {
-      updateReduxWhenNertzIsCalled(currentGameRef);
-      updateReduxWithPlayerNumWhoCalledNertz(currentGameRef);
-    })
-    .catch(console.error.bind(console))
-}
-
 export const startGame = () => {
   return set4FieldStacksPerPlayer()
   .then(() => storeFieldStackRefsInRedux())
   .then(() => initAllPlayerAreas())
   .then(() => registerUpdateHandlersOnGameRef(currentGameRef))
+  .then(() => {
+    updateReduxWhenNertzIsCalled(currentGameRef);
+    updateReduxWithPlayerNumWhoCalledNertz(currentGameRef);
+  })
   .catch(console.error.bind(console))
 }
-
 
 export const resetReduxForPendingGameInstance = (gameRef) => {
   setGameRefForUtils(gameRef)
