@@ -4,27 +4,26 @@ import {Link} from 'react-router-dom';
 import {BarTop, BarBufferInPx} from '../Common';
 import {getUserPlayerNum} from '../../vanillaUtils'
 import {
-  roundIsOverInRedux,
-  setRoundOverInRedux,
-  startNewRoundInRedux,
+  // roundIsOverInRedux,
+  // setRoundOverInRedux,
+  // startNewRoundInRedux,
   getStackInStoreByKey,
-  setPlayerNumWhoCalledNertzInRedux
 } from '../../redux/reduxUtils';
 import {updateDbWithNertzCall} from '../../firebase'
 
 const TopNavbar = ({userIsLoggedIn, currentUser, players}) => {
+  // Replaced this functionality with combination of callNertz button and firebase/redux utils for isNertzCalled
+
   // TODO: remove when done testing modal
-  const toggleRound = () => {
-    if (roundIsOverInRedux()) return startNewRoundInRedux();
-    else return setRoundOverInRedux();
-  }
+  // const toggleRound = () => {
+  //   if (roundIsOverInRedux()) return startNewRoundInRedux();
+  //   else return setRoundOverInRedux();
+  // }
 
   const playerNum = getUserPlayerNum(currentUser, players);
 
   const callNertz = () => {
-    // setPlayerNumWhoCalledNertzInRedux(playerNum)
     updateDbWithNertzCall(playerNum);
-    return setRoundOverInRedux();
   }
 
   const ableToCallNertz = () => {
@@ -57,7 +56,8 @@ const TopNavbar = ({userIsLoggedIn, currentUser, players}) => {
           <button onClick={callNertz}>CALL NERTZ!!</button>
         }
         {/* TODO: remove this after testing modal */}
-          <button onClick={() => toggleRound()}>Toggle Round</button>
+          {/*<button onClick={() => toggleRound()}>Toggle Round</button>
+          */}
           {userIsLoggedIn && <Link to="/join">Play</Link>}
           {userIsLoggedIn && <Link to="/account">Account</Link>}
           {userIsLoggedIn && <Link to="/signout">Sign Out</Link>}

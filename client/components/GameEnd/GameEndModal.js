@@ -86,7 +86,7 @@ const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
 }
 
 const mapState = state => ({
-  isRoundOver: state.game.isRoundOver,
+  isRoundOver: state.game.isNertzCalled,
   players: state.players,
   playerNumWhoCalledNertz: state.game.playerNumWhoCalledNertz
 })

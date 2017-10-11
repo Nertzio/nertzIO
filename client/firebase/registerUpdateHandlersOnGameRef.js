@@ -5,8 +5,23 @@ import {
   getPlayersInStore,
   updatePlayerInReduxByKey,
   updateReduxPlayerStackByKey,
-  updateReduxFieldStackByKey
+  updateReduxFieldStackByKey,
+  setNertzHasBeenCalledInRedux,
+  setPlayerNumWhoCalledNertzInRedux,
 } from '../redux/reduxUtils'
+
+export const updateReduxWhenNertzIsCalled = gameRef => {
+  return gameRef.child('nertzHasBeenCalled').on('value', snapshot => {
+     setNertzHasBeenCalledInRedux(snapshot.val())
+  })
+
+}
+
+export const updateReduxWithPlayerNumWhoCalledNertz = gameRef => {
+  return gameRef.child('numOfPlayerWhoCalledNertz').on('value', snapshot => {
+     setPlayerNumWhoCalledNertzInRedux(snapshot.val())
+  })
+}
 
 
 const updateReduxWhenFieldStacksUpdate = (gameRef) => {

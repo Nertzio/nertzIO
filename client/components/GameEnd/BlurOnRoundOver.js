@@ -12,7 +12,7 @@ const BlurOnRoundOver = ({ children, isRoundOver }) => {
 }
 
 const mapState = state => ({
-  isRoundOver: state.game.isRoundOver,
+  isRoundOver: state.game.isNertzCalled,
 })
 
 export default connect(mapState)(BlurOnRoundOver);

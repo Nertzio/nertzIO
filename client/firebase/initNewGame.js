@@ -11,7 +11,10 @@ import {
   setGameRefForUtils,
   setPlayersToGameRef,
   updateReduxWhenPlayersJoinGame,
+  updateReduxWhenNertzIsCalled,
+  updateReduxWithPlayerNumWhoCalledNertz,
 } from '../firebase';
+
 
 import {shuffleNewDeckForPlayer} from '../gameUtils';
 import firebase from 'firebase';
@@ -31,6 +34,8 @@ export const addNewGame = () => {
   currentGameRef = db.ref('games').push();
   currentGameRef.child('nertzHasBeenCalled').set(false);
   currentGameRef.child('numOfPlayerWhoCalledNertz').set(false);
+  updateReduxWhenNertzIsCalled(currentGameRef);
+  updateReduxWithPlayerNumWhoCalledNertz(currentGameRef);
   setGameRefForUtils(currentGameRef);
   setGameRefInRedux(currentGameRef);
   return currentGameRef;
