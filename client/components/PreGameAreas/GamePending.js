@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { Redirect } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {startGame, resetReduxForPendingGameInstance} from '../../firebase';
 import {
@@ -39,19 +38,23 @@ class GamePending extends Component {
 
     return (
       <div style={styles.GamePending}>
+
         <h1>Waiting for Four Players...</h1>
         <h3>Game Key: {this.gameKey}</h3>
+
         <div style={{borderStyle: 'solid'}}>
           {
-            playerKeys.length === 4 ? this.startNewGame() :
-            playerKeys.map((playerKey, index) => (
-              <h4 key={playerKey} >Player {index + 1}. {this.props.players[playerKey].displayName}</h4>
+            playerKeys.length === 4 ?
+              this.startNewGame() :
+              playerKeys.map((playerKey, index) => (
+
+              <h4 key={playerKey} >
+                Player {index + 1}. {this.props.players[playerKey].displayName}
+              </h4>
             ))
           }
         </div>
-        {/* {
-          this.state.shouldRedirectToGame && <Redirect to={`/gamesInProgress/${this.gameKey}`} />
-        } */}
+
       </div>
     )
   }
