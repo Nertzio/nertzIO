@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Modal} from '../Common';
 
-const GameEndModal = ({players, isRoundOver, whoCalledNertz}) => {
+const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
 
 
   const styler = () => ({
@@ -25,14 +25,12 @@ const GameEndModal = ({players, isRoundOver, whoCalledNertz}) => {
   } = styler()
 
   const renderPlayerStats = () => {
-    return players.map((player, idx) => (
-
+    const playerValues = Object.values(players)
+    return playerValues.map((player, idx) => (
       <div key={player.uid} style={playerScore}>
-
        <div style={playerId}>
         {idx + 1}. {player.displayName}
        </div>
-
         <div id={player.uid + 'score'} style={score}>
           {/* animate score count */}
           {player.score}
@@ -41,6 +39,8 @@ const GameEndModal = ({players, isRoundOver, whoCalledNertz}) => {
     </div>
     ))
   }
+
+
 
   // INITIAL ATTEMPT AT ANIMATING SCORE COUNT
   // NEED TO FIGURE OUT HOW TO WAIT FOR DOM TO LOAD
@@ -60,6 +60,9 @@ const GameEndModal = ({players, isRoundOver, whoCalledNertz}) => {
   //     })
   //   }
 
+  console.log("Players", players)
+  console.log("PlayerNumNertzETc", playerNumWhoCalledNertz)
+  console.log("Round Over", isRoundOver)
 
 
   // -------------- COMPONENT --------------------
@@ -67,7 +70,7 @@ const GameEndModal = ({players, isRoundOver, whoCalledNertz}) => {
   return (
     <Modal shouldShow={isRoundOver}>
 
-        <div style={header}>{whoCalledNertz} calls Nertz!</div>
+        <div style={header}>{playerNumWhoCalledNertz && players && players[playerNumWhoCalledNertz].displayName} calls Nertz!</div>
         <div style={bonusPoints}>+ 10pts</div>
 
 
@@ -83,9 +86,9 @@ const GameEndModal = ({players, isRoundOver, whoCalledNertz}) => {
 }
 
 const mapState = state => ({
-  isRoundOver: state.game.isRoundOver,
-  players: Object.values(state.players),
-  whoCalledNertz: 'Dobby' // add this state to game reducer?
+  isRoundOver: state.game.isNertzCalled,
+  players: state.players,
+  playerNumWhoCalledNertz: state.game.playerNumWhoCalledNertz
 })
 
 export default connect(mapState)(GameEndModal);

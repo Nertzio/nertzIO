@@ -71,7 +71,7 @@ function mapStateToProps (state) {
     game: state.game,
     players: state.players,
     user: state.user,
-    isRoundOver: state.game.isRoundOver,
+    isRoundOver: state.game.isNertzCalled,
   }
 }
 

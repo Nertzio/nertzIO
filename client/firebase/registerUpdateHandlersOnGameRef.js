@@ -7,8 +7,33 @@ import {
   setReduxGameProgressStatus,
   updatePlayerInReduxByKey,
   updateReduxPlayerStackByKey,
-  updateReduxFieldStackByKey
+  updateReduxFieldStackByKey,
+  setNertzHasBeenCalledInRedux,
+  setPlayerNumWhoCalledNertzInRedux,
 } from '../redux/reduxUtils'
+
+export const updateReduxWhenNertzIsCalled = gameRef => {
+  console.log('Hitting updateReduxWhenNertzIsCalled')
+  Promise.resolve(gameRef.child('nertzHasBeenCalled').on('value', snapshot => {
+    console.log('updateReduxWhenNertzIsCalled event listener fired')
+    console.log('snapshot val from nertz called', snapshot.val())
+    setNertzHasBeenCalledInRedux(snapshot.val())
+  }))
+  .then(() => {console.log('nertzHasBeenCalled has been changed')})
+  .catch(err => console.error(err));
+
+}
+
+export const updateReduxWithPlayerNumWhoCalledNertz = gameRef => {
+  console.log('Hitting updateReduxWithPlayerNumWhoCalledNertz')
+  Promise.resolve(gameRef.child('numOfPlayerWhoCalledNertz').on('value', snapshot => {
+    console.log('updateReduxWithPlayerNumWhoCalledNertz event listener fired')
+    console.log('snapshot val from nertz player who called', snapshot.val())
+    setPlayerNumWhoCalledNertzInRedux(snapshot.val())
+  }))
+  .then(() => {console.log('numOfPlayerWhoCalledNertz has been changed')})
+  .catch(err => console.error(err));
+}
 
 
 const updateReduxWhenFieldStacksUpdate = (gameRef) => {

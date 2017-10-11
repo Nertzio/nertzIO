@@ -2,17 +2,33 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
 import {BarTop, BarBufferInPx} from '../Common';
+import {getUserPlayerNum} from '../../vanillaUtils'
 import {
-  roundIsOverInRedux,
-  setRoundOverInRedux,
-  startNewRoundInRedux,
+  // roundIsOverInRedux,
+  // setRoundOverInRedux,
+  // startNewRoundInRedux,
+  getStackInStoreByKey,
 } from '../../redux/reduxUtils';
+import {updateDbWithNertzCall} from '../../firebase'
 
-const TopNavbar = ({userIsLoggedIn}) => {
+const TopNavbar = ({userIsLoggedIn, currentUser, players}) => {
+  // Replaced this functionality with combination of callNertz button and firebase/redux utils for isNertzCalled
+
   // TODO: remove when done testing modal
-  const toggleRound = () => {
-    if (roundIsOverInRedux()) return startNewRoundInRedux();
-    else return setRoundOverInRedux();
+  // const toggleRound = () => {
+  //   if (roundIsOverInRedux()) return startNewRoundInRedux();
+  //   else return setRoundOverInRedux();
+  // }
+
+  const playerNum = getUserPlayerNum(currentUser, players);
+
+  const callNertz = () => {
+    updateDbWithNertzCall(playerNum);
+  }
+
+  const ableToCallNertz = () => {
+    const nertzPile = getStackInStoreByKey(`p${playerNum}LittleStack`);
+    return nertzPile && !nertzPile.length;
   }
 
   return (
@@ -35,8 +51,13 @@ const TopNavbar = ({userIsLoggedIn}) => {
         </BarTop>
 
         <BarTop alignRight>
+        {
+          ableToCallNertz() &&
+          <button onClick={callNertz}>CALL NERTZ!!</button>
+        }
         {/* TODO: remove this after testing modal */}
-          <button onClick={() => toggleRound()}>Toggle Round</button>
+          {/*<button onClick={() => toggleRound()}>Toggle Round</button>
+          */}
           {userIsLoggedIn && <Link to="/join">Play</Link>}
           {userIsLoggedIn && <Link to="/account">Account</Link>}
           {userIsLoggedIn && <Link to="/signout">Sign Out</Link>}
@@ -53,7 +74,9 @@ const TopNavbar = ({userIsLoggedIn}) => {
 }
 
 const mapState = state => ({
-  userIsLoggedIn: state.user,
+  userIsLoggedIn: state.user.email,
+  currentUser: state.user,
+  players: state.players
 })
 
 export default connect(mapState, null)(TopNavbar);
