@@ -100,8 +100,7 @@ const generateStacksForPlayer = (playerNum) => {
   return {
     [`p${playerNum}BigStack`]: cards.slice(0, 35),
     [`p${playerNum}DrawnStack`]: false, // placeholder val for firebase
-    // [`p${playerNum}LittleStack`]: cards.slice(35,48),
-    [`p${playerNum}LittleStack`]: [],
+    [`p${playerNum}LittleStack`]: cards.slice(35, 48),
     [`p${playerNum}SolitaireStack1`]: cards.slice(48, 49),
     [`p${playerNum}SolitaireStack2`]: cards.slice(49, 50),
     [`p${playerNum}SolitaireStack3`]: cards.slice(50, 51),
