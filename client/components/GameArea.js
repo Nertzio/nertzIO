@@ -33,12 +33,12 @@ class GameArea extends Component {
     otherPlayerNums.forEach(num => {
       if (num % 2 === 0) {
         if (this.leftColumnPlayers.length > this.rightColumnPlayers.length) {
-          this.rightColumnPlayers.push(<PlayerArea playerNum={num} side="right"/>)
+          this.rightColumnPlayers.push(num);
         } else {
-          this.leftColumnPlayers.push(<PlayerArea playerNum={num} side="left" />)
+          this.leftColumnPlayers.push(num);
         }
       } else {
-        this.topRowPlayers.push(<PlayerArea playerNum={num} side="top" />)
+        this.topRowPlayers.push(num);
       }
     })
   }
@@ -54,6 +54,27 @@ class GameArea extends Component {
     }
   }
 
+  renderLeftColumnPlayers() {
+    if (!this.leftColumnPlayers.length) return null;
+    return this.leftColumnPlayers.map(playerNum => {
+      return <PlayerArea key={playerNum} playerNum={playerNum} side="left" />
+    })
+  }
+
+  renderRightColumnPlayers() {
+    if (!this.rightColumnPlayers.length) return null;
+    return this.leftColumnPlayers.map(playerNum => {
+      return <PlayerArea key={playerNum} playerNum={playerNum} side="right" />
+    })
+  }
+
+  renderTopRowPlayers() {
+    if (!this.topRowPlayers.length) return null;
+    return this.leftColumnPlayers.map(playerNum => {
+      return <PlayerArea key={playerNum} playerNum={playerNum} side="top" />
+    })
+  }
+
   render() {
 
     return (
@@ -65,7 +86,7 @@ class GameArea extends Component {
 {/* ------------------ COLUMN ONE -------------------------- */}
             <div className="player-left-container">
               <div className="rotate-270">
-                {this.leftColumnPlayers}
+                {this.renderLeftColumnPlayers()}
               </div>
             </div>
 
@@ -73,7 +94,7 @@ class GameArea extends Component {
             <div className="game-area-middle-column">
 
               <div className="player-top-container">
-                {this.topRowPlayers}
+                {this.renderTopRowPlayers()}
               </div>
 
               <div className="game-field-container">
@@ -89,7 +110,7 @@ class GameArea extends Component {
 {/* --------------------- COLUMN THREE --------------------------- */}
             <div className="player-right-container">
               <div className="rotate-90">
-               {this.rightColumnPlayers}
+               {this.renderRightColumnPlayers()}
               </div>
             </div>
 
