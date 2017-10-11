@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
-import { Redirect } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {startGame, resetReduxForPendingGameInstance} from '../../firebase';
+import {
+  tellReduxImLoading,
+  tellReduxImDoneLoading,
+} from '../../redux/reduxUtils';
 import firebase from 'firebase'
 const db = firebase.database()
 
 class GamePending extends Component {
   constructor(props){
     super(props)
-    this.state = {
-      shouldRedirectToGame: false,
-    }
     this.gameKey = props.match.params.gameId;
     this.startNewGame = this.startNewGame.bind(this);
   }
@@ -21,10 +21,10 @@ class GamePending extends Component {
   }
 
   startNewGame(){
-    startGame(this.gameKey);
-    this.setState({
-      shouldRedirectToGame: true
-    })
+    tellReduxImLoading()
+    startGame(this.gameKey)
+      .then(() => tellReduxImDoneLoading());
+    this.props.history.push(`/gamesInProgress/${this.gameKey}`)
   }
 
   render(){
@@ -32,19 +32,23 @@ class GamePending extends Component {
 
     return (
       <div style={styles.GamePending}>
+
         <h1>Waiting for Four Players...</h1>
         <h3>Game Key: {this.gameKey}</h3>
+
         <div style={{borderStyle: 'solid'}}>
           {
-            playerKeys.length === 4 ? this.startNewGame() :
-            playerKeys.map((playerKey, index) => (
-              <h4 key={playerKey} >Player {index + 1}. {this.props.players[playerKey].displayName}</h4>
+            playerKeys.length === 4 ?
+              this.startNewGame() :
+              playerKeys.map((playerKey, index) => (
+
+              <h4 key={playerKey} >
+                Player {index + 1}. {this.props.players[playerKey].displayName}
+              </h4>
             ))
           }
         </div>
-        {
-          this.state.shouldRedirectToGame && <Redirect to={`/gamesInProgress/${this.gameKey}`} />
-        }
+
       </div>
     )
   }

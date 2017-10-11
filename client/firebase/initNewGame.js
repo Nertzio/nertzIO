@@ -7,6 +7,7 @@ import {
 
 import {
   goCountAllPlayersInGame,
+  markGameAsInProgress,
   registerUpdateHandlersOnGameRef,
   setGameRefForUtils,
   setPlayersToGameRef,
@@ -176,13 +177,14 @@ export const startGame = () => {
 export const resetReduxForPendingGameInstance = (gameRef) => {
   setGameRefForUtils(gameRef)
   setGameRefInRedux(gameRef)
+  markGameAsInProgress(); // this must come after gameRef being stored
   updateReduxWhenPlayersJoinGame(gameRef)
 }
 
 export const resetReduxForStartedDbGameInstance = (gameRef) => {
   resetReduxForPendingGameInstance(gameRef)
   storeFieldStackRefsInRedux(gameRef)
-  initAllPlayerAreas(true, gameRef)
-  registerUpdateHandlersOnGameRef(gameRef)
-}
+  return initAllPlayerAreas(true, gameRef)
+    .then(() => registerUpdateHandlersOnGameRef(gameRef))
+  }
 
