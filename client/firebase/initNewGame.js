@@ -46,12 +46,14 @@ const db = firebase.database();
 
 //sets player data for game instance in db
 export const goAddPlayerToGame = (playerData, gameRef) => {
+  let playerKey;
   return gameRef.once('value')
     .then(gameSnapshot => {
-      const playerKey = gameSnapshot.child('players').numChildren() + 1;
+      playerKey = gameSnapshot.child('players').numChildren() + 1;
       setUserPlayerNumInRedux(+playerKey);
       return gameRef.child(`players/${playerKey}`).set(playerData);
     })
+    .then(() => gameRef.child(`players/${playerKey}/score`).set(0))
     .then(() => gameRef)
     .catch(console.error.bind(console));
 }

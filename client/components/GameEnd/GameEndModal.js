@@ -4,7 +4,6 @@ import {Modal} from '../Common';
 
 const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
 
-
   const styler = () => ({
     header: {
       // width: '90%',
