@@ -34,8 +34,6 @@ export const addNewGame = () => {
   currentGameRef = db.ref('games').push();
   currentGameRef.child('nertzHasBeenCalled').set(false);
   currentGameRef.child('numOfPlayerWhoCalledNertz').set(false);
-  updateReduxWhenNertzIsCalled(currentGameRef);
-  updateReduxWithPlayerNumWhoCalledNertz(currentGameRef);
   setGameRefForUtils(currentGameRef);
   setGameRefInRedux(currentGameRef);
   return currentGameRef;
@@ -163,11 +161,15 @@ const hardCodedPlayers = {
 
 export const initNewGame = () => {
   return addNewGame()
-    .then(() => setPlayersToGameRef(hardCodedPlayers, currentGameRef))
+    .then(() => setPlayersToGameRef(hardCodedPlayers, currentGameRef))  // TODO: Refactor this to negate the need to reference hardcoded player info.
     .then(() => set4FieldStacksPerPlayer())
     .then(() => storeFieldStackRefsInRedux())
     .then(() => initAllPlayerAreas())
     .then(() => registerUpdateHandlersOnGameRef(currentGameRef))
+    .then(() => {
+      updateReduxWhenNertzIsCalled(currentGameRef);
+      updateReduxWithPlayerNumWhoCalledNertz(currentGameRef);
+    })
     .catch(console.error.bind(console))
 }
 

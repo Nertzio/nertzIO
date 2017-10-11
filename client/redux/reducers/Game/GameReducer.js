@@ -48,9 +48,9 @@ export const setPlayerNumWhoCalledNertz = playerNumWhoCalledNertz => ({
   playerNumWhoCalledNertz
 })
 
-export const setNertzHasBeenCalled = (nertzBool) => ({
+export const setNertzHasBeenCalled = (isNertzCalled) => ({
   type: SET_NERTZ_HAS_BEEN_CALLED,
-  nertzBool
+  isNertzCalled
 })
 
 const gameReducer = (game = DEFAULT_GAME, action) => {
@@ -71,7 +71,7 @@ const gameReducer = (game = DEFAULT_GAME, action) => {
     case SET_PLAYER_NUM_WHO_CALLED_NERTZ:
       return {...game, playerNumWhoCalledNertz};
     case SET_NERTZ_HAS_BEEN_CALLED:
-      return {...game, isNertzCalled: nertzBool};
+      return {...game, isNertzCalled};
     default:
       return game;
   }
