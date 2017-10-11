@@ -70,7 +70,7 @@ const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
   return (
     <Modal shouldShow={isRoundOver}>
 
-        <div style={header}>{playerNumWhoCalledNertz && players && players[playerNumWhoCalledNertz]} calls Nertz!</div>
+        <div style={header}>{playerNumWhoCalledNertz && players && players[playerNumWhoCalledNertz].displayName} calls Nertz!</div>
         <div style={bonusPoints}>+ 10pts</div>
 
 
