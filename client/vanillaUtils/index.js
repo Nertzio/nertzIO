@@ -57,15 +57,16 @@ export const tallyScoreForAllPlayers = () => {
     fieldCards.concat(getStackInStoreByKey(`fieldStack${fieldStackNum}`))
     fieldStackNum -= 1
   }
-
+  console.log('field cards', fieldCards);
   const playerScores = {}
   playerNums.forEach(playerNum => {
-    playerScores[playerNum] = fieldCards.filter(card => {
-      return card.belongsTo === playerNum
-    }).length - getStackInStoreByKey(`p${playerNum}LittleStack`).length * 2
+    playerScores[playerNum] = 0
+    playerScores[playerNum] += fieldCards.filter(card => {
+      return +card.belongsTo === +playerNum
+    }).length
+    playerScores[playerNum] -= getStackInStoreByKey(`p${playerNum}LittleStack`).length * 2
   })
+  playerScores[playerNumWhoCalledNertzInRedux()] += 10;
 
-  playerScores[playerNumWhoCalledNertzInRedux] += 10
-
-  return playerScores
+  return playerScores;
 }
