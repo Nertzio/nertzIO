@@ -8,6 +8,7 @@ import {
 import {
   goCountAllPlayersInGame,
   markGameAsInProgress,
+  queryUserPlayerNum,
   registerUpdateHandlersOnGameRef,
   setGameRefForUtils,
   setPlayersToGameRef,
@@ -123,8 +124,11 @@ const initAllPlayerAreas = (dbGameInstanceIsPreInitialized, gameRef) => {
   .then(numOfPlayers => {
     const playerAreasInitializing = [];
     for (let i = 1; i <= numOfPlayers; i++) {
-      //if dbGameInstanceIsPreInitialized, skip creation of nodes in db, just set up Redux to link w/ them
-      const initializingArea = dbGameInstanceIsPreInitialized ? linkReduxStacksWithDbByPlayerNum(i, gameRef) : initPlayerAreaByPlayerNum(i);
+    // if dbGameInstanceIsPreInitialized, skip creation of nodes in db,
+    // just set up Redux to link w/ them
+      const initializingArea = dbGameInstanceIsPreInitialized
+      ? linkReduxStacksWithDbByPlayerNum(i, gameRef)
+      : initPlayerAreaByPlayerNum(i);
       playerAreasInitializing.push(initializingArea)
     }
     return Promise.all(playerAreasInitializing);
@@ -132,38 +136,17 @@ const initAllPlayerAreas = (dbGameInstanceIsPreInitialized, gameRef) => {
   .catch(console.error.bind(console));
 }
 
-const hardCodedPlayers = {
-  1: { // all games have players 1-4
-    uid: 6346, //  uid from firebase.auth().currentUser
-    username: 'neatGuy',
-    email: 'neatguy@email.com'
-  },
-  2: {
-    uid: 13451,
-    username: 'dudebro',
-    email: 'other@place.com',
-  },
-  3: {
-    uid: 32461,
-    username: 'yoloKid',
-    email: 'yolo@kid.com',
-  },
-  4: {
-    uid: 37461,
-    username: 'chump',
-    email: 'chump@chump.com',
-  }
-}
 
-export const initNewGame = () => {
-  return addNewGame()
-    .then(() => setPlayersToGameRef(hardCodedPlayers, currentGameRef))
-    .then(() => set4FieldStacksPerPlayer())
-    .then(() => storeFieldStackRefsInRedux())
-    .then(() => initAllPlayerAreas())
-    .then(() => registerUpdateHandlersOnGameRef(currentGameRef))
-    .catch(console.error.bind(console))
-}
+// // NO LONGER IN USE:
+// export const initNewGame = () => {
+//   return addNewGame()
+//     .then(() => setPlayersToGameRef(hardCodedPlayers, currentGameRef))
+//     .then(() => set4FieldStacksPerPlayer())
+//     .then(() => storeFieldStackRefsInRedux())
+//     .then(() => initAllPlayerAreas())
+//     .then(() => registerUpdateHandlersOnGameRef(currentGameRef))
+//     .catch(console.error.bind(console))
+// }
 
 export const startGame = () => {
   return set4FieldStacksPerPlayer()
@@ -175,16 +158,22 @@ export const startGame = () => {
 
 
 export const resetReduxForPendingGameInstance = (gameRef) => {
-  setGameRefForUtils(gameRef)
-  setGameRefInRedux(gameRef)
-  markGameAsInProgress(); // this must come after gameRef being stored
-  updateReduxWhenPlayersJoinGame(gameRef)
+    setGameRefForUtils(gameRef)
+    setGameRefInRedux(gameRef)
+    markGameAsInProgress() // this must come after gameRef being stored
+  return Promise.all([
+    queryUserPlayerNum().then(setUserPlayerNumInRedux),
+    updateReduxWhenPlayersJoinGame(gameRef),
+  ])
+
 }
 
 export const resetReduxForStartedDbGameInstance = (gameRef) => {
-  resetReduxForPendingGameInstance(gameRef)
-  storeFieldStackRefsInRedux(gameRef)
-  return initAllPlayerAreas(true, gameRef)
-    .then(() => registerUpdateHandlersOnGameRef(gameRef))
+  return Promise.all([
+    resetReduxForPendingGameInstance(gameRef),
+    storeFieldStackRefsInRedux(gameRef),
+    initAllPlayerAreas(true, gameRef),
+  ])
+  .then(() => registerUpdateHandlersOnGameRef(gameRef))
   }
 
