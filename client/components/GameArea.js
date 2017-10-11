@@ -62,12 +62,14 @@ class GameArea extends Component {
           <h1>Game Area</h1>
           <div id="gameArea" className="game-area">
 
+{/* ------------------ COLUMN ONE -------------------------- */}
             <div className="player-left-container">
               <div className="rotate-270">
                 {this.leftColumnPlayers}
               </div>
             </div>
 
+{/* ------------------- COLUMN TWO --------------------------- */}
             <div className="game-area-middle-column">
 
               <div className="player-top-container">
@@ -84,6 +86,7 @@ class GameArea extends Component {
 
             </div>
 
+{/* --------------------- COLUMN THREE --------------------------- */}
             <div className="player-right-container">
               <div className="rotate-90">
                {this.rightColumnPlayers}
