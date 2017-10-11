@@ -54,7 +54,7 @@ export const tallyScoreForAllPlayers = () => {
   const fieldCards = []
   let fieldStackNum = playerNums.length * 4
   while (fieldStackNum) {
-    fieldCards.concat(getStackInStoreByKey(`fieldStack${fieldStackNum}`))
+   fieldCards.push(...getStackInStoreByKey(`fieldStack${fieldStackNum}`));
     fieldStackNum -= 1
   }
   console.log('field cards', fieldCards);
