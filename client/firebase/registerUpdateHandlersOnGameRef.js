@@ -2,7 +2,9 @@ import {
   getSnapshotOfAllPlayersByGameRef,
 } from './firebase_utils.js';
 import {
+  getReduxGameRef,
   getPlayersInStore,
+  setReduxGameProgressStatus,
   updatePlayerInReduxByKey,
   updateReduxPlayerStackByKey,
   updateReduxFieldStackByKey,
@@ -42,6 +44,15 @@ const updateReduxWhenFieldStacksUpdate = (gameRef) => {
         updateReduxFieldStackByKey(stackKey, stackSnapshot.val());
       })
     }))
+}
+
+const updateReduxWhenGameStatusChanges = () => {
+  console.log('updateReduxWhenGameStatusChanges()')
+  return getReduxGameRef()
+    .child('isInProgress').on('value', isInProgress => {
+      console.log('UPDATING GAME PROGRESS STATUS')
+      return setReduxGameProgressStatus(isInProgress.val())
+    })
 }
 
 export const updateReduxWhenPlayerDataChanges = (gameRef) => {
@@ -92,6 +103,7 @@ const updateReduxWhenPlayerStacksUpdate = (gameRef) => {
 
 export function registerUpdateHandlersOnGameRef(gameRef) {
   return Promise.all([
+    updateReduxWhenGameStatusChanges(),
     updateReduxWhenFieldStacksUpdate(gameRef),
     updateReduxWhenPlayerStacksUpdate(gameRef),
     updateReduxWhenPlayerDataChanges(gameRef),

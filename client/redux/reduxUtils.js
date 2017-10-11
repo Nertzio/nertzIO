@@ -5,8 +5,11 @@ import {
 import store, {
   setNertzHasBeenCalled,
   setPlayerNumWhoCalledNertz,
+  clearPlayers,
   setGameRef,
   setStackRef,
+  setGameInProgress,
+  setGameNotInProgress,
   // userActionTaken,
   // requireUserAction,
   // setGameOver,
@@ -20,8 +23,14 @@ import store, {
   updatePlayerByKey, // need to create this action creator
   updatePlayerStackByKey,
   updateFieldStackByKey,
+  updatePlayerScoreByKey,
+  updatePlayerListeningStatusByKey,
 } from '../redux';
 const {dispatch} = store;
+
+export const clearPlayersInStore = () => {
+  return dispatch(clearPlayers());
+}
 
 export const countCardsInUserLittleStackInRedux = () => {
   const {user, players} = store.getState();
@@ -53,6 +62,14 @@ export const getFirebaseGameRefFromRedux = () => {
   return store.getState().firebaseRefs.game
 }
 
+export const getReduxGameRef = () => {
+  return store.getState().firebaseRefs.game
+}
+
+export const getGameRefInRedux = () => {
+  return store.getState().firebaseRefs.game
+}
+
 export const getPlayersInStore = () => {
   return store.getState().players;
 }
@@ -64,6 +81,11 @@ export const getStackInStoreByKey = (stackKey) => {
 // export const setGameOverInRedux = () => {
 //   return dispatch(setGameOver());
 // }
+
+export const setReduxGameProgressStatus = isInProgress => {
+  if (isInProgress) return dispatch(setGameInProgress());
+  else return dispatch(setGameNotInProgress());
+}
 
 export const setUserPlayerNumInRedux = (num) => {
   return dispatch(setUserPlayerNum(num));
@@ -120,6 +142,14 @@ export const tellReduxImDoneLoading = () => {
 
 export const updatePlayerInReduxByKey = (playerKey, updatedPlayer) => {
   return dispatch(updatePlayerByKey(playerKey, updatedPlayer));
+}
+
+export const updatePlayerScoreInReduxByKey = (key, score) => {
+  return dispatch(updatePlayerScoreByKey(key, score));
+}
+
+export const updatePlayerListeningStatusInReduxByKey = (key, status) => {
+  return dispatch(updatePlayerListeningStatusByKey(key, status));
 }
 
 export const updateReduxPlayerStackByKey = (stackKey, newState) => {

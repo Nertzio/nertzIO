@@ -3,14 +3,17 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {
+  tellReduxImLoading,
+  tellReduxImDoneLoading,
+} from './redux/reduxUtils';
+import {
   ProtectedRoute,
   UnprotectedRoute,
 } from './Routing';
-import PropTypes from 'prop-types';
-import history from './history';
-import firebase from 'firebase';
+
+// import firebase from 'firebase';
 import {initAuth} from './firebase'
-const auth = firebase.auth();
+// const auth = firebase.auth();
 
 
 
@@ -36,13 +39,15 @@ class Routes extends Component {
     super(props)
   }
 
-  componentDidMount () {
-    initAuth()
+  componentWillMount () {
+    tellReduxImLoading()
+    initAuth();
+    setTimeout(() => tellReduxImDoneLoading(), 1000);
   }
 
   render () {
     const {isLoggedIn, somethingIsLoading} = this.props;
-    // if (somethingIsLoading) return <LoadingSpinner />
+    if (somethingIsLoading) return <LoadingSpinner />
 
     return (
       <Router>
@@ -97,7 +102,8 @@ class Routes extends Component {
  * CONTAINER
  */
 const mapState = state => ({
-  isLoggedIn: state.user.uid
+  isLoggedIn: state.user.uid,
+  somethingIsLoading: state.app.somethingIsLoading,
 });
 
 export default connect(mapState)(Routes);

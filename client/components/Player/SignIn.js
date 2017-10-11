@@ -19,12 +19,10 @@ class SignIn extends Component {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     if (email.length < 4 || email.indexOf('@') === -1) {
-      alert('Please enter a valid email address.');
-      return;
+      return alert('Please enter a valid email address.');
     }
     if (password.length < 4) {
-      alert('Please enter a valid password.');
-      return;
+      return alert('Please enter a valid password.');
     }
     // Sign in with email and pass.
     auth.signInWithEmailAndPassword(email, password)
@@ -37,9 +35,8 @@ class SignIn extends Component {
     .catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
-      alert('No such email / password combination. Please try again.');
       console.log(error);
-      return;
+      return alert('No such email / password combination. Please try again.');
     });
   }
 

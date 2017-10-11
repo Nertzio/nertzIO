@@ -1,4 +1,5 @@
 import {
+  getReduxGameRef,
   getFirebaseGameRefFromRedux,
   storeStackRefInReduxByKey,
   updatePlayerInReduxByKey,
@@ -42,6 +43,11 @@ export const getStackRefByKey = (stackKey) => {
 export const goCountAllPlayersInGame = () => {
   return getSnapshotOfAllPlayersByGameRef(currentGameRef)
     .then(snapshot => snapshot.numChildren())
+}
+
+export const markGameAsInProgress = () => {
+  return getReduxGameRef().update({isInProgress: true})
+    .catch(console.error.bind(console));
 }
 
 export const setPlayersToGameRef = (players, gameRef) => {
