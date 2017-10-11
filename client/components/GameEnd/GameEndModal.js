@@ -24,19 +24,20 @@ const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
   } = styler()
 
   const renderPlayerStats = () => {
-    const playerValues = Object.values(players)
-    return playerValues.map((player, idx) => (
-      <div key={player.uid} style={playerScore}>
-       <div style={playerId}>
-        {idx + 1}. {player.displayName}
-       </div>
-        <div id={player.uid + 'score'} style={score}>
-          {/* animate score count */}
-          {player.score}
+    const playerNums = Object.keys(players)
+    return playerNums.map(playerNum => {
+      const player = players[playerNum];
+      return (
+      <div key={playerNum} style={playerScore}>
+        <div style={playerId}>
+          {playerNum}. {player.displayName}
         </div>
-
-    </div>
-    ))
+        <div id={playerNum + 'score'} style={score}>
+            {/* animate score count */}
+            {player.score}
+        </div>
+        </div>
+    )})
   }
 
 
@@ -87,7 +88,7 @@ const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
 const mapState = state => ({
   isRoundOver: state.game.isNertzCalled,
   players: state.players,
-  playerNumWhoCalledNertz: state.game.playerNumWhoCalledNertz
+  playerNumWhoCalledNertz: state.game.playerNumWhoCalledNertz,
 })
 
 export default connect(mapState)(GameEndModal);

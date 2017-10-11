@@ -16,7 +16,7 @@ export const updateDbWithPlayerScores = () => {
   const playerScores = tallyScoreForAllPlayers();
   const playerNums = Object.keys(playerScores)
   playerNums.forEach(playerNum => {
-    currentGameRef.child(playerNum).update({
+    currentGameRef.child(`players/${playerNum}`).update({
         score: playerScores[playerNum]
     })
   })

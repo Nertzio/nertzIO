@@ -47,7 +47,7 @@ export const thereAreNo = (collection) => {
 }
 
 
-export const tallyScoreForAllPlayers () {
+export const tallyScoreForAllPlayers = () => {
   const playerObjs = getPlayersInStore()
   const playerNums = Object.keys(playerObjs)
 

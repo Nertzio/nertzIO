@@ -22,18 +22,18 @@ export const updateReduxWhenNertzIsCalled = gameRef => {
 }
 
 export const updateReduxWithPlayerNumWhoCalledNertz = gameRef => {
-  Promise.resolve(gameRef.child('numOfPlayerWhoCalledNertz').on('value', snapshot => {
-    Promise.resolve(setPlayerNumWhoCalledNertzInRedux(snapshot.val()))
-    // .then(() => {
-    //   const playerNums = Object.keys(getPlayersInStore())
-    //   playerNums.forEach(playerNum => {
-    //     updatePlayerScoreInReduxByKey(playerNum)
-    //   })
-    // })
-  }))
+  Promise.resolve(gameRef.child('numOfPlayerWhoCalledNertz').on('value', snapshot => {setPlayerNumWhoCalledNertzInRedux(snapshot.val())}))
   .catch(err => console.error(err));
 }
 
+const updateReduxWithPlayerScores = gameRef => {
+  const playerNums = Object.keys(getPlayersInStore())
+  playerNums.forEach(playerNum => {
+    gameRef.child(`players/${playerNum}/score`).on('value', scoreSnapshot => {
+      updatePlayerScoreInReduxByKey(playerNum, scoreSnapshot.val())
+    })
+  })
+}
 
 const updateReduxWhenFieldStacksUpdate = (gameRef) => {
   return gameRef.child('fieldStacks').once('value')
@@ -62,7 +62,6 @@ export const updateReduxWhenPlayerDataChanges = (gameRef) => {
         return updatePlayerInReduxByKey(updatedPlayer.key, updatedPlayer.val())
       })
     })
-
   })
 }
 
@@ -74,6 +73,7 @@ export const updateReduxWhenPlayersJoinGame = (gameRef) => {
         return updatePlayerInReduxByKey(player.key, player.val())
       })
     })
+    .then(() => updateReduxWithPlayerScores(gameRef))
 }
 
 // export const updateReduxWhenPlayersJoinGame = (gameRef) => {
