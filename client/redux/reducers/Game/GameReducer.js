@@ -1,5 +1,6 @@
 
 const DEFAULT_GAME = {
+  isInProgress: false,
   // playerCanCallNertz
   isRoundOver: false,
   // isGameOver: false,
@@ -9,6 +10,8 @@ const DEFAULT_GAME = {
 };
 const GAME_START = 'GAME_START';
 const GAME_OVER = 'GAME_OVER';
+const GAME_IN_PROGRESS = 'GAME_IN_PROGRESS';
+const GAME_NOT_IN_PROGRESS = 'GAME_NOT_IN_PROGRESS';
 const ROUND_OVER = 'ROUND_OVER';
 const ROUND_START = 'ROUND_START';
 const SET_SCORE_LIMIT = 'SET_SCORE_LIMIT';
@@ -20,6 +23,14 @@ export const setGameOver = () => ({
 
 export const startNewGame = () => ({
   type: GAME_START,
+})
+
+export const setGameInProgress = () => ({
+  type: GAME_IN_PROGRESS,
+})
+
+export const setGameNotInProgress = () => ({
+  type: GAME_NOT_IN_PROGRESS,
 })
 
 export const setRoundOver = () => ({
@@ -48,6 +59,10 @@ const gameReducer = (game = DEFAULT_GAME, action) => {
       return {...game, isGameOver: false};
     case GAME_OVER:
       return {...game, isGameOver: true};
+    case GAME_IN_PROGRESS:
+      return {...game, isInProgress: true}
+    case GAME_NOT_IN_PROGRESS:
+      return {...game, isInProgress: false};
     case ROUND_START:
       return {...game, isRoundOver: false};
     case ROUND_OVER:

@@ -1,17 +1,20 @@
-import React, {Component} from 'react';
+import firebase from 'firebase'
 import {connect} from 'react-redux';
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+import React, {Component} from 'react';
+import {getUserPlayerNum} from '../vanillaUtils'
 import {
   BlurOnRoundOver,
   GameEndModal,
   GameField,
   PlayerArea,
-  Stack,
 } from '../components';
-import { DragDropContext } from 'react-dnd'
-import {getUserPlayerNum} from '../vanillaUtils'
-import HTML5Backend from 'react-dnd-html5-backend'
+import {
+  tellReduxImLoading,
+  tellReduxImDoneLoading,
+} from '../redux/reduxUtils';
 import { resetReduxForStartedDbGameInstance } from '../firebase'
-import firebase from 'firebase'
 const db = firebase.database()
 
 
@@ -41,8 +44,14 @@ class GameArea extends Component {
   }
 
   componentWillMount () {
+    const {game} = this.props;
     const gameRef = db.ref(`games/${this.props.match.params.gameId}`)
-    resetReduxForStartedDbGameInstance(gameRef);
+    if (!game.isInProgress) {
+
+      tellReduxImLoading();
+      return resetReduxForStartedDbGameInstance(gameRef)
+      .then(() => tellReduxImDoneLoading())
+    }
   }
 
   render() {
@@ -91,6 +100,7 @@ class GameArea extends Component {
 
 function mapStateToProps (state) {
   return {
+    game: state.game,
     players: Object.keys(state.players),
     user: state.user,
     isRoundOver: state.game.isRoundOver,
@@ -103,7 +113,7 @@ const reduxifiedGameArea = connect(mapStateToProps)(GameArea);
 export default DragDropContext(HTML5Backend)(reduxifiedGameArea)
 
 
-
+// ------------------ ORIGINAL GAME AREA --------------------
 {/* <div id="firstRow" className="container">
 <PlayerArea playerNum={otherPlayerNums[0] || 1} />
 </div>
