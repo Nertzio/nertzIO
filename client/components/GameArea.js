@@ -64,11 +64,9 @@ class GameArea extends Component {
     const areas = {top: [], left: [], right: []};
     players.forEach(num => {
       if (num % 2 !== 0) {
-        if (areas.left.length >= areas.right.length) {
-          areas.right.push(num);
-        } else {
-          areas.left.push(num);
-        }
+        areas.left.length >= areas.right.length
+          ? areas.right.push(num)
+          : areas.left.push(num);
       } else {
         areas.top.push(num);
       }
@@ -77,8 +75,8 @@ class GameArea extends Component {
   }
 
   render() {
-    if (!this.props.otherPlayerNums.length) return null;
     const {userPlayerNum, otherPlayerNums} = this.props;
+    if (!otherPlayerNums.length) return null;
     console.log('otherPlayerNums', otherPlayerNums);
 
     const areas = this.sortPlayersNumsIntoAreas(otherPlayerNums)
@@ -91,9 +89,7 @@ class GameArea extends Component {
 
 {/* ------------------ COLUMN ONE -------------------------- */}
             <div className="player-left-container">
-              <div>
                 {this.renderLeftColumnPlayers(areas.left)}
-              </div>
             </div>
 
 {/* ------------------- COLUMN TWO --------------------------- */}
@@ -115,9 +111,7 @@ class GameArea extends Component {
 
 {/* --------------------- COLUMN THREE --------------------------- */}
             <div className="player-right-container">
-              <div>
                {this.renderRightColumnPlayers(areas.right)}
-              </div>
             </div>
 
           </div>

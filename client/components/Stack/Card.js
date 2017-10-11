@@ -32,7 +32,8 @@ const Card = (props) => {
       style={{
         border: `1px solid ${borderColor}`,
         opacity: isDragging ? 0 : 1,
-        transform: `translate(0px, ${stackPosition * -1}px) perspective(50em) rotateX(20deg)`,
+        transform: `translate(0px, ${stackPosition * -1}px)`,
+        // perspective(50em) rotateX(20deg),
         zIndex: stackPosition,
     }}>
       {isFaceUp

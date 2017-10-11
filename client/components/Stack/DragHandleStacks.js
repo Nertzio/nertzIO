@@ -26,29 +26,21 @@ const DragHandleStacks = ({
 
 
   return connectDragPreview( // ALL NESTED COMPONENTS INCLUDED IN DRAG PREVIEW
-    <div style={{
-      height: 'calc(15vh)',
-      margin: '0 auto',
-      maxWidth: 'calc(100vw / 10)',
-      opacity: isDragging ? 0 : 1,
-      position: cssPosition, // 'relative' required for absolute stacking'
-      width: 'calc(10vh)',
-      zIndex: stackPosition,
+    <div
+      className="draggable-stack"
+      style={{
+        opacity: isDragging ? 0 : 1,
+        position: cssPosition, // 'relative' parent required for stacking'
+        zIndex: stackPosition,
     }}>
 
       {thereAreMoreCards && connectDragSource( // -- START DRAG ANCHOR --
-        <div style={{
-          backgroundColor: '#E8E8E8',
-          color: currentCard.textColor,
-          fontSize: '1.5vh',
-          height: '8.333%',
-          right: '0',
-          marginTop: `${8.333 * stackPosition}%`,
-          maxWidth: '15vw',
-          padding: 3,
-          position: 'absolute',
-          top: `${8.333  * stackPosition}%`,
-          width: '13vh',
+        <div
+          className="draggable-stack-anchor"
+          style={{
+            color: currentCard.textColor,
+            marginTop: `${8.333 * stackPosition}%`,
+            top: `${8.333  * stackPosition}%`,
         }}>
           {currentCard.displayName}{currentCard.symbol}
         </div> // --------------- END DRAG ANCHOR -------------------
@@ -62,7 +54,9 @@ const DragHandleStacks = ({
       />
 
       {/* ----------- RECURSIVE DRAG SOURCE COMPONENT ------------*/}
-        {/* Every card in this solitiare stack renders as a draggable stack which contains other draggable stacks as its children  */}
+        {/* Every card in this solitiare stack is actually a draggable
+            stack, which contains 1) a single card and 2) another draggable
+            stack */}
         {/* Stop recursing when no more cards to render */}
       {thereAreMoreCards &&
         <DraggableDragHandleStacks

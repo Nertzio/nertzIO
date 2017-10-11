@@ -15,11 +15,7 @@ const StackSolitaire = ({cards, firebaseRef, connectDropTarget, stackKey}) => {
     return card;
   })}
   return connectDropTarget(
-    <div style={{ /* unnecessary styling */
-      // border: '1px solid gray',
-      // height: '100%',
-      // flex: '1 10%'
-    }}>
+    <div className="solitaire-stack-drop-target">
       {cards && cards.length > 0 &&
         <DragHandleStacks cards={faceUpCards} firebaseStackRef={firebaseRef} />
       }
