@@ -30,7 +30,9 @@ export function initAuth () {
       // emailVerified: user.emailVerified,
         uid: '',
       }
+      tellReduxImLoading();
       dispatch(addLocalUserInfo(localUser));
+      setTimeout(() => tellReduxImDoneLoading(), 1000);
       console.log("Not signed in yet / signed out")
     }
   }))

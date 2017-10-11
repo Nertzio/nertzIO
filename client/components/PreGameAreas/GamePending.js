@@ -11,9 +11,6 @@ const db = firebase.database()
 class GamePending extends Component {
   constructor(props){
     super(props)
-    this.state = {
-      shouldRedirectToGame: false,
-    }
     this.gameKey = props.match.params.gameId;
     this.startNewGame = this.startNewGame.bind(this);
   }
@@ -28,9 +25,6 @@ class GamePending extends Component {
     startGame(this.gameKey)
       .then(() => tellReduxImDoneLoading());
     this.props.history.push(`/gamesInProgress/${this.gameKey}`)
-    // this.setState({
-    //   shouldRedirectToGame: true
-    // })
   }
 
   render(){
