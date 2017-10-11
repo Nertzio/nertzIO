@@ -35,7 +35,7 @@ const appReducer = (app = DEFAULT_APP, action) => {
     case START_LOADING:
       return {...app, somethingIsLoading: true};
     case STOP_LOADING:
-      return {...ap, somethingIsLoading: false};
+      return {...app, somethingIsLoading: false};
     default:
       return app;
   }

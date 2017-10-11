@@ -14,6 +14,10 @@ class SignIn extends Component {
     }
   }
 
+  componentWillMount() {
+
+  }
+
 
   handleSignIn () {
     const email = document.getElementById('email').value;

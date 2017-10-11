@@ -1,32 +1,95 @@
-
-
 /**
  * ACTION TYPES
  */
-const ADD_PLAYER = 'ADD_PLAYER'
+const UPDATE_PLAYER = 'UPDATE_PLAYER'
+const UPDATE_LISTENING_STATUS = 'UPDATE_LISTENING_STATUS';
+const UPDATE_SCORE = 'UPDATE_SCORE';
+const CLEAR_PLAYERS = 'CLEAR_PLAYERS';
 
 /**
  * INITIAL STATE
  */
-const defaultPlayers = {}
+const DEFAULT_PLAYERS = {}
 
 /**
  * ACTION CREATORS
  */
-export const updatePlayerByKey = (playerKey, userInfo) => {
-  let user = {};
-  user[playerKey] = userInfo;
-  return ({type: ADD_PLAYER, user})
+export const updatePlayerByKey = (playerKey, playerInfo) => {
+  let player = {};
+
+  player[playerKey] = playerInfo;
+  return ({type: UPDATE_PLAYER, player})
 }
+
+export const updatePlayerScoreByKey = (playerKey, score) => ({
+  type: UPDATE_SCORE,
+  key: playerKey,
+  score: score || 0,
+})
+
+export const updatePlayerListeningStatusByKey = (playerKey, status) => ({
+  type: UPDATE_LISTENING_STATUS,
+  key: playerKey,
+  isListeningForUpdates: status || false,
+})
+
+export const clearPlayers = () => ({
+  type: CLEAR_PLAYERS
+})
 
 /**
  * REDUCER
  */
-export default function playersReducer (state = defaultPlayers, action) {
-  switch (action.type) {
-    case ADD_PLAYER:
-      return {...state, ...action.user}
+export default function playersReducer (players = DEFAULT_PLAYERS, action) {
+  const { type, player, key, isListeningForUpdates, score } = action;
+  switch (type) {
+    case UPDATE_PLAYER:
+      return {...players, ...player};
+    case UPDATE_LISTENING_STATUS:
+      let updatedPlayer = {[key]: {...players[key], isListeningForUpdates}}
+      return {...players, ...updatedPlayer};
+    case UPDATE_SCORE:
+      updatedPlayer = {[key]: {...players[key], score}};
+      return {...players, ...updatedPlayer};
+    case CLEAR_PLAYERS:
+      return DEFAULT_PLAYERS;
     default:
-      return state
+      return players
   }
 }
+
+
+//------------------------ ORIGINAL ------------------------
+
+
+
+// /**
+//  * ACTION TYPES
+//  */
+// const ADD_PLAYER = 'ADD_PLAYER'
+
+// /**
+//  * INITIAL STATE
+//  */
+// const defaultPlayers = {}
+
+// /**
+//  * ACTION CREATORS
+//  */
+// export const updatePlayerByKey = (playerKey, userInfo) => {
+//   let user = {};
+//   user[playerKey] = userInfo;
+//   return ({type: ADD_PLAYER, user})
+// }
+
+// /**
+//  * REDUCER
+//  */
+// export default function playersReducer (state = defaultPlayers, action) {
+//   switch (action.type) {
+//     case ADD_PLAYER:
+//       return {...state, ...action.user}
+//     default:
+//       return state
+//   }
+// }

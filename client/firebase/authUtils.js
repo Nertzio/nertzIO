@@ -1,12 +1,16 @@
 
 import store, {addLocalUserInfo} from '../redux'
+import {
+  tellReduxImDoneLoading,
+  tellReduxImLoading,
+} from '../redux/reduxUtils';
 const {dispatch} = store;
 import firebase from 'firebase';
 const auth = firebase.auth();
 
   //Event listener for state changes on auth
 export function initAuth () {
-  Promise.resolve(auth.onAuthStateChanged(user => {
+  return Promise.resolve(auth.onAuthStateChanged(user => {
     if (user) {
       console.log("User inside initAuth: ", user.email)
       let localUser = {
@@ -15,7 +19,9 @@ export function initAuth () {
       // emailVerified: user.emailVerified,
         uid: user.uid,
       }
+      tellReduxImLoading();
       dispatch(addLocalUserInfo(localUser));
+      setTimeout(() => tellReduxImDoneLoading(), 1000);
     } else {
       // No user is signed in.
       let localUser = {

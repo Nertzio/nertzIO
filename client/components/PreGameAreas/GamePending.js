@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import { Redirect } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {startGame, resetReduxForPendingGameInstance} from '../../firebase';
+import {
+  tellReduxImLoading,
+  tellReduxImDoneLoading,
+} from '../../redux/reduxUtils';
 import firebase from 'firebase'
 const db = firebase.database()
 
@@ -21,10 +25,13 @@ class GamePending extends Component {
   }
 
   startNewGame(){
-    startGame(this.gameKey);
-    this.setState({
-      shouldRedirectToGame: true
-    })
+    tellReduxImLoading()
+    startGame(this.gameKey)
+      .then(() => tellReduxImDoneLoading());
+    this.props.history.push(`/gamesInProgress/${this.gameKey}`)
+    // this.setState({
+    //   shouldRedirectToGame: true
+    // })
   }
 
   render(){
@@ -42,9 +49,9 @@ class GamePending extends Component {
             ))
           }
         </div>
-        {
+        {/* {
           this.state.shouldRedirectToGame && <Redirect to={`/gamesInProgress/${this.gameKey}`} />
-        }
+        } */}
       </div>
     )
   }
