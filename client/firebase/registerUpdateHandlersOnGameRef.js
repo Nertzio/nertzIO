@@ -106,6 +106,9 @@ export function registerUpdateHandlersOnGameRef(gameRef) {
     updateReduxWhenFieldStacksUpdate(gameRef),
     updateReduxWhenPlayerStacksUpdate(gameRef),
     updateReduxWhenPlayerDataChanges(gameRef),
+    updateReduxWhenNertzIsCalled(gameRef),
+    updateReduxWithPlayerNumWhoCalledNertz(gameRef),
+    updateReduxWithPlayerScores(gameRef)
   ]);
 }
 

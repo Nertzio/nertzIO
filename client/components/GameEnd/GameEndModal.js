@@ -8,7 +8,12 @@ const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
     header: {
       // width: '90%',
     },
-
+  //   playerId: {
+  //     display: 'inline'
+  //   },
+  //   score: {
+  //     display: 'inline'
+  //   },
     bonusPoints: {
       // width: '10%',
     }
@@ -23,14 +28,23 @@ const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
     score
   } = styler()
 
+  const playerNums = Object.keys(players)
+  const playersValues = Object.values(players);
+
+  const winner = playersValues.reduce((playerA, playerB) => {
+    const aScore = playerA.score;
+    const bScore = playerB.score;
+    if (aScore > bScore) return playerA;
+    return playerB;
+  })
+
   const renderPlayerStats = () => {
-    const playerNums = Object.keys(players)
     return playerNums.map(playerNum => {
       const player = players[playerNum];
       return (
       <div key={playerNum} style={playerScore}>
         <div style={playerId}>
-          {playerNum}. {player.displayName}
+          {player.displayName}
         </div>
         <div id={playerNum + 'score'} style={score}>
             {/* animate score count */}
@@ -70,12 +84,12 @@ const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
   return (
     <Modal shouldShow={isRoundOver}>
 
-        <div style={header}>{playerNumWhoCalledNertz && players && players[playerNumWhoCalledNertz].displayName} calls Nertz!</div>
-        <div style={bonusPoints}>+ 10pts</div>
-
+      <div style={header}>{playerNumWhoCalledNertz && players && players[playerNumWhoCalledNertz].displayName} calls Nertz!</div>
+      <div style={bonusPoints}>+ 10pts</div>
 
       <div style={header}>Let's see how everyone did:</div>
       <div style={playerStats}>
+      <h2>{winner.displayName} is the winner!</h2>
         {renderPlayerStats()}
       </div>
 
