@@ -45,5 +45,46 @@ html {
         width: '90%';
       }
     }
+    .keyInput {
+      border: none;
+      border-bottom: solid white 2px;
+      background: #63a2a7;
+      margin-left: 101px;
+      color: rgb(255, 153, 0);
+      padding: 10px;
+      font-family: 'Roboto', sans-serif;
+      transition: all 600ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
+      &:focus {
+       outline-width: 0;
+       font-size: 27px;
+      }
+     }
+
+    .startGameBtn {
+      background: #63a2a7;
+      -webkit-border-radius: 10;
+      -moz-border-radius: 10;
+      border-radius: 10px;
+      -webkit-box-shadow: 0px 1px 3px #989494;
+      -moz-box-shadow: 0px 1px 3px #989494;
+      box-shadow: 0px 1px 3px #989494;
+      font-family: Arial;
+      color: white;
+      font-size: 35px;
+      padding: 10px 20px 10px 20px;
+      border: solid rgb(255, 153, 0) 2px;
+      text-decoration: none;
+      margin: 20px
+    }
+
+    .startGameBtn:hover {
+      background: rgb(72, 72, 72);
+      background-image: -webkit-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
+      background-image: -moz-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
+      background-image: -ms-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
+      background-image: -o-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
+      background-image: linear-gradient(to bottom, rgb(48, 47, 47), rgb(72, 72, 72));
+      text-decoration: none;
+    }
   }
 }
