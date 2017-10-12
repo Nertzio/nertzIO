@@ -2,14 +2,18 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Modal} from '../Common';
 
-const GameEndModal = ({players, isRoundOver, whoCalledNertz}) => {
-
+const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
 
   const styler = () => ({
     header: {
       // width: '90%',
     },
-
+  //   playerId: {
+  //     display: 'inline'
+  //   },
+  //   score: {
+  //     display: 'inline'
+  //   },
     bonusPoints: {
       // width: '10%',
     }
@@ -24,23 +28,33 @@ const GameEndModal = ({players, isRoundOver, whoCalledNertz}) => {
     score
   } = styler()
 
+  const playerNums = Object.keys(players)
+  const playersValues = Object.values(players);
+
+  const winner = playersValues.reduce((playerA, playerB) => {
+    const aScore = playerA.score;
+    const bScore = playerB.score;
+    if (aScore > bScore) return playerA;
+    return playerB;
+  })
+
   const renderPlayerStats = () => {
-    return players.map((player, idx) => (
-
-      <div key={player.uid} style={playerScore}>
-
-       <div style={playerId}>
-        {idx + 1}. {player.displayName}
-       </div>
-
-        <div id={player.uid + 'score'} style={score}>
-          {/* animate score count */}
-          {player.score}
+    return playerNums.map(playerNum => {
+      const player = players[playerNum];
+      return (
+      <div key={playerNum} style={playerScore}>
+        <div style={playerId}>
+          {player.displayName}
         </div>
-
-    </div>
-    ))
+        <div id={playerNum + 'score'} style={score}>
+            {/* animate score count */}
+            {player.score}
+        </div>
+        </div>
+    )})
   }
+
+
 
   // INITIAL ATTEMPT AT ANIMATING SCORE COUNT
   // NEED TO FIGURE OUT HOW TO WAIT FOR DOM TO LOAD
@@ -60,6 +74,9 @@ const GameEndModal = ({players, isRoundOver, whoCalledNertz}) => {
   //     })
   //   }
 
+  console.log("Players", players)
+  console.log("PlayerNumNertzETc", playerNumWhoCalledNertz)
+  console.log("Round Over", isRoundOver)
 
 
   // -------------- COMPONENT --------------------
@@ -67,12 +84,12 @@ const GameEndModal = ({players, isRoundOver, whoCalledNertz}) => {
   return (
     <Modal shouldShow={isRoundOver}>
 
-        <div style={header}>{whoCalledNertz} calls Nertz!</div>
-        <div style={bonusPoints}>+ 10pts</div>
-
+      <div style={header}>{playerNumWhoCalledNertz && players && players[playerNumWhoCalledNertz].displayName} calls Nertz!</div>
+      <div style={bonusPoints}>+ 10pts</div>
 
       <div style={header}>Let's see how everyone did:</div>
       <div style={playerStats}>
+      <h2>{winner.displayName} is the winner!</h2>
         {renderPlayerStats()}
       </div>
 
@@ -83,9 +100,9 @@ const GameEndModal = ({players, isRoundOver, whoCalledNertz}) => {
 }
 
 const mapState = state => ({
-  isRoundOver: state.game.isRoundOver,
-  players: Object.values(state.players),
-  whoCalledNertz: 'Dobby' // add this state to game reducer?
+  isRoundOver: state.game.isNertzCalled,
+  players: state.players,
+  playerNumWhoCalledNertz: state.game.playerNumWhoCalledNertz,
 })
 
 export default connect(mapState)(GameEndModal);

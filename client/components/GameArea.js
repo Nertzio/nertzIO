@@ -128,9 +128,9 @@ function mapStateToProps (state) {
   return {
     game: state.game,
     user: state.user,
-    isRoundOver: state.game.isRoundOver,
     userPlayerNum: state.game.userPlayerNum,
     otherPlayerNums: Object.keys(state.players).filter(num => +num !== +state.game.userPlayerNum).map(num => +num)
+    isRoundOver: state.game.isNertzCalled,
   }
 }
 

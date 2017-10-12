@@ -3,6 +3,8 @@ import {
   getUserPlayerNum,
 } from '../vanillaUtils';
 import store, {
+  setNertzHasBeenCalled,
+  setPlayerNumWhoCalledNertz,
   clearPlayers,
   setGameRef,
   setStackRef,
@@ -10,11 +12,11 @@ import store, {
   setGameNotInProgress,
   // userActionTaken,
   // requireUserAction,
-  setGameOver,
+  // setGameOver,
   startNewGame,
-  setRoundOver,
-  startNewRound,
-  setScoreLimit,
+  // setRoundOver,
+  // startNewRound,
+  // setScoreLimit,
   setUserPlayerNum,
   startLoading,
   stopLoading,
@@ -42,8 +44,14 @@ export const gameIsOverInRedux = () => {
   return store.getState().game.isGameOver;
 }
 
-export const roundIsOverInRedux = () => {
-  return store.getState().game.isRoundOver;
+// Replaced this functionality with combination of callNertz button and firebase/redux utils for isNertzCalled
+
+// export const roundIsOverInRedux = () => {
+//   return store.getState().game.isRoundOver;
+// }
+
+export const playerNumWhoCalledNertzInRedux = () => {
+  return store.getState().game.playerNumWhoCalledNertz;
 }
 
 export const getCurrentUserInRedux = () => {
@@ -70,9 +78,9 @@ export const getStackInStoreByKey = (stackKey) => {
   return store.getState()[stackKey]
 }
 
-export const setGameOverInRedux = () => {
-  return dispatch(setGameOver());
-}
+// export const setGameOverInRedux = () => {
+//   return dispatch(setGameOver());
+// }
 
 export const setReduxGameProgressStatus = isInProgress => {
   if (isInProgress) return dispatch(setGameInProgress());
@@ -83,21 +91,30 @@ export const setUserPlayerNumInRedux = (num) => {
   return dispatch(setUserPlayerNum(num));
 }
 
+export const setPlayerNumWhoCalledNertzInRedux = (playerNumWhoCalledNertz) => {
+  return dispatch(setPlayerNumWhoCalledNertz(playerNumWhoCalledNertz));
+}
+
+export const setNertzHasBeenCalledInRedux = (isNertzCalled) => {
+  console.log('IS NERTZ CALLED SHOULD BE FALSE', isNertzCalled);
+return dispatch(setNertzHasBeenCalled(isNertzCalled));
+}
+
 export const startNewGameInRedux = () => {
   return dispatch(startNewGame());
 }
 
-export const setRoundOverInRedux = () => {
-  return dispatch(setRoundOver());
-}
+// export const setRoundOverInRedux = () => {
+//   return dispatch(setRoundOver());
+// }
 
-export const startNewRoundInRedux = () => {
-  return dispatch(startNewRound());
-}
+// export const startNewRoundInRedux = () => {
+//   return dispatch(startNewRound());
+// }
 
-export const setScoreLimitInRedux = (limit) => {
-  return dispatch(setScoreLimit(limit));
-}
+// export const setScoreLimitInRedux = (limit) => {
+//   return dispatch(setScoreLimit(limit));
+// }
 
 export const setGameRefInRedux = gameRef => {
   dispatch(setGameRef(gameRef));

@@ -13,7 +13,10 @@ import {
   setGameRefForUtils,
   setPlayersToGameRef,
   updateReduxWhenPlayersJoinGame,
+  updateReduxWhenNertzIsCalled,
+  updateReduxWithPlayerNumWhoCalledNertz,
 } from '../firebase';
+
 
 import {shuffleNewDeckForPlayer} from '../gameUtils';
 import firebase from 'firebase';
@@ -29,21 +32,29 @@ const db = firebase.database();
                                * * *
    ------------------------------------------------------------------*/
 
-export const addNewGame = () => {
-  currentGameRef = db.ref('games').push();
-  setGameRefForUtils(currentGameRef);
-  setGameRefInRedux(currentGameRef);
+  const initalizeNewGameForUtils = (gameRef) => {
+  Promise.resolve(gameRef.child('nertzHasBeenCalled').set(false))
+    .then(() => Promise.resolve(gameRef.child('numOfPlayerWhoCalledNertz').set(false)))
+    .then(() => Promise.resolve(setGameRefForUtils(gameRef)))
+    .then(() => Promise.resolve(setGameRefInRedux(gameRef)))
+  }
+
+  export const addNewGame = () => {
+  currentGameRef = db.ref('games').push()
+  initalizeNewGameForUtils(currentGameRef)
   return currentGameRef;
 }
 
 //sets player data for game instance in db
 export const goAddPlayerToGame = (playerData, gameRef) => {
+  let playerKey;
   return gameRef.once('value')
     .then(gameSnapshot => {
-      const playerKey = gameSnapshot.child('players').numChildren() + 1;
+      playerKey = gameSnapshot.child('players').numChildren() + 1;
       setUserPlayerNumInRedux(+playerKey);
       return gameRef.child(`players/${playerKey}`).set(playerData);
     })
+    .then(() => gameRef.child(`players/${playerKey}/score`).set(0))
     .then(() => gameRef)
     .catch(console.error.bind(console));
 }
@@ -90,7 +101,7 @@ const generateStacksForPlayer = (playerNum) => {
   return {
     [`p${playerNum}BigStack`]: cards.slice(0, 35),
     [`p${playerNum}DrawnStack`]: false, // placeholder val for firebase
-    [`p${playerNum}LittleStack`]: cards.slice(35,48),
+    [`p${playerNum}LittleStack`]: cards.slice(35, 48),
     [`p${playerNum}SolitaireStack1`]: cards.slice(48, 49),
     [`p${playerNum}SolitaireStack2`]: cards.slice(49, 50),
     [`p${playerNum}SolitaireStack3`]: cards.slice(50, 51),
@@ -118,7 +129,6 @@ const initPlayerAreaByPlayerNum = (playerNum) => {
     .then(() => linkReduxStacksWithDbByPlayerNum(playerNum, currentGameRef))
 }
 
-
 const initAllPlayerAreas = (dbGameInstanceIsPreInitialized, gameRef) => {
   return goCountAllPlayersInGame()
   .then(numOfPlayers => {
@@ -136,18 +146,6 @@ const initAllPlayerAreas = (dbGameInstanceIsPreInitialized, gameRef) => {
   .catch(console.error.bind(console));
 }
 
-
-// // NO LONGER IN USE:
-// export const initNewGame = () => {
-//   return addNewGame()
-//     .then(() => setPlayersToGameRef(hardCodedPlayers, currentGameRef))
-//     .then(() => set4FieldStacksPerPlayer())
-//     .then(() => storeFieldStackRefsInRedux())
-//     .then(() => initAllPlayerAreas())
-//     .then(() => registerUpdateHandlersOnGameRef(currentGameRef))
-//     .catch(console.error.bind(console))
-// }
-
 export const startGame = () => {
   return set4FieldStacksPerPlayer()
   .then(() => storeFieldStackRefsInRedux())
@@ -155,7 +153,6 @@ export const startGame = () => {
   .then(() => registerUpdateHandlersOnGameRef(currentGameRef))
   .catch(console.error.bind(console))
 }
-
 
 export const resetReduxForPendingGameInstance = (gameRef) => {
     setGameRefForUtils(gameRef)

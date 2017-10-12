@@ -7,9 +7,33 @@ import {
   setReduxGameProgressStatus,
   updatePlayerInReduxByKey,
   updateReduxPlayerStackByKey,
-  updateReduxFieldStackByKey
+  updateReduxFieldStackByKey,
+  setNertzHasBeenCalledInRedux,
+  setPlayerNumWhoCalledNertzInRedux,
+  updatePlayerScoreInReduxByKey
 } from '../redux/reduxUtils'
 
+export const updateReduxWhenNertzIsCalled = gameRef => {
+  Promise.resolve(gameRef.child('nertzHasBeenCalled').on('value', snapshot => {
+    setNertzHasBeenCalledInRedux(snapshot.val())
+  }))
+  .catch(err => console.error(err));
+
+}
+
+export const updateReduxWithPlayerNumWhoCalledNertz = gameRef => {
+  Promise.resolve(gameRef.child('numOfPlayerWhoCalledNertz').on('value', snapshot => {setPlayerNumWhoCalledNertzInRedux(snapshot.val())}))
+  .catch(err => console.error(err));
+}
+
+const updateReduxWithPlayerScores = gameRef => {
+  const playerNums = Object.keys(getPlayersInStore())
+  playerNums.forEach(playerNum => {
+    gameRef.child(`players/${playerNum}/score`).on('value', scoreSnapshot => {
+      updatePlayerScoreInReduxByKey(playerNum, scoreSnapshot.val())
+    })
+  })
+}
 
 const updateReduxWhenFieldStacksUpdate = (gameRef) => {
   return gameRef.child('fieldStacks').once('value')
@@ -38,7 +62,6 @@ export const updateReduxWhenPlayerDataChanges = (gameRef) => {
         return updatePlayerInReduxByKey(updatedPlayer.key, updatedPlayer.val())
       })
     })
-
   })
 }
 
@@ -50,6 +73,7 @@ export const updateReduxWhenPlayersJoinGame = (gameRef) => {
         return updatePlayerInReduxByKey(player.key, player.val())
       })
     })
+    .then(() => updateReduxWithPlayerScores(gameRef))
 }
 
 // export const updateReduxWhenPlayersJoinGame = (gameRef) => {
@@ -82,6 +106,9 @@ export function registerUpdateHandlersOnGameRef(gameRef) {
     updateReduxWhenFieldStacksUpdate(gameRef),
     updateReduxWhenPlayerStacksUpdate(gameRef),
     updateReduxWhenPlayerDataChanges(gameRef),
+    updateReduxWhenNertzIsCalled(gameRef),
+    updateReduxWithPlayerNumWhoCalledNertz(gameRef),
+    updateReduxWithPlayerScores(gameRef)
   ]);
 }
 
