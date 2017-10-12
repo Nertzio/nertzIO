@@ -46,10 +46,8 @@ const updateReduxWhenFieldStacksUpdate = (gameRef) => {
 }
 
 const updateReduxWhenGameStatusChanges = () => {
-  console.log('updateReduxWhenGameStatusChanges()')
   return getReduxGameRef()
     .child('isInProgress').on('value', isInProgress => {
-      console.log('UPDATING GAME PROGRESS STATUS')
       return setReduxGameProgressStatus(isInProgress.val())
     })
 }

@@ -17,7 +17,6 @@ export const checkIfUserIsAmongPlayers = players => {
 
 export const getUserPlayerNum = (user, players) => {
   if (Array.isArray(players)) {
-    console.log('getUserPlayerNum() - players: ', players)
     return players.findIndex(player => player.uid === user.uid) + 1;
 
   } else if (typeof players === 'object') {
@@ -60,7 +59,6 @@ export const tallyScoreForAllPlayers = () => {
    fieldCards.push(...getStackInStoreByKey(`fieldStack${fieldStackNum}`));
     fieldStackNum -= 1
   }
-  console.log('field cards', fieldCards);
   const playerScores = {}
   playerNums.forEach(playerNum => {
     playerScores[playerNum] = 0

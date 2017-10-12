@@ -45,11 +45,9 @@ export const flip3ForPlayer = (playerNum) => {
   if (!reduxBigStack.length) return restartBigStackForPlayer(playerNum);
   const reduxDrawnStack = getStackInStoreByKey(`p${playerNum}DrawnStack`)
   const drawnCards = reduxBigStack.slice(-3).reverse(); // maintaining LIFO
-  console.log('ABOUT TO ADD TO DRAWN STACK: ', drawnCards)
   const remainingCards = reduxBigStack.length <= 3
     ? false // placeholder for firebase so the node isn't erased
     : reduxBigStack.slice(0, -3);
-  console.log('CARDS THAT SHOULD BE LEFT IN BIG STACK: ', remainingCards)
   return Promise.all([
     getStackRefByKey(`p${playerNum}BigStack`).set(remainingCards),
     getStackRefByKey(`p${playerNum}DrawnStack`).set([...reduxDrawnStack, ...drawnCards])
