@@ -20,9 +20,6 @@ class JoinAGame extends Component {
     this.joinPrivateGame = this
       .joinPrivateGame
       .bind(this);
-    this.joinPublicGame = this
-      .joinPublicGame
-      .bind(this);
     this.startGame = this
       .startGame
       .bind(this);
@@ -35,38 +32,21 @@ class JoinAGame extends Component {
   joinPrivateGame(event) {
     event.preventDefault();
     const gameKey = this.state.gameKeyInput
-      let gameExists,
-        playersNeeded;
-      const privateGameRef = db.ref(`games/${gameKey}`);
-      privateGameRef
-        .once('value')
-        .then((gameSnapshot) => {
-          gameExists = gameSnapshot.exists();
-          playersNeeded = gameSnapshot
-            .child('players')
-            .numChildren() < 4;
-          if (gameExists && playersNeeded) {
-            addPlayerToGame(this.props.me, privateGameRef);
-            // TODO: Check to see if .then should be on this line after addPlayerToGame call
-            // for rest of functionality
-            this.setState({gameId: gameKey, redirect: true})
-          } else {
-            this.setState({showJoinGameError: true})
-          }
-        })
-    }
-
-    joinPublicGame() {
-      /* TODO HERE: find random public game (ie private attribute set to
-      false) in Firebase DB that has less than 4 'players', and
-      set gameId in state to that game's key (and publicGameRef in
-      following function's argument to that game's ref)
-    */
-      db.ref('games')
-      addPlayerToGame(this.props.me, publicGameRef);
-      // TODO: Check to see if .then should be on this line after addPlayerToGame call
-      // for rest of functionality
-      this.setState({redirect: true})
+    let gameExists, playersNeeded;
+    const privateGameRef = db.ref(`games/${gameKey}`);
+    privateGameRef.once('value')
+      .then((gameSnapshot) => {
+        gameExists = gameKey && gameSnapshot.exists();
+        playersNeeded = gameSnapshot
+          .child('players')
+          .numChildren() < 4;
+        if (gameExists && playersNeeded) {
+          addPlayerToGame(this.props.me, privateGameRef);
+          this.setState({gameId: gameKey, redirect: true})
+        } else {
+          this.setState({showJoinGameError: true})
+        }
+      })
     }
 
     startGame(event) {
@@ -90,6 +70,72 @@ class JoinAGame extends Component {
       console.log(this.props, 'AND', this.props.me)
       return (
         <div style={styles.JoinAGame}>
+          {this.state.redirect && <Redirect to={`/pendingGames/${this.state.gameId}`} />}
+          <h1 style={{marginTop: '60px', fontSize: '70px'}}>Join A Game</h1>
+          <div>
+            <button
+              className="startGameBtn"
+              name="startPrivateGame"
+              onClick={this.startGame}>Start New Game</button>
+          </div>
+          <br />
+          <div>
+            <form onSubmit={this.joinPrivateGame}>
+              <input
+                className= "keyInput"
+                placeholder="Game Key"
+                onChange={this.handleChange}
+                value={this.state.gameKeyValue}
+                autoFocus/>
+              <button className="startGameBtn" >Join Existing Game by Key</button>
+            </form>
+            {this.state.showJoinGameError && <p>Game key provided does not match a playable game.</p>}
+          </div>
+        </div>
+      )
+    }
+  }
+
+  const styles = {
+    JoinAGame: {
+      alignContent: 'center',
+      textAlign: 'center',
+      backgroundColor: '#63a2a7',
+      position: 'absolute',
+      height: '100%',
+      width: '100%',
+      color: 'white',
+    }
+  }
+
+  function mapStateToProps (state){
+    return {
+      me: state.user
+    }
+  }
+
+  export default connect(mapStateToProps)(JoinAGame);
+
+
+
+
+  /* When Creating Public Game in Future, Can Utilize:
+
+      this.joinPublicGame = this.joinPublicGame.bind(this);
+
+      joinPublicGame() {
+      // TODO HERE: find random public game (ie private attribute set to false) in Firebase DB that has less than 4 'players', and set gameId in state to that game's key (and publicGameRef in following function's argument to that game's ref)
+      db.ref('games')
+      addPlayerToGame(this.props.me, publicGameRef);
+      this.setState({redirect: true})
+    }
+
+
+
+
+    return can utilize:
+
+    <div style={styles.JoinAGame}>
           {this.state.redirect && <Redirect to={`/pendingGames/${this.state.gameId}`}/>
 }
           <h1>Join A Game!</h1>
@@ -115,24 +161,4 @@ class JoinAGame extends Component {
             </div>
           </div>
         </div>
-      )
-    }
-  }
-
-  const styles = {
-    JoinAGame: {
-      alignContent: 'center',
-      textAlign: 'center'
-    },
-    button: {
-      margin: '10px'
-    }
-  }
-
-  function mapStateToProps (state){
-    return {
-      me: state.user
-    }
-  }
-
-  export default connect(mapStateToProps)(JoinAGame);
+  */
