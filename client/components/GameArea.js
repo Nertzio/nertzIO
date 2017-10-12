@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import React, {Component} from 'react';
-import {getUserPlayerNum} from '../vanillaUtils'
+
 import {
   BlurOnRoundOver,
   GameEndModal,
@@ -20,13 +20,6 @@ const db = firebase.database()
 
 class GameArea extends Component {
 
-  constructor(props) {
-    super(props)
-    this.leftColumnPlayers = [];
-    this.rightColumnPlayers = [];
-    this.topRowPlayers = [];
-  }
-
   componentWillMount () {
     const {game} = this.props;
     const gameRef = db.ref(`games/${this.props.match.params.gameId}`)
@@ -39,39 +32,15 @@ class GameArea extends Component {
     }
   }
 
-  renderLeftColumnPlayers(playerNums) {
+  renderOtherPlayersByNum(playerNums) {
     if (!playerNums.length) return null;
     return playerNums.map(playerNum => {
-      return <PlayerArea key={playerNum} playerNum={playerNum} side="left" />
+      return (
+        <div key={playerNum} className="player-area-stacked-container">
+          <PlayerArea key={playerNum} playerNum={playerNum} />
+        </div>
+      )
     })
-  }
-
-  renderRightColumnPlayers(playerNums) {
-    if (!playerNums.length) return null;
-    return playerNums.map(playerNum => {
-      return <PlayerArea key={playerNum} playerNum={playerNum} side="right" />
-    })
-  }
-
-  renderTopRowPlayers(playerNums) {
-    if (!playerNums.length) return null;
-    return playerNums.map(playerNum => {
-      return <PlayerArea key={playerNum} playerNum={playerNum} side="top" />
-    })
-  }
-
-  sortPlayersNumsIntoAreas(players) {
-    const areas = {top: [], left: [], right: []};
-    players.forEach(num => {
-      if (num % 2 !== 0) {
-        areas.left.length >= areas.right.length
-          ? areas.right.push(num)
-          : areas.left.push(num);
-      } else {
-        areas.top.push(num);
-      }
-    })
-    return areas;
   }
 
   render() {
@@ -79,7 +48,6 @@ class GameArea extends Component {
     if (!otherPlayerNums.length) return null;
     console.log('otherPlayerNums', otherPlayerNums);
 
-    const areas = this.sortPlayersNumsIntoAreas(otherPlayerNums)
 
 
     return (
@@ -88,20 +56,8 @@ class GameArea extends Component {
 
           <div id="gameArea" className="game-area">
 
-{/* ------------------ COLUMN ONE -------------------------- */}
-            <div className="player-area-stacked-container">
-              {this.renderTopRowPlayers(areas.top)}
-            </div>
+            {this.renderOtherPlayersByNum(otherPlayerNums)}
 
-            <div className="player-area-stacked-container">
-                {this.renderLeftColumnPlayers(areas.left)}
-            </div>
-
-            <div className="player-area-stacked-container">
-               {this.renderRightColumnPlayers(areas.right)}
-            </div>
-
-{/* ------------------- COLUMN TWO --------------------------- */}
             <div className="game-field-stacked-container">
 
               <div className="game-field-container">
@@ -110,10 +66,8 @@ class GameArea extends Component {
 
             </div>
 
-{/* --------------------- COLUMN THREE --------------------------- */}
-
             <div className="player-area-stacked-container">
-              <PlayerArea playerNum={userPlayerNum} side="bottom" />
+              <PlayerArea playerNum={userPlayerNum} isCurrentUser side="bottom" />
             </div>
 
           </div>

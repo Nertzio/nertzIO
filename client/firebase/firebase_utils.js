@@ -61,8 +61,19 @@ export const queryUserPlayerNum = () => {
   const user = getCurrentUserInRedux()
   return getSnapshotOfAllPlayers()
     .then(playersData => playersData.val())
+    .then(players => {
+      if (!players) throw new Error('no players')
+      return players
+    })
     .then(players => Object.values(players))
     .then(players => getUserPlayerNum(user, players))
+    .catch(err => {
+      if (err.message === 'no players') {
+        console.warn('[@queryUserPlayerNum]: Tried to query players but found none');
+      } else {
+        throw err;
+      }
+    })
     .catch(console.error.bind(console));
 }
 

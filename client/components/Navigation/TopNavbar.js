@@ -62,7 +62,7 @@ const TopNavbar = ({userIsLoggedIn, currentUser, players}) => {
           {userIsLoggedIn && <Link to="/join">Play</Link>}
           {userIsLoggedIn && <Link to="/account">Account</Link>}
           {userIsLoggedIn && <Link to="/signout">Sign Out</Link>}
-          {!userIsLoggedIn && <Link to="/sigin">Sign In</Link>}
+          {!userIsLoggedIn && <Link to="/signin">Sign In</Link>}
           {!userIsLoggedIn && <Link to="/signup">Sign Up</Link>}
         </BarTop>
 

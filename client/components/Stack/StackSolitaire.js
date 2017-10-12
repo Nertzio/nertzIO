@@ -4,14 +4,15 @@ import {Stack, DragHandleStacks} from '../../components';
 import {DropTarget} from 'react-dnd';
 import {
   ItemTypes,
-  canIDropThisOnThatByStackType
+  canIDropThisOnThatByStackType,
+  thisIsMyCardAndStack,
 } from '../../DragNDrop';
 
 const StackSolitaire = ({
   cards,
   firebaseRef,
   connectDropTarget,
-  side,
+  isCurrentUser,
   stackKey
 }) => {
 
@@ -23,9 +24,15 @@ const StackSolitaire = ({
   })}
   return connectDropTarget(
     <div className="stack-solitaire-drop-target">
-      {cards && cards.length > 0 &&
-        <DragHandleStacks cards={faceUpCards} {...{side}} firebaseStackRef={firebaseRef} />
-      }
+       <div className="draggable-stack">
+        {cards && cards.length > 0 &&
+          <DragHandleStacks
+            {...{isCurrentUser}}
+            cards={faceUpCards}
+            firebaseStackRef={firebaseRef}
+          />
+        }
+      </div>
     </div>
   )
 }
@@ -51,15 +58,17 @@ const solitaireTarget = { // TODO: extract this into firebase utils
 
   },
 
-  canDrop({cards}, monitor) {
+  canDrop({cards, stackKey}, monitor) {
     const DropType = monitor.getItemType();
     const payload = monitor.getItem();
     const targetTopCard = cards[cards.length - 1];
     if (DropType === 'stack') {
       const {draggedStack} = payload;
       // just validate bottom card of incoming stack
+      if (!thisIsMyCardAndStack(draggedStack[0], stackKey)) return false;
       return canIDropThisOnThatByStackType(draggedStack[0], targetTopCard, 'StackSolitaire');
     } else if (DropType === 'card') {
+      if (!thisIsMyCardAndStack(payload, stackKey)) return false;
       return canIDropThisOnThatByStackType(payload, targetTopCard, 'StackSolitaire');
     }
   }

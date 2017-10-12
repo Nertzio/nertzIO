@@ -7,9 +7,9 @@ import {
   StackLittle,
 } from '../../components';
 
-const PlayerArea = ({playerNum, side}) => {
+const PlayerArea = ({playerNum, isCurrentUser}) => {
 
-  const className = side === 'bottom' ?
+  const className = isCurrentUser ?
   'stack-area user-stack-area' :
   'stack-area';
 
@@ -18,24 +18,24 @@ const PlayerArea = ({playerNum, side}) => {
 
         <div className={className}>
           <StackSolitaire
-            {...{side}}
+            {...{isCurrentUser}}
             stackKey={`p${playerNum}SolitaireStack1`}
           />
           <StackSolitaire
-            {...{side}}
+            {...{isCurrentUser}}
             stackKey={`p${playerNum}SolitaireStack2`}
           />
           <StackSolitaire
-            {...{side}}
+            {...{isCurrentUser}}
             stackKey={`p${playerNum}SolitaireStack3`}
           />
           <StackSolitaire
-            {...{side}}
+            {...{isCurrentUser}}
             stackKey={`p${playerNum}SolitaireStack4`}
           />
-          <StackBig {...{side}} stackKey={`p${playerNum}BigStack`}  />
-          <StackDrawn {...{side}} stackKey={`p${playerNum}DrawnStack`} />
-          <StackLittle {...{side}} stackKey={`p${playerNum}LittleStack`}  />
+          <StackBig {...{isCurrentUser}} stackKey={`p${playerNum}BigStack`}  />
+          <StackDrawn {...{isCurrentUser}} stackKey={`p${playerNum}DrawnStack`} />
+          <StackLittle {...{isCurrentUser}} stackKey={`p${playerNum}LittleStack`}  />
         </div>
       </section>
   )

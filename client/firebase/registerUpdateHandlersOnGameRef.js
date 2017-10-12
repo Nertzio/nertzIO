@@ -87,15 +87,34 @@ export const updateReduxWhenPlayersJoinGame = (gameRef) => {
 //   })
 // }
 
+// const updateReduxWhenPlayerStacksUpdate = (gameRef) => {
+//   return getSnapshotOfAllPlayersByGameRef(gameRef)
+//   .then((playersSnapshot) => {
+//     playersSnapshot.forEach(playerSnapshot => {
+//       playerSnapshot.child('stacks').forEach(stack => {
+//         stack.ref.on('value', stackSnapshot => {
+//           updateReduxPlayerStackByKey(stack.key, stackSnapshot.val())
+//         })
+//       })
+//     })
+//   })
+// }
+
 const updateReduxWhenPlayerStacksUpdate = (gameRef) => {
   return getSnapshotOfAllPlayersByGameRef(gameRef)
   .then((playersSnapshot) => {
     playersSnapshot.forEach(playerSnapshot => {
-      playerSnapshot.child('stacks').forEach(stack => {
-        stack.ref.on('value', stackSnapshot => {
-          updateReduxPlayerStackByKey(stack.key, stackSnapshot.val())
+      const stackSnapshot = playerSnapshot.child('stacks')
+        stackSnapshot.ref
+        .on('child_changed', stack => {
+          updateReduxPlayerStackByKey(stack.key, stack.val())
         })
-      })
+
+      // .forEach(stack => {
+      //   stack.ref.on('value', stackSnapshot => {
+      //     updateReduxPlayerStackByKey(stack.key, stackSnapshot.val())
+      //   })
+      // })
     })
   })
 }

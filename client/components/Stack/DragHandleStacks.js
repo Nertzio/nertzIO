@@ -15,16 +15,16 @@ const DragHandleStacks = ({
   connectDragSource,
   connectDragPreview,
   currentStackPosition,
+  isCurrentUser,
   isDragging,
   firebaseStackRef,
-  side,
 }) => {
 
   const stackPosition = currentStackPosition || 0;
   const currentCard = cards[stackPosition];
   const thereAreMoreCards = stackPosition < cards.length - 1;
   const cssPosition = stackPosition ? 'absolute' : 'relative';
-  const shouldDisplay = side !== 'bottom' ? 'none' : true;
+  const shouldDisplay = isCurrentUser ? true : 'none';
 
 
   return connectDragPreview( // ALL NESTED COMPONENTS INCLUDED IN DRAG PREVIEW
@@ -75,6 +75,7 @@ const DragHandleStacks = ({
           {/* Stop recursing when no more cards to render */}
         {thereAreMoreCards &&
           <DraggableDragHandleStacks
+            {...{isCurrentUser}}
             cards={cards}
             currentStackPosition={stackPosition + 1}
             firebaseStackRef={firebaseStackRef}
