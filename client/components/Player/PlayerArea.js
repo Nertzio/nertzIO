@@ -17,13 +17,25 @@ const PlayerArea = ({playerNum, side}) => {
       <section className="player-area-container">
 
         <div className={className}>
-          <StackSolitaire stackKey={`p${playerNum}SolitaireStack1`}  />
-          <StackSolitaire stackKey={`p${playerNum}SolitaireStack2`}  />
-          <StackSolitaire stackKey={`p${playerNum}SolitaireStack3`}  />
-          <StackSolitaire stackKey={`p${playerNum}SolitaireStack4`}  />
-          <StackBig stackKey={`p${playerNum}BigStack`}  />
-          <StackDrawn stackKey={`p${playerNum}DrawnStack`} />
-          <StackLittle stackKey={`p${playerNum}LittleStack`}  />
+          <StackSolitaire
+            {...{side}}
+            stackKey={`p${playerNum}SolitaireStack1`}
+          />
+          <StackSolitaire
+            {...{side}}
+            stackKey={`p${playerNum}SolitaireStack2`}
+          />
+          <StackSolitaire
+            {...{side}}
+            stackKey={`p${playerNum}SolitaireStack3`}
+          />
+          <StackSolitaire
+            {...{side}}
+            stackKey={`p${playerNum}SolitaireStack4`}
+          />
+          <StackBig {...{side}} stackKey={`p${playerNum}BigStack`}  />
+          <StackDrawn {...{side}} stackKey={`p${playerNum}DrawnStack`} />
+          <StackLittle {...{side}} stackKey={`p${playerNum}LittleStack`}  />
         </div>
       </section>
   )

@@ -14,18 +14,21 @@ const DragHandleStacks = ({
   cards,
   connectDragSource,
   connectDragPreview,
-  firebaseStackRef,
-  isDragging,
   currentStackPosition,
+  isDragging,
+  firebaseStackRef,
+  side,
 }) => {
 
   const stackPosition = currentStackPosition || 0;
   const currentCard = cards[stackPosition];
   const thereAreMoreCards = stackPosition < cards.length - 1;
   const cssPosition = stackPosition ? 'absolute' : 'relative';
+  const shouldDisplay = side !== 'bottom';
 
 
   return connectDragPreview( // ALL NESTED COMPONENTS INCLUDED IN DRAG PREVIEW
+
     <div
       className="draggable-stack"
       style={{
@@ -38,36 +41,49 @@ const DragHandleStacks = ({
         <div
           className="draggable-stack-anchor"
           style={{
-            color: currentCard.textColor,
+            color: 'white', //currentCard.textColor,
+            display: shouldDisplay,
             marginTop: `${8.333 * stackPosition}%`,
-            top: `${8.333  * stackPosition}%`,
+            top: `${-30 + (20  * stackPosition)}%`,
         }}>
-          {currentCard.displayName}{currentCard.symbol}
+
+            <span className="anchor-suit">
+              <div className="anchor-suit-flex">
+                <span className="anchor-suit-inner">
+                  {currentCard.symbol}
+                </span>
+              </div>
+            </span>
+            <div className="anchor-num">
+                  {currentCard.displayName}
+            </div>
+
         </div> // --------------- END DRAG ANCHOR -------------------
       )}
 
-      <Card
-        ownStack={cards}
-        stackPosition={stackPosition}
-        firebaseStackRef={firebaseStackRef}
-        {...currentCard}
-      />
-
-      {/* ----------- RECURSIVE DRAG SOURCE COMPONENT ------------*/}
-        {/* Every card in this solitiare stack is actually a draggable
-            stack, which contains 1) a single card and 2) another draggable
-            stack */}
-        {/* Stop recursing when no more cards to render */}
-      {thereAreMoreCards &&
-        <DraggableDragHandleStacks
-          cards={cards}
-          currentStackPosition={stackPosition + 1}
+        <Card
+          ownStack={cards}
+          stackPosition={stackPosition}
           firebaseStackRef={firebaseStackRef}
+          {...currentCard}
         />
-      }
+
+        {/* ----------- RECURSIVE DRAG SOURCE COMPONENT ------------*/}
+          {/* Every card in this solitiare stack is actually a draggable
+              stack, which contains 1) a single card and 2) another draggable
+              stack */}
+          {/* Stop recursing when no more cards to render */}
+        {thereAreMoreCards &&
+          <DraggableDragHandleStacks
+            cards={cards}
+            currentStackPosition={stackPosition + 1}
+            firebaseStackRef={firebaseStackRef}
+          />
+        }
     </div>,
 
-    {offsetX: 50}) // special dragPreview option argument
+    {offsetX: 50}) // makes the preview line up with the mouse better
+                    // when dragging.
 }
 
 // ------------------- DRAG N DROP STUFF ------------------------

@@ -17,7 +17,7 @@ const Card = (props) => {
     backgroundColor,
     belongsTo,
     connectDragSource,
-    // firebaseStackRef,
+    firebaseStackRef,
     isDragging,
     isFaceUp,
     // name,
@@ -111,7 +111,7 @@ function collect(connect, monitor) {
 const draggableCards = DragSource(ItemTypes.CARD, cardSource, collect)(Card)
 
 const mapState = state => ({
-  // user: state.user,
+  user: state.user,
   players: state.players,
 })
 

@@ -7,7 +7,14 @@ import {
   canIDropThisOnThatByStackType
 } from '../../DragNDrop';
 
-const StackSolitaire = ({cards, firebaseRef, connectDropTarget, stackKey}) => {
+const StackSolitaire = ({
+  cards,
+  firebaseRef,
+  connectDropTarget,
+  side,
+  stackKey
+}) => {
+
   let faceUpCards
   if (cards){
     faceUpCards = cards.map(card => {
@@ -17,7 +24,7 @@ const StackSolitaire = ({cards, firebaseRef, connectDropTarget, stackKey}) => {
   return connectDropTarget(
     <div className="stack-solitaire-drop-target">
       {cards && cards.length > 0 &&
-        <DragHandleStacks cards={faceUpCards} firebaseStackRef={firebaseRef} />
+        <DragHandleStacks cards={faceUpCards} {...{side}} {...{firebaseRef}} />
       }
     </div>
   )

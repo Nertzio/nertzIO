@@ -129,7 +129,7 @@ function mapStateToProps (state) {
     game: state.game,
     user: state.user,
     userPlayerNum: state.game.userPlayerNum,
-    otherPlayerNums: Object.keys(state.players).filter(num => +num !== +state.game.userPlayerNum).map(num => +num)
+    otherPlayerNums: Object.keys(state.players).filter(num => +num !== +state.game.userPlayerNum).map(num => +num),
     isRoundOver: state.game.isNertzCalled,
   }
 }
@@ -137,24 +137,4 @@ function mapStateToProps (state) {
 
 const reduxifiedGameArea = connect(mapStateToProps)(GameArea);
 export default DragDropContext(HTML5Backend)(reduxifiedGameArea)
-
-
-// ------------------ ORIGINAL GAME AREA --------------------
-{/* <div id="firstRow" className="container">
-<PlayerArea playerNum={otherPlayerNums[0] || 1} />
-</div>
-<div id="secondRow" className="container">
-<div style={{transform: 'rotate(270deg)'}}>
-<PlayerArea
-  playerNum={otherPlayerNums[1] || 2} />
-  </div>
-<GameField />
-  <div style={{transform: 'rotate(90deg)'}}>
-    <PlayerArea
-      playerNum={otherPlayerNums[2] || 3} />
-  </div>
-</div>
-<div id="thirdRow" className="container">
-<PlayerArea playerNum={currentUserPlayerNum || 4} />
-</div> */}
 
