@@ -113,6 +113,7 @@ const draggableCards = DragSource(ItemTypes.CARD, cardSource, collect)(Card)
 const mapState = state => ({
   user: state.user,
   players: state.players,
+  userPlayerNum: state.game.userPlayerNum,
 })
 
 export default connect(mapState)(draggableCards);

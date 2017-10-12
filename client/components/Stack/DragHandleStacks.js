@@ -24,7 +24,7 @@ const DragHandleStacks = ({
   const currentCard = cards[stackPosition];
   const thereAreMoreCards = stackPosition < cards.length - 1;
   const cssPosition = stackPosition ? 'absolute' : 'relative';
-  const shouldDisplay = side !== 'bottom';
+  const shouldDisplay = side !== 'bottom' ? 'none' : true;
 
 
   return connectDragPreview( // ALL NESTED COMPONENTS INCLUDED IN DRAG PREVIEW

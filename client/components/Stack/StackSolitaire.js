@@ -24,7 +24,7 @@ const StackSolitaire = ({
   return connectDropTarget(
     <div className="stack-solitaire-drop-target">
       {cards && cards.length > 0 &&
-        <DragHandleStacks cards={faceUpCards} {...{side}} {...{firebaseRef}} />
+        <DragHandleStacks cards={faceUpCards} {...{side}} firebaseStackRef={firebaseRef} />
       }
     </div>
   )
