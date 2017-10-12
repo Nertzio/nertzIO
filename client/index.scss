@@ -59,6 +59,48 @@ html {
             margin: 1em;
             display: inline-block;
         }
+        .keyInput {
+            border: none;
+            border-bottom: solid white 2px;
+            background: #63a2a7;
+            margin-left: 101px;
+            color: rgb(255, 153, 0);
+            padding: 10px;
+            font-family: 'Roboto', sans-serif;
+            transition: all 600ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
+            &:focus {
+             outline-width: 0;
+             font-size: 27px;
+            }
+           }
+
+          .startGameBtn {
+            background: #63a2a7;
+            -webkit-border-radius: 10;
+            -moz-border-radius: 10;
+            border-radius: 10px;
+            -webkit-box-shadow: 0px 1px 3px #989494;
+            -moz-box-shadow: 0px 1px 3px #989494;
+            box-shadow: 0px 1px 3px #989494;
+            font-family: Arial;
+            color: white;
+            font-size: 35px;
+            padding: 10px 20px 10px 20px;
+            border: solid rgb(255, 153, 0) 2px;
+            text-decoration: none;
+            margin: 20px
+          }
+
+          .startGameBtn:hover {
+            background: rgb(72, 72, 72);
+            background-image: -webkit-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
+            background-image: -moz-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
+            background-image: -ms-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
+            background-image: -o-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
+            background-image: linear-gradient(to bottom, rgb(48, 47, 47), rgb(72, 72, 72));
+            text-decoration: none;
+          }
+
         .blur {
             filter: none;
             transform: none;
@@ -231,6 +273,22 @@ html {
                                 }
                               }
 
+                                // background-color: rgb(232, 232, 232);
+                                // color: black;
+                                // font-size: 1.5vh;
+                                // height: 8.333%;
+                                // right: 0px;
+                                // margin-top: 0%;
+                                // max-width: 15vw;
+                                // padding: 3px;
+                                // position: absolute;
+                                // top: 0%;
+                                // width: 13vh;
+
+                                // anchor-suit
+                                // anchor-suit-inner
+                                // anchor-suit-flex
+                                // anchor-num
                             }
                             .draggable-stack {
                                 margin: 0px auto;
@@ -543,50 +601,57 @@ html {
                             }
                         }
                     }
-                }
+                } // .player-area-container {
+                //   align-items: center;
+                //   background-color: tomato;
+                //   border: 1px solid gray;
+                //   color: white;
+                //   display: flex;
+                //   justify-content: space-evenly;
+                //   .stack-area {
+                //     align-items: center;
+                //     border: 1px solid white;
+                //     display: flex;
+                //     justify-content: space-evenly;
+                //     .draggable-stack {
+                //       height: calc(15vh);
+                //       margin: 0px auto;
+                //       max-width: calc(10vw);
+                //       opacity: 1;
+                //       position: relative;
+                //       width: calc(10vh);
+                //       z-index: 0;
+                //       .draggable-stack-anchor {
+                //         background-color: rgb(232, 232, 232);
+                //         color: black;
+                //         font-size: 1.5vh;
+                //         height: 8.333%;
+                //         right: 0px;
+                //         margin-top: 0%;
+                //         max-width: 15vw;
+                //         padding: 3px;
+                //         position: absolute;
+                //         top: 0%;
+                //         width: 13vh;
+                //       }
+                //     }
+                //   }
+                // }
             }
+        } // #gameArea {
+        //   .container {
+        //     display: flex;
+        //     flex-direction: row;
+        //     flex-wrap: nowrap;
+        //     align-items: center;
+        //     align-content: center;
+        //     height: '100vh';
+        //     justify-content: 'space-evenly';
+        //     margin: '10px auto';
+        //     width: '90%';
+        //   }
+        // }
 
 
-    .keyInput {
-      border: none;
-      border-bottom: solid white 2px;
-      background: #63a2a7;
-      margin-left: 101px;
-      color: rgb(255, 153, 0);
-      padding: 10px;
-      font-family: 'Roboto', sans-serif;
-      transition: all 600ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
-      &:focus {
-       outline-width: 0;
-       font-size: 27px;
-      }
-     }
-
-    .startGameBtn {
-      background: #63a2a7;
-      -webkit-border-radius: 10;
-      -moz-border-radius: 10;
-      border-radius: 10px;
-      -webkit-box-shadow: 0px 1px 3px #989494;
-      -moz-box-shadow: 0px 1px 3px #989494;
-      box-shadow: 0px 1px 3px #989494;
-      font-family: Arial;
-      color: white;
-      font-size: 35px;
-      padding: 10px 20px 10px 20px;
-      border: solid rgb(255, 153, 0) 2px;
-      text-decoration: none;
-      margin: 20px
     }
-
-    .startGameBtn:hover {
-      background: rgb(72, 72, 72);
-      background-image: -webkit-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
-      background-image: -moz-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
-      background-image: -ms-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
-      background-image: -o-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
-      background-image: linear-gradient(to bottom, rgb(48, 47, 47), rgb(72, 72, 72));
-      text-decoration: none;
-    }
-  }
 }
