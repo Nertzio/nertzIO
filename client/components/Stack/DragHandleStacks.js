@@ -83,7 +83,7 @@ const DragHandleStacks = ({
         }
     </div>,
 
-    {offsetX: 50}) // makes the preview line up with the mouse better
+    {offsetX: 50, offsetY: 50}) // makes the preview line up with the mouse better
                     // when dragging.
 }
 
