@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {BarTop, BarBufferInPx} from '../Common';
 import {getUserPlayerNum} from '../../vanillaUtils'
 import {
@@ -9,10 +9,13 @@ import {
   // startNewRoundInRedux,
   getStackInStoreByKey,
 } from '../../redux/reduxUtils';
-import {updateDbWithNertzCall, updateDbWithPlayerScores,
-  updateDbWithPauseStatus} from '../../firebase'
+import {updateDbWithNertzCall,
+  updateDbWithPlayerScores,
+  markGameAsNotInProgress,
+  // updateDbWithPauseStatus,
+} from '../../firebase'
 
-const TopNavbar = ({userIsLoggedIn, currentUser, players, game}) => {
+const TopNavbar = ({userIsLoggedIn, currentUser, players, game, history}) => {
   // Replaced this functionality with combination of callNertz button and firebase/redux utils for isNertzCalled
 
   // TODO: remove when done testing modal
@@ -28,21 +31,40 @@ const TopNavbar = ({userIsLoggedIn, currentUser, players, game}) => {
     updateDbWithPlayerScores()
   }
 
-  const reshuffle = () => {
-    //TODO: add functionality to reshuffle
-  }
+  // const reshuffle = () => {
+  //   //TODO: add functionality to reshuffle
+  // }
 
-  const pause = () => {
-    updateDbWithPauseStatus()
-  }
+// //PAUSE BUTTON ON PAUSE
+//   const pause = () => {
+//     updateDbWithPauseStatus()
+//   }
 
   const ableToCallNertz = () => {
     const nertzPile = getStackInStoreByKey(`p${playerNum}LittleStack`);
     return nertzPile && !nertzPile.length;
   }
 
-  const signOutOrLeaveGame = game.isInProgress ? 'Quit Game' : 'Sign Out'
-  const playOrNewGame = game.isInProgress ? 'New Game' : 'Play'
+  const handleSignOutOrQuitGame = () => {
+    if (game.isInProgress) {
+      Promise.resolve(markGameAsNotInProgress())
+      .then(() => history.push('/signout'))
+    } else {
+      history.push('/signout')
+    }
+  }
+
+  const handlePlayOrNewGame = () => {
+    if (game.isInProgress) {
+      Promise.resolve(markGameAsNotInProgress())
+      .then(() => history.push('/join'))
+    } else {
+      history.push('/join')
+    }
+  }
+
+  const signOutOrQuitGameLabel = game.isInProgress ? 'Quit Game' : 'Sign Out'
+  const playOrNewGameLabel = game.isInProgress ? 'New Game' : 'Play'
 
   return (
     <div>
@@ -65,11 +87,11 @@ const TopNavbar = ({userIsLoggedIn, currentUser, players, game}) => {
 
         <BarTop alignRight>
           {game.isInProgress && ableToCallNertz() && <button onClick={callNertz}>CALL NERTZ!!</button>}
-          {game.isInProgress && <button onClick={pause}>Pause</button>}
-          {game.isInProgress && <button onClick={reshuffle}>Reshuffle Cards</button>}
-          {userIsLoggedIn && <Link to="/join">{playOrNewGame}</Link>}
+          {/*{game.isInProgress && <button onClick={pause}>Pause</button>}*/}
+          {/*{game.isInProgress && <button onClick={reshuffle}>Reshuffle Cards</button>}*/}
+          {userIsLoggedIn && <button onClick={handlePlayOrNewGame}>{playOrNewGameLabel}</button>}
+          {userIsLoggedIn && <button onClick={handleSignOutOrQuitGame}>{signOutOrQuitGameLabel}</button>}
           {/*{userIsLoggedIn && <Link to="/account">Account</Link>}*/}
-          {userIsLoggedIn && <Link to="/signout">{signOutOrLeaveGame}</Link>}
           {!userIsLoggedIn && <Link to="/signin">Sign In</Link>}
           {!userIsLoggedIn && <Link to="/signup">Sign Up</Link>}
         </BarTop>
@@ -89,4 +111,4 @@ const mapState = state => ({
   game: state.game
 })
 
-export default connect(mapState, null)(TopNavbar);
+export default withRouter(connect(mapState, null)(TopNavbar));

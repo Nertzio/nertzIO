@@ -89,10 +89,10 @@ export const setReduxGameProgressStatus = isInProgress => {
   else return dispatch(setGameNotInProgress());
 }
 
-export const setReduxGamePauseStatus = isGamePaused => {
-  if (isGamePaused) return dispatch(setGameToPaused());
-  else return dispatch(setGameToUnpaused());
-}
+// export const setReduxGamePauseStatus = isGamePaused => {
+//   if (isGamePaused) return dispatch(setGameToPaused());
+//   else return dispatch(setGameToUnpaused());
+// }
 
 export const setUserPlayerNumInRedux = (num) => {
   return dispatch(setUserPlayerNum(num));

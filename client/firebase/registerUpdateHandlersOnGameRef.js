@@ -5,6 +5,7 @@ import {
   getReduxGameRef,
   getPlayersInStore,
   setReduxGameProgressStatus,
+  // setReduxGamePauseStatus,
   updatePlayerInReduxByKey,
   updateReduxPlayerStackByKey,
   updateReduxFieldStackByKey,
@@ -54,12 +55,14 @@ const updateReduxWhenGameStatusChanges = () => {
     })
 }
 
-const updateReduxWhenGamePauseStatusChanges = () => {
-  return getReduxGameRef()
-    .child('isGamePaused').on('value', isGamePaused => {
-      return setReduxGameProgressStatus(isGamePaused.val())
-    })
-}
+
+// //PAUSE BUTTON ON PAUSE
+// const updateReduxWhenGamePauseStatusChanges = () => {
+//   return getReduxGameRef()
+//     .child('isGamePaused').on('value', isGamePaused => {
+//       return setReduxGamePauseStatus(isGamePaused.val())
+//     })
+// }
 
 export const updateReduxWhenPlayerDataChanges = (gameRef) => {
   return gameRef.child('players').once('value')
@@ -110,7 +113,7 @@ const updateReduxWhenPlayerStacksUpdate = (gameRef) => {
 export function registerUpdateHandlersOnGameRef(gameRef) {
   return Promise.all([
     updateReduxWhenGameStatusChanges(),
-    updateReduxWhenGamePauseStatusChanges(),
+    // updateReduxWhenGamePauseStatusChanges(),
     updateReduxWhenFieldStacksUpdate(gameRef),
     updateReduxWhenPlayerStacksUpdate(gameRef),
     updateReduxWhenPlayerDataChanges(gameRef),
