@@ -100,7 +100,7 @@ class JoinAGame extends Component {
     JoinAGame: {
       alignContent: 'center',
       textAlign: 'center',
-      backgroundColor: 'rgb 23, 23, 23',
+      backgroundColor: '#63a2a7',
       position: 'absolute',
       height: '100%',
       width: '100%',

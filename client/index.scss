@@ -47,9 +47,10 @@ html {
     }
     .keyInput {
       border: none;
-      background: rgb(34, 30, 30);
+      border-bottom: solid white 2px;
+      background: #63a2a7;
       margin-left: 101px;
-      color: rgb(169, 15, 169);
+      color: rgb(255, 153, 0);
       padding: 10px;
       font-family: 'Roboto', sans-serif;
       transition: all 600ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
@@ -60,7 +61,7 @@ html {
      }
 
     .startGameBtn {
-      background: #000000;
+      background: #63a2a7;
       -webkit-border-radius: 10;
       -moz-border-radius: 10;
       border-radius: 10px;
@@ -71,7 +72,7 @@ html {
       color: white;
       font-size: 35px;
       padding: 10px 20px 10px 20px;
-      border: solid rgb(169, 15, 169) 2px;
+      border: solid rgb(255, 153, 0) 2px;
       text-decoration: none;
       margin: 20px
     }
