@@ -1,7 +1,22 @@
+@mixin for-phone-only {
+  @media (max-width: 599px) { @content; }
+}
+@mixin for-tablet-portrait-up {
+  @media (min-width: 600px) { @content; }
+}
+@mixin for-tablet-landscape-up {
+  @media (min-width: 900px) { @content; }
+}
+@mixin for-desktop-up {
+  @media (min-width: 1200px) { @content; }
+}
+@mixin for-big-desktop-up {
+  @media (min-width: 1800px) { @content; }
+}
+
 
 html {
   background-color: #63A2A7;
-  height: 100vh;
   box-sizing: 'border-box';
   *, *:before, *:after {
     box-sizing: inherit;
@@ -53,37 +68,272 @@ html {
     .game-area-wrapper {
       display: flex;
       height: 100%;
-      flex-direction: column;
+      flex-direction: row;
       justify-content: center;
       align-items: center;
 
 
       .game-area {
         display: flex;
+        align-content: space-around;
         align-items: center;
         flex-direction: row;
-        /* flex-wrap: nowrap; */
-        height: 100%;
+        flex-wrap: wrap;
+        height: 90%;
         max-height: 100%;
-        justify-content: center;
+        justify-content: space-evenly;
         width: 100vw;
         max-width: 100vw;
         // transform: perspective(15em) rotateX(39deg) scale(0.6, 0.6);
 
+        .player-area-stacked-container {
+          display: flex;
+          width: 100%;
+          justify-content: center;
+          @include for-phone-only {
+            margin: 3px auto;
+          }
+          @include for-tablet-portrait-up {
+            margin: 6px auto;
+          }
+
+          .player-area-container {
+            align-items: center;
+            color: white;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 800px;
+            min-width: 400px;
+
+
+            .stack-area {
+              align-items: center;
+              display: flex;
+              justify-content: center;
+
+              .stack-solitaire-drop-target {
+                margin: 0 2%;
+                height: 100%
+              }
+
+              .stack-non-solitaire {
+                height: 100%;
+                margin: 0 2%;
+              }
+
+              .draggable-stack {
+                margin: 0px auto;
+                opacity: 1;
+                position: relative;
+                z-index: 0;
+
+                @include for-phone-only {
+                  height: 6vh;
+                  max-height: 100px;
+                  min-height: 45px;
+                  max-width: 75px;
+                  min-width: 30px;
+                  width: 4vh;
+                }
+
+                @include for-tablet-portrait-up {
+                  height: 9vh;
+                  max-height: 100px;
+                  min-height: 45px;
+                  max-width: 75px;
+                  min-width: 30px;
+                  width: 6vh;
+                }
+
+                @include for-tablet-landscape-up {
+                  height: 10vh;
+                  max-height: 100px;
+                  min-height: 45px;
+                  max-width: 75px;
+                  min-width: 30px;
+                  width: 7vh;
+                }
+
+                @include for-desktop-up {
+                  height: 13vh;
+                  max-height: 100px;
+                  min-height: 45px;
+                  max-width: 75px;
+                  min-width: 30px;
+                  width: 8vh;
+                }
+
+                .draggable-stack-anchor {
+                  background-color: rgb(232, 232, 232);
+                  color: black;
+                  font-size: 1.5vh;
+                  height: 8.333%;
+                  right: 0px;
+                  margin-top: 0%;
+                  max-width: 15vw;
+                  padding: 3px;
+                  position: absolute;
+                  top: 0%;
+                  width: 13vh;
+                }
+              }
+            }
+
+            .stack-area.user-stack-area {
+              align-items: center;
+              display: flex;
+              justify-content: space-evenly;
+
+              .stack-solitaire-drop-target {
+                margin: 0 2%;
+                height: 100%
+              }
+
+              .stack-non-solitaire {
+                height: 100%;
+                margin: 0 2%;
+              }
+
+              .draggable-stack {
+                margin: 0px auto;
+                opacity: 1;
+                position: relative;
+                z-index: 0;
+
+                @include for-phone-only {
+                  height: 6vh;
+                  max-height: 100px;
+                  min-height: 45px;
+                  max-width: 75px;
+                  min-width: 30px;
+                  width: 4vh;
+                }
+
+                @include for-tablet-portrait-up {
+                  height: 9vh;
+                  max-height: 100px;
+                  min-height: 45px;
+                  max-width: 75px;
+                  min-width: 30px;
+                  width: 6vh;
+                }
+
+                @include for-tablet-landscape-up {
+                  height: 10vh;
+                  max-height: 100px;
+                  min-height: 45px;
+                  max-width: 75px;
+                  min-width: 30px;
+                  width: 7vh;
+                }
+
+                @include for-desktop-up {
+                  height: 13vh;
+                  max-height: 100px;
+                  min-height: 45px;
+                  max-width: 75px;
+                  min-width: 30px;
+                  width: 8vh;
+                }
+
+                .draggable-stack-anchor {
+                  background-color: rgb(232, 232, 232);
+                  color: black;
+                  font-size: 1.5vh;
+                  height: 8.333%;
+                  right: 0px;
+                  margin-top: 0%;
+                  max-width: 15vw;
+                  padding: 3px;
+                  position: absolute;
+                  top: 0%;
+                  width: 13vh;
+                }
+              }
+
+              .stack-area.user-player-area {
+                display: flex;
+                justify-content: space-evenly;
+              }
+            }
+          }
+
+
+
+        }
+
+        .game-field-stacked-container {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+
+          .game-field-container {
+            display: flex;
+            width: 100%;
+            max-width: 800px;
+            min-width: 400px;
+            padding-bottom: 5%;
+
+            .game-field-outer {
+              // background-color: purple;
+              // border: 1px solid gray;
+              color: white;
+              width: 100%;
+              height: 100%;
+
+              .grid-component {
+                color: white;
+                display: flex;
+                flex-wrap: wrap;
+                height: 100%;
+                max-height: 100%;
+                width: 100%;
+
+                .grid-cell-wrapper {
+                  flex: 0 0 25%;
+
+                  .grid-cell-component {
+                    color: white;
+                    display: flex;
+                    height: 100%;
+                    width: 100%;
+
+                    .game-field-stack {
+                      background-color: #463f3f;
+                      color: white;
+                      display: flex;
+                      justify-content: center;
+                      height: 100%;
+                      width: 100%;
+                      padding: 2%;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
         .card-wrapper {
-          border: 1px solid lightgray;
           border-radius: 3px;
-          height: 13vh;
-          left: 0px;
-          // margin: 0px auto;
-          max-height: 100px;
-          max-width: 75px;
-          opacity: 1;
+          height: 100%;
           position: absolute;
-          top: 0px;
-          // transform: translate(0px, 0px) perspective(50em) rotateX(20deg);
-          width: 9vh;
-          z-index: 0;
+          width: 100%;
+          // ORIGINAL
+          // border-radius: 3px;
+          // height: 10vh;
+          // left: 0px;
+          // max-height: 100px;
+          // min-height: 45px;
+          // max-width: 75px;
+          // min-width: 30px;
+          // opacity: 1;
+          // position: relative;
+          // top: 0px;
+          // width: 6vh;
+          // // transform: translate(0px, 0px) perspective(50em) rotateX(20deg);
+          // z-index: 0;
+
         }
 
         .card-back {
@@ -93,7 +343,7 @@ html {
           color: white;
           display: flex;
           flex-direction: column;
-          font-size: calc(2.5vh);
+          // font-size: 10%; // bigger size is nice here
           height: 100%;
           justify-content: space-around;
         }
@@ -105,17 +355,34 @@ html {
           color: black;
           display: flex;
           flex-direction: column;
-          font-size: calc(2.5vh);
+          font-size: 10%;
           height: 100%;
           justify-content: space-around;
+
+          @include for-tablet-portrait-up {
+            font-size: 2vh;
+          }
         }
 
         .stack-component {
-          height: calc(15vh);
-          margin: 0px auto;
-          max-width: calc(10vw);
           position: relative;
-          width: calc(10vh);
+          @include for-phone-only {
+            height: 6vh;
+            max-height: 100px;
+            min-height: 45px;
+            max-width: 75px;
+            min-width: 30px;
+            width: 4vh;
+          }
+
+          @include for-tablet-portrait-up {
+            height: 10vh;
+            max-height: 100px;
+            min-height: 45px;
+            max-width: 75px;
+            min-width: 30px;
+            width: 7vh;
+          }
         }
 
         .player-right-container {
@@ -295,46 +562,46 @@ html {
 
         }
 
-        .player-area-container {
-          align-items: center;
-          background-color: tomato;
-          border: 1px solid gray;
-          color: white;
-          display: flex;
-          justify-content: space-evenly;
+        // .player-area-container {
+        //   align-items: center;
+        //   background-color: tomato;
+        //   border: 1px solid gray;
+        //   color: white;
+        //   display: flex;
+        //   justify-content: space-evenly;
 
-          .stack-area {
-            align-items: center;
-            border: 1px solid white;
-            display: flex;
-            justify-content: space-evenly;
+        //   .stack-area {
+        //     align-items: center;
+        //     border: 1px solid white;
+        //     display: flex;
+        //     justify-content: space-evenly;
 
 
-            .draggable-stack {
-              height: calc(15vh);
-              margin: 0px auto;
-              max-width: calc(10vw);
-              opacity: 1;
-              position: relative;
-              width: calc(10vh);
-              z-index: 0;
+        //     .draggable-stack {
+        //       height: calc(15vh);
+        //       margin: 0px auto;
+        //       max-width: calc(10vw);
+        //       opacity: 1;
+        //       position: relative;
+        //       width: calc(10vh);
+        //       z-index: 0;
 
-              .draggable-stack-anchor {
-                background-color: rgb(232, 232, 232);
-                color: black;
-                font-size: 1.5vh;
-                height: 8.333%;
-                right: 0px;
-                margin-top: 0%;
-                max-width: 15vw;
-                padding: 3px;
-                position: absolute;
-                top: 0%;
-                width: 13vh;
-              }
-            }
-          }
-        }
+        //       .draggable-stack-anchor {
+        //         background-color: rgb(232, 232, 232);
+        //         color: black;
+        //         font-size: 1.5vh;
+        //         height: 8.333%;
+        //         right: 0px;
+        //         margin-top: 0%;
+        //         max-width: 15vw;
+        //         padding: 3px;
+        //         position: absolute;
+        //         top: 0%;
+        //         width: 13vh;
+        //       }
+        //     }
+        //   }
+        // }
     }
   }
 

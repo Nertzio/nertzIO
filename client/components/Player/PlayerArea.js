@@ -7,27 +7,26 @@ import {
   StackLittle,
 } from '../../components';
 
-class PlayerArea extends Component {
+const PlayerArea = ({playerNum, side}) => {
 
-  render(){
-    const {playerNum, players, side} = this.props;
+  const className = side === 'bottom' ?
+  'stack-area user-stack-area' :
+  'stack-area';
 
-    return (
-        <section className="player-area-container">
+  return (
+      <section className="player-area-container">
 
-        {/* <h2>{players[playerNum] && players[playerNum].displayName}</h2> */}
-          <div className="stack-area">
-            <StackSolitaire stackKey={`p${playerNum}SolitaireStack1`}  />
-            <StackSolitaire stackKey={`p${playerNum}SolitaireStack2`}  />
-            <StackSolitaire stackKey={`p${playerNum}SolitaireStack3`}  />
-            <StackSolitaire stackKey={`p${playerNum}SolitaireStack4`}  />
-            <StackBig stackKey={`p${playerNum}BigStack`}  />
-            <StackDrawn stackKey={`p${playerNum}DrawnStack`} />
-            <StackLittle stackKey={`p${playerNum}LittleStack`}  />
-          </div>
-        </section>
-    )
-  }
+        <div className={className}>
+          <StackSolitaire stackKey={`p${playerNum}SolitaireStack1`}  />
+          <StackSolitaire stackKey={`p${playerNum}SolitaireStack2`}  />
+          <StackSolitaire stackKey={`p${playerNum}SolitaireStack3`}  />
+          <StackSolitaire stackKey={`p${playerNum}SolitaireStack4`}  />
+          <StackBig stackKey={`p${playerNum}BigStack`}  />
+          <StackDrawn stackKey={`p${playerNum}DrawnStack`} />
+          <StackLittle stackKey={`p${playerNum}LittleStack`}  />
+        </div>
+      </section>
+  )
 }
 
 function mapStateToProps (state) {

@@ -4,15 +4,15 @@
 
 import React from 'react';
 
-const CardBack = ({belongsTo, backgroundColor}) => {
+const CardBack = ({initials, color}) => {
 
   return (
     <div
       className="card-back"
       style={{
-        backgroundColor: backgroundColor,
+        backgroundColor: color,
     }}>
-        <p>P{belongsTo}</p>
+        <p>{initials}</p>
     </div>
   )
 }

@@ -85,33 +85,35 @@ class GameArea extends Component {
     return (
         <div className="game-area-wrapper">
         <BlurOnRoundOver >
+
           <div id="gameArea" className="game-area">
 
 {/* ------------------ COLUMN ONE -------------------------- */}
-            <div className="player-left-container">
+            <div className="player-area-stacked-container">
+              {this.renderTopRowPlayers(areas.top)}
+            </div>
+
+            <div className="player-area-stacked-container">
                 {this.renderLeftColumnPlayers(areas.left)}
             </div>
 
-{/* ------------------- COLUMN TWO --------------------------- */}
-            <div className="game-area-middle-column">
+            <div className="player-area-stacked-container">
+               {this.renderRightColumnPlayers(areas.right)}
+            </div>
 
-              <div className="player-top-container">
-                {this.renderTopRowPlayers(areas.top)}
-              </div>
+{/* ------------------- COLUMN TWO --------------------------- */}
+            <div className="game-field-stacked-container">
 
               <div className="game-field-container">
                 <GameField />
               </div>
 
-              <div className="player-bottom-container">
-                <PlayerArea playerNum={userPlayerNum} side="bottom" />
-              </div>
-
             </div>
 
 {/* --------------------- COLUMN THREE --------------------------- */}
-            <div className="player-right-container">
-               {this.renderRightColumnPlayers(areas.right)}
+
+            <div className="player-area-stacked-container">
+              <PlayerArea playerNum={userPlayerNum} side="bottom" />
             </div>
 
           </div>

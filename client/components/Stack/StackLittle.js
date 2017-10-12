@@ -12,11 +12,7 @@ const StackLittle =  ({cards, firebaseRef}) => {
   })
 
   return (
-    <div style={{
-      border: '1px solid gray',
-      height: '100%',
-      flex: '1 10%'
-    }}>
+    <div className="stack-non-solitaire">
       <Stack cards={faceUpCards} firebaseStackRef={firebaseRef}/>
     </div>
   )

@@ -41,3 +41,7 @@ export const thereAreNo = (collection) => {
     return Object.keys(collection).length === 0;
   }
 }
+
+export const takeInitials = (nameStr) => (
+  nameStr.split(' ').map(name => name[0].toUpperCase()).join('')
+)

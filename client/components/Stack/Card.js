@@ -9,22 +9,28 @@ import {
 } from '../../DragNDrop';
 import {
   getUserPlayerNum,
+  takeInitials,
 } from '../../vanillaUtils';
 
 const Card = (props) => {
   const {
-    // belongsTo,
+    backgroundColor,
+    belongsTo,
+    connectDragSource,
     // firebaseStackRef,
+    isDragging,
     isFaceUp,
     // name,
     // number,
     // ownStack,
     stackPosition,
+    players,
     // suit,
    } = props;
 
-   const { connectDragSource, isDragging } = props
-   const borderColor = stackPosition % 2 === 1 ? 'white' : 'lightgray'
+
+   const playerInitials = takeInitials(players[belongsTo].displayName);
+   const borderColor = stackPosition % 3 === 0 ? 'lightgray' : 'white'
 
   return connectDragSource(
     <div
@@ -32,13 +38,14 @@ const Card = (props) => {
       style={{
         border: `1px solid ${borderColor}`,
         opacity: isDragging ? 0 : 1,
-        transform: `translate(0px, ${stackPosition * -1}px)`,
+        // position: stackPosition ? 'absolute' : 'relative',
+        transform: `translate(0px, ${stackPosition * -0.5}px)`,
         // perspective(50em) rotateX(20deg),
         zIndex: stackPosition,
     }}>
       {isFaceUp
         ? <CardFront {...props} />
-        : <CardBack {...props} />
+        : <CardBack initials={playerInitials} color={backgroundColor} />
       }
     </div>
   )
@@ -104,7 +111,7 @@ function collect(connect, monitor) {
 const draggableCards = DragSource(ItemTypes.CARD, cardSource, collect)(Card)
 
 const mapState = state => ({
-  user: state.user,
+  // user: state.user,
   players: state.players,
 })
 

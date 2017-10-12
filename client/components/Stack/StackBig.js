@@ -23,12 +23,7 @@ const StackBig =  ({cards, firebaseRef, playerNum, user, players}) => {
   return (
     <div
       onClick={() => flip3IfPlayerIsCurrentUser()}
-      style={{
-        border: '1px solid gray',
-        height: '100%',
-        flex: '1 10%',
-        position: 'relative',
-    }}>
+      className="stack-non-solitaire">
       <Stack cards={faceDownCards} firebaseStackRef={firebaseRef} />
 
       {/* restart button needs to be moved outside the div with the flip3 onClick listener */}
