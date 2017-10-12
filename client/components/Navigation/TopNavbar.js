@@ -9,7 +9,7 @@ import {
   // startNewRoundInRedux,
   getStackInStoreByKey,
 } from '../../redux/reduxUtils';
-import {updateDbWithNertzCall} from '../../firebase'
+import {updateDbWithNertzCall, updateDbWithPlayerScores} from '../../firebase'
 
 const TopNavbar = ({userIsLoggedIn, currentUser, players}) => {
   // Replaced this functionality with combination of callNertz button and firebase/redux utils for isNertzCalled
@@ -24,6 +24,7 @@ const TopNavbar = ({userIsLoggedIn, currentUser, players}) => {
 
   const callNertz = () => {
     updateDbWithNertzCall(playerNum);
+    updateDbWithPlayerScores()
   }
 
   const ableToCallNertz = () => {

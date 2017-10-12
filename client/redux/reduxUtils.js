@@ -16,7 +16,7 @@ import store, {
   startNewGame,
   // setRoundOver,
   // startNewRound,
-  setScoreLimit,
+  // setScoreLimit,
   setUserPlayerNum,
   startLoading,
   stopLoading,
@@ -112,9 +112,9 @@ export const startNewGameInRedux = () => {
 //   return dispatch(startNewRound());
 // }
 
-export const setScoreLimitInRedux = (limit) => {
-  return dispatch(setScoreLimit(limit));
-}
+// export const setScoreLimitInRedux = (limit) => {
+//   return dispatch(setScoreLimit(limit));
+// }
 
 export const setGameRefInRedux = gameRef => {
   dispatch(setGameRef(gameRef));

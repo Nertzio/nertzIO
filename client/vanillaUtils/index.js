@@ -1,6 +1,10 @@
 import {
   getCurrentUserInRedux,
+  playerNumWhoCalledNertzInRedux,
+  getPlayersInStore,
+  getStackInStoreByKey,
 } from '../redux/reduxUtils';
+
 
 export const checkIfUserIsAmongPlayers = players => {
   if (!players) return false;
@@ -40,4 +44,29 @@ export const thereAreNo = (collection) => {
   if (typeof collection === 'object') {
     return Object.keys(collection).length === 0;
   }
+}
+
+
+export const tallyScoreForAllPlayers = () => {
+  const playerObjs = getPlayersInStore()
+  const playerNums = Object.keys(playerObjs)
+
+  const fieldCards = []
+  let fieldStackNum = playerNums.length * 4
+  while (fieldStackNum) {
+   fieldCards.push(...getStackInStoreByKey(`fieldStack${fieldStackNum}`));
+    fieldStackNum -= 1
+  }
+  console.log('field cards', fieldCards);
+  const playerScores = {}
+  playerNums.forEach(playerNum => {
+    playerScores[playerNum] = 0
+    playerScores[playerNum] += fieldCards.filter(card => {
+      return +card.belongsTo === +playerNum
+    }).length
+    playerScores[playerNum] -= getStackInStoreByKey(`p${playerNum}LittleStack`).length * 2
+  })
+  playerScores[playerNumWhoCalledNertzInRedux()] += 10;
+
+  return playerScores;
 }

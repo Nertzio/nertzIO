@@ -4,12 +4,16 @@ import {Modal} from '../Common';
 
 const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
 
-
   const styler = () => ({
     header: {
       // width: '90%',
     },
-
+  //   playerId: {
+  //     display: 'inline'
+  //   },
+  //   score: {
+  //     display: 'inline'
+  //   },
     bonusPoints: {
       // width: '10%',
     }
@@ -24,20 +28,30 @@ const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
     score
   } = styler()
 
-  const renderPlayerStats = () => {
-    const playerValues = Object.values(players)
-    return playerValues.map((player, idx) => (
-      <div key={player.uid} style={playerScore}>
-       <div style={playerId}>
-        {idx + 1}. {player.displayName}
-       </div>
-        <div id={player.uid + 'score'} style={score}>
-          {/* animate score count */}
-          {player.score}
-        </div>
+  const playerNums = Object.keys(players)
+  const playersValues = Object.values(players);
 
-    </div>
-    ))
+  const winner = playersValues.reduce((playerA, playerB) => {
+    const aScore = playerA.score;
+    const bScore = playerB.score;
+    if (aScore > bScore) return playerA;
+    return playerB;
+  })
+
+  const renderPlayerStats = () => {
+    return playerNums.map(playerNum => {
+      const player = players[playerNum];
+      return (
+      <div key={playerNum} style={playerScore}>
+        <div style={playerId}>
+          {player.displayName}
+        </div>
+        <div id={playerNum + 'score'} style={score}>
+            {/* animate score count */}
+            {player.score}
+        </div>
+        </div>
+    )})
   }
 
 
@@ -70,12 +84,12 @@ const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
   return (
     <Modal shouldShow={isRoundOver}>
 
-        <div style={header}>{playerNumWhoCalledNertz && players && players[playerNumWhoCalledNertz].displayName} calls Nertz!</div>
-        <div style={bonusPoints}>+ 10pts</div>
-
+      <div style={header}>{playerNumWhoCalledNertz && players && players[playerNumWhoCalledNertz].displayName} calls Nertz!</div>
+      <div style={bonusPoints}>+ 10pts</div>
 
       <div style={header}>Let's see how everyone did:</div>
       <div style={playerStats}>
+      <h2>{winner.displayName} is the winner!</h2>
         {renderPlayerStats()}
       </div>
 
@@ -88,7 +102,7 @@ const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
 const mapState = state => ({
   isRoundOver: state.game.isNertzCalled,
   players: state.players,
-  playerNumWhoCalledNertz: state.game.playerNumWhoCalledNertz
+  playerNumWhoCalledNertz: state.game.playerNumWhoCalledNertz,
 })
 
 export default connect(mapState)(GameEndModal);

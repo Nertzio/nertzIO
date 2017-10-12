@@ -10,31 +10,30 @@ import {
   updateReduxFieldStackByKey,
   setNertzHasBeenCalledInRedux,
   setPlayerNumWhoCalledNertzInRedux,
+  updatePlayerScoreInReduxByKey
 } from '../redux/reduxUtils'
 
 export const updateReduxWhenNertzIsCalled = gameRef => {
-  console.log('Hitting updateReduxWhenNertzIsCalled')
   Promise.resolve(gameRef.child('nertzHasBeenCalled').on('value', snapshot => {
-    console.log('updateReduxWhenNertzIsCalled event listener fired')
-    console.log('snapshot val from nertz called', snapshot.val())
     setNertzHasBeenCalledInRedux(snapshot.val())
   }))
-  .then(() => {console.log('nertzHasBeenCalled has been changed')})
   .catch(err => console.error(err));
 
 }
 
 export const updateReduxWithPlayerNumWhoCalledNertz = gameRef => {
-  console.log('Hitting updateReduxWithPlayerNumWhoCalledNertz')
-  Promise.resolve(gameRef.child('numOfPlayerWhoCalledNertz').on('value', snapshot => {
-    console.log('updateReduxWithPlayerNumWhoCalledNertz event listener fired')
-    console.log('snapshot val from nertz player who called', snapshot.val())
-    setPlayerNumWhoCalledNertzInRedux(snapshot.val())
-  }))
-  .then(() => {console.log('numOfPlayerWhoCalledNertz has been changed')})
+  Promise.resolve(gameRef.child('numOfPlayerWhoCalledNertz').on('value', snapshot => {setPlayerNumWhoCalledNertzInRedux(snapshot.val())}))
   .catch(err => console.error(err));
 }
 
+const updateReduxWithPlayerScores = gameRef => {
+  const playerNums = Object.keys(getPlayersInStore())
+  playerNums.forEach(playerNum => {
+    gameRef.child(`players/${playerNum}/score`).on('value', scoreSnapshot => {
+      updatePlayerScoreInReduxByKey(playerNum, scoreSnapshot.val())
+    })
+  })
+}
 
 const updateReduxWhenFieldStacksUpdate = (gameRef) => {
   return gameRef.child('fieldStacks').once('value')
@@ -63,7 +62,6 @@ export const updateReduxWhenPlayerDataChanges = (gameRef) => {
         return updatePlayerInReduxByKey(updatedPlayer.key, updatedPlayer.val())
       })
     })
-
   })
 }
 
@@ -75,6 +73,7 @@ export const updateReduxWhenPlayersJoinGame = (gameRef) => {
         return updatePlayerInReduxByKey(player.key, player.val())
       })
     })
+    .then(() => updateReduxWithPlayerScores(gameRef))
 }
 
 // export const updateReduxWhenPlayersJoinGame = (gameRef) => {
@@ -107,6 +106,9 @@ export function registerUpdateHandlersOnGameRef(gameRef) {
     updateReduxWhenFieldStacksUpdate(gameRef),
     updateReduxWhenPlayerStacksUpdate(gameRef),
     updateReduxWhenPlayerDataChanges(gameRef),
+    updateReduxWhenNertzIsCalled(gameRef),
+    updateReduxWithPlayerNumWhoCalledNertz(gameRef),
+    updateReduxWithPlayerScores(gameRef)
   ]);
 }
 
