@@ -50,6 +50,11 @@ export const markGameAsInProgress = () => {
     .catch(console.error.bind(console));
 }
 
+export const markGameAsUnpaused = () => {
+  return getReduxGameRef().update({isGamePaused: false})
+    .catch(console.error.bind(console));
+}
+
 export const setPlayersToGameRef = (players, gameRef) => {
   return gameRef.set({ players: {...players} });
 }

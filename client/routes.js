@@ -18,6 +18,7 @@ import {initAuth} from './firebase'
 
 
 import {
+  About,
   BlurWhenActionRequired,
   GameArea,
   GamePending,
@@ -28,7 +29,6 @@ import {
   SignOut,
   SignUp,
   SignIn,
-  UserHome,
 } from './components'
 
 
@@ -53,7 +53,6 @@ class Routes extends Component {
       <Router>
         <MainLayout>
           <Switch>
-
             <ProtectedRoute
               {...{isLoggedIn}}
               exact path="/join"
@@ -89,7 +88,7 @@ class Routes extends Component {
               exact path="/signin"
               component={SignIn}
             />
-
+            <Route exact path="/about" component={About} />
             <Route component={Home} />
           </Switch>
         </MainLayout>
@@ -97,6 +96,7 @@ class Routes extends Component {
     )
   }
 }
+
 
 /**
  * CONTAINER

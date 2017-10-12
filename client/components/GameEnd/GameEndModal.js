@@ -74,11 +74,6 @@ const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
   //     })
   //   }
 
-  console.log("Players", players)
-  console.log("PlayerNumNertzETc", playerNumWhoCalledNertz)
-  console.log("Round Over", isRoundOver)
-
-
   // -------------- COMPONENT --------------------
 
   return (

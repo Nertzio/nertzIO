@@ -1,6 +1,8 @@
 export * from './AppStateFeedback';
 export * from './Common';
+export {default as BlurOnGamePaused} from './BlurOnGamePaused';
 export {default as GameArea} from './GameArea';
+export {default as PauseModal} from './PauseModal';
 export * from './GameEnd';
 export * from './GameField';
 export * from './Layout';

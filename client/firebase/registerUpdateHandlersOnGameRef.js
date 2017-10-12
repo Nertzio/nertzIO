@@ -54,6 +54,13 @@ const updateReduxWhenGameStatusChanges = () => {
     })
 }
 
+const updateReduxWhenGamePauseStatusChanges = () => {
+  return getReduxGameRef()
+    .child('isGamePaused').on('value', isGamePaused => {
+      return setReduxGameProgressStatus(isGamePaused.val())
+    })
+}
+
 export const updateReduxWhenPlayerDataChanges = (gameRef) => {
   return gameRef.child('players').once('value')
   .then(allPlayers => {
@@ -103,6 +110,7 @@ const updateReduxWhenPlayerStacksUpdate = (gameRef) => {
 export function registerUpdateHandlersOnGameRef(gameRef) {
   return Promise.all([
     updateReduxWhenGameStatusChanges(),
+    updateReduxWhenGamePauseStatusChanges(),
     updateReduxWhenFieldStacksUpdate(gameRef),
     updateReduxWhenPlayerStacksUpdate(gameRef),
     updateReduxWhenPlayerDataChanges(gameRef),
