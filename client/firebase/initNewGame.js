@@ -8,7 +8,7 @@ import {
 import {
   goCountAllPlayersInGame,
   markGameAsInProgress,
-  // markGameAsUnpaused,
+  queryUserPlayerNum,
   registerUpdateHandlersOnGameRef,
   setGameRefForUtils,
   setPlayersToGameRef,
@@ -134,8 +134,11 @@ const initAllPlayerAreas = (dbGameInstanceIsPreInitialized, gameRef) => {
   .then(numOfPlayers => {
     const playerAreasInitializing = [];
     for (let i = 1; i <= numOfPlayers; i++) {
-      //if dbGameInstanceIsPreInitialized, skip creation of nodes in db, just set up Redux to link w/ them
-      const initializingArea = dbGameInstanceIsPreInitialized ? linkReduxStacksWithDbByPlayerNum(i, gameRef) : initPlayerAreaByPlayerNum(i);
+    // if dbGameInstanceIsPreInitialized, skip creation of nodes in db,
+    // just set up Redux to link w/ them
+      const initializingArea = dbGameInstanceIsPreInitialized
+      ? linkReduxStacksWithDbByPlayerNum(i, gameRef)
+      : initPlayerAreaByPlayerNum(i);
       playerAreasInitializing.push(initializingArea)
     }
     return Promise.all(playerAreasInitializing);
@@ -152,17 +155,22 @@ export const startGame = () => {
 }
 
 export const resetReduxForPendingGameInstance = (gameRef) => {
-  setGameRefForUtils(gameRef)
-  setGameRefInRedux(gameRef)
-  markGameAsInProgress(); // this must come after gameRef being stored
-  // markGameAsUnpaused();
-  updateReduxWhenPlayersJoinGame(gameRef)
+    setGameRefForUtils(gameRef)
+    setGameRefInRedux(gameRef)
+    markGameAsInProgress() // this must come after gameRef being stored
+  return Promise.all([
+    queryUserPlayerNum().then(setUserPlayerNumInRedux),
+    updateReduxWhenPlayersJoinGame(gameRef),
+  ])
+
 }
 
 export const resetReduxForStartedDbGameInstance = (gameRef) => {
-  resetReduxForPendingGameInstance(gameRef)
-  storeFieldStackRefsInRedux(gameRef)
-  return initAllPlayerAreas(true, gameRef)
-    .then(() => registerUpdateHandlersOnGameRef(gameRef))
+  return Promise.all([
+    resetReduxForPendingGameInstance(gameRef),
+    storeFieldStackRefsInRedux(gameRef),
+    initAllPlayerAreas(true, gameRef),
+  ])
+  .then(() => registerUpdateHandlersOnGameRef(gameRef))
   }
 

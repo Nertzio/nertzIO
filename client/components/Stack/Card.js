@@ -9,42 +9,43 @@ import {
 } from '../../DragNDrop';
 import {
   getUserPlayerNum,
+  takeInitials,
 } from '../../vanillaUtils';
 
 const Card = (props) => {
   const {
-    // belongsTo,
-    // firebaseStackRef,
+    backgroundColor,
+    belongsTo,
+    connectDragSource,
+    firebaseStackRef,
+    isDragging,
     isFaceUp,
     // name,
     // number,
     // ownStack,
     stackPosition,
+    players,
     // suit,
    } = props;
 
-   const { connectDragSource, isDragging } = props
-   const borderColor = stackPosition % 2 === 1 ? 'white' : 'lightgray'
+
+   const playerInitials = takeInitials(players[belongsTo].displayName);
+   const borderColor = stackPosition % 3 === 0 ? 'lightgray' : 'white'
 
   return connectDragSource(
-    <div style={{
-      border: `1px solid ${borderColor}`,
-      borderRadius: '3px',
-      height: 'calc(15vh)',
-      left: 0,
-      margin: '0 auto',
-      maxHeight: 'calc(100vw / 5)',
-      maxWidth: '100%',
-      opacity: isDragging ? 0 : 1,
-      position: 'absolute',
-      top: 0,
-      transform: `translate(0px, ${stackPosition * -1}px) perspective(50em) rotateX(20deg)`,
-      width: 'calc(10vh)',
-      zIndex: stackPosition,
+    <div
+      className="card-wrapper"
+      style={{
+        border: `1px solid ${borderColor}`,
+        opacity: isDragging ? 0 : 1,
+        // position: stackPosition ? 'absolute' : 'relative',
+        transform: `translate(0px, ${stackPosition * -0.5}px)`,
+        // perspective(50em) rotateX(20deg),
+        zIndex: stackPosition,
     }}>
       {isFaceUp
         ? <CardFront {...props} />
-        : <CardBack {...props} />
+        : <CardBack initials={playerInitials} color={backgroundColor} />
       }
     </div>
   )
@@ -112,6 +113,7 @@ const draggableCards = DragSource(ItemTypes.CARD, cardSource, collect)(Card)
 const mapState = state => ({
   user: state.user,
   players: state.players,
+  userPlayerNum: state.game.userPlayerNum,
 })
 
 export default connect(mapState)(draggableCards);

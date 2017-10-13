@@ -14,66 +14,77 @@ const DragHandleStacks = ({
   cards,
   connectDragSource,
   connectDragPreview,
-  firebaseStackRef,
-  isDragging,
   currentStackPosition,
+  isCurrentUser,
+  isDragging,
+  firebaseStackRef,
 }) => {
 
   const stackPosition = currentStackPosition || 0;
   const currentCard = cards[stackPosition];
   const thereAreMoreCards = stackPosition < cards.length - 1;
   const cssPosition = stackPosition ? 'absolute' : 'relative';
+  const shouldDisplay = isCurrentUser ? true : 'none';
 
 
   return connectDragPreview( // ALL NESTED COMPONENTS INCLUDED IN DRAG PREVIEW
-    <div style={{
-      height: 'calc(15vh)',
-      margin: '0 auto',
-      maxWidth: 'calc(100vw / 10)',
-      opacity: isDragging ? 0 : 1,
-      position: cssPosition, // 'relative' required for absolute stacking'
-      width: 'calc(10vh)',
-      zIndex: stackPosition,
+
+    <div
+      className="draggable-stack"
+      style={{
+        opacity: isDragging ? 0 : 1,
+        position: cssPosition, // 'relative' parent required for stacking'
+        zIndex: stackPosition,
     }}>
 
       {thereAreMoreCards && connectDragSource( // -- START DRAG ANCHOR --
-        <div style={{
-          backgroundColor: '#E8E8E8',
-          color: currentCard.textColor,
-          fontSize: '1.5vh',
-          height: '8.333%',
-          right: '0',
-          marginTop: `${8.333 * stackPosition}%`,
-          maxWidth: '15vw',
-          padding: 3,
-          position: 'absolute',
-          top: `${8.333  * stackPosition}%`,
-          width: '13vh',
+        <div
+          className="draggable-stack-anchor"
+          style={{
+            color: 'white', //currentCard.textColor,
+            display: shouldDisplay,
+            marginTop: `${8.333 * stackPosition}%`,
+            top: `${-30 + (20  * stackPosition)}%`,
         }}>
-          {currentCard.displayName}{currentCard.symbol}
+
+            <span className="anchor-suit">
+              <div className="anchor-suit-flex">
+                <span className="anchor-suit-inner">
+                  {currentCard.symbol}
+                </span>
+              </div>
+            </span>
+            <div className="anchor-num">
+                  {currentCard.displayName}
+            </div>
+
         </div> // --------------- END DRAG ANCHOR -------------------
       )}
 
-      <Card
-        ownStack={cards}
-        stackPosition={stackPosition}
-        firebaseStackRef={firebaseStackRef}
-        {...currentCard}
-      />
-
-      {/* ----------- RECURSIVE DRAG SOURCE COMPONENT ------------*/}
-        {/* Every card in this solitiare stack renders as a draggable stack which contains other draggable stacks as its children  */}
-        {/* Stop recursing when no more cards to render */}
-      {thereAreMoreCards &&
-        <DraggableDragHandleStacks
-          cards={cards}
-          currentStackPosition={stackPosition + 1}
+        <Card
+          ownStack={cards}
+          stackPosition={stackPosition}
           firebaseStackRef={firebaseStackRef}
+          {...currentCard}
         />
-      }
+
+        {/* ----------- RECURSIVE DRAG SOURCE COMPONENT ------------*/}
+          {/* Every card in this solitiare stack is actually a draggable
+              stack, which contains 1) a single card and 2) another draggable
+              stack */}
+          {/* Stop recursing when no more cards to render */}
+        {thereAreMoreCards &&
+          <DraggableDragHandleStacks
+            {...{isCurrentUser}}
+            cards={cards}
+            currentStackPosition={stackPosition + 1}
+            firebaseStackRef={firebaseStackRef}
+          />
+        }
     </div>,
 
-    {offsetX: 50}) // special dragPreview option argument
+    {offsetX: 50, offsetY: 50}) // makes the preview line up with the mouse better
+                    // when dragging.
 }
 
 // ------------------- DRAG N DROP STUFF ------------------------
@@ -92,14 +103,12 @@ const stackSource = {
   endDrag({firebaseStackRef, cards}, monitor){
     const {draggedStack} = monitor.getItem();
 
-    console.log('endDrag draggedStack: ', draggedStack);
     const remainingCards = cards.slice(0, -draggedStack.length )
     // const cutoff = cards.length - draggedStack.length;
     const isAllCards = remainingCards.length === 0;
 
     if (monitor.didDrop()) {
       if (isAllCards) {
-        console.log(firebaseStackRef.key, 'set to false');
         firebaseStackRef.set(false).catch(console.error.bind(console));
       } else {
         firebaseStackRef

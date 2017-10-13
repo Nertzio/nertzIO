@@ -7,44 +7,38 @@ import {
   StackLittle,
 } from '../../components';
 
-class PlayerArea extends Component {
+const PlayerArea = ({playerNum, isCurrentUser}) => {
 
-  render(){
-    const {playerNum, players} = this.props;
+  const className = isCurrentUser ?
+  'stack-area user-stack-area' :
+  'stack-area';
 
-    return (
-        <section style={{
-          alignItems: 'center', // sets vertical alignment
-          backgroundColor: 'tomato',
-          border: '1px solid gray', // TODO: remove later
-          color: 'white',
-          display: 'flex',
-          flexGrow: 3,
-          justifyContent: 'space-evenly',
-          width: '100%',
-        }}>
-          <h2>{players[playerNum] && players[playerNum].displayName}</h2>
-          <div
-            className="stack-area"
-            style={{
-              alignItems: 'center',
-              border: '1px solid white',
-              display: 'flex',
-              flex: '0 80%',
-              height: '15vh',
-              justifyContent: 'space-evenly',
-          }}>
-            <StackSolitaire stackKey={`p${playerNum}SolitaireStack1`}  />
-            <StackSolitaire stackKey={`p${playerNum}SolitaireStack2`}  />
-            <StackSolitaire stackKey={`p${playerNum}SolitaireStack3`}  />
-            <StackSolitaire stackKey={`p${playerNum}SolitaireStack4`}  />
-            <StackBig stackKey={`p${playerNum}BigStack`}  />
-            <StackDrawn stackKey={`p${playerNum}DrawnStack`} />
-            <StackLittle stackKey={`p${playerNum}LittleStack`}  />
-          </div>
-        </section>
-    )
-  }
+  return (
+      <section className="player-area-container">
+
+        <div className={className}>
+          <StackSolitaire
+            {...{isCurrentUser}}
+            stackKey={`p${playerNum}SolitaireStack1`}
+          />
+          <StackSolitaire
+            {...{isCurrentUser}}
+            stackKey={`p${playerNum}SolitaireStack2`}
+          />
+          <StackSolitaire
+            {...{isCurrentUser}}
+            stackKey={`p${playerNum}SolitaireStack3`}
+          />
+          <StackSolitaire
+            {...{isCurrentUser}}
+            stackKey={`p${playerNum}SolitaireStack4`}
+          />
+          <StackBig {...{isCurrentUser}} stackKey={`p${playerNum}BigStack`}  />
+          <StackDrawn {...{isCurrentUser}} stackKey={`p${playerNum}DrawnStack`} />
+          <StackLittle {...{isCurrentUser}} stackKey={`p${playerNum}LittleStack`}  />
+        </div>
+      </section>
+  )
 }
 
 function mapStateToProps (state) {

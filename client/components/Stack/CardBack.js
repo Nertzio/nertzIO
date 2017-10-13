@@ -4,21 +4,15 @@
 
 import React from 'react';
 
-const CardBack = ({belongsTo, backgroundColor}) => {
+const CardBack = ({initials, color}) => {
 
   return (
-    <div style={{
-      alignItems: 'center',
-      backgroundColor: backgroundColor,
-      borderRadius: '2px',
-      color: 'white',
-      display: 'flex',
-      flexDirection: 'column',
-      fontSize: 'calc(2.5vh)',
-      height: '100%',
-      justifyContent: 'space-around',
+    <div
+      className="card-back"
+      style={{
+        backgroundColor: color,
     }}>
-        <p>P{belongsTo}</p>
+        <p>{initials}</p>
     </div>
   )
 }

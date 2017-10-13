@@ -4,10 +4,18 @@ import {Stack, DragHandleStacks} from '../../components';
 import {DropTarget} from 'react-dnd';
 import {
   ItemTypes,
-  canIDropThisOnThatByStackType
+  canIDropThisOnThatByStackType,
+  thisIsMyCardAndStack,
 } from '../../DragNDrop';
 
-const StackSolitaire = ({cards, firebaseRef, connectDropTarget, stackKey}) => {
+const StackSolitaire = ({
+  cards,
+  firebaseRef,
+  connectDropTarget,
+  isCurrentUser,
+  stackKey
+}) => {
+
   let faceUpCards
   if (cards){
     faceUpCards = cards.map(card => {
@@ -15,14 +23,16 @@ const StackSolitaire = ({cards, firebaseRef, connectDropTarget, stackKey}) => {
     return card;
   })}
   return connectDropTarget(
-    <div style={{
-      border: '1px solid gray',
-      height: '100%',
-      flex: '1 10%'
-    }}>
-      {cards && cards.length > 0 &&
-        <DragHandleStacks cards={faceUpCards} firebaseStackRef={firebaseRef} />
-      }
+    <div className="stack-solitaire-drop-target">
+       <div className="draggable-stack">
+        {cards && cards.length > 0 &&
+          <DragHandleStacks
+            {...{isCurrentUser}}
+            cards={faceUpCards}
+            firebaseStackRef={firebaseRef}
+          />
+        }
+      </div>
     </div>
   )
 }
@@ -48,15 +58,17 @@ const solitaireTarget = { // TODO: extract this into firebase utils
 
   },
 
-  canDrop({cards}, monitor) {
+  canDrop({cards, stackKey}, monitor) {
     const DropType = monitor.getItemType();
     const payload = monitor.getItem();
     const targetTopCard = cards[cards.length - 1];
     if (DropType === 'stack') {
       const {draggedStack} = payload;
       // just validate bottom card of incoming stack
+      if (!thisIsMyCardAndStack(draggedStack[0], stackKey)) return false;
       return canIDropThisOnThatByStackType(draggedStack[0], targetTopCard, 'StackSolitaire');
     } else if (DropType === 'card') {
+      if (!thisIsMyCardAndStack(payload, stackKey)) return false;
       return canIDropThisOnThatByStackType(payload, targetTopCard, 'StackSolitaire');
     }
   }

@@ -26,3 +26,7 @@ export const canIDropThisOnThatByStackType = (incoming, top, stackType) => {
     default: return false;
   }
 }
+
+export const thisIsMyCardAndStack = (card, stackKey) => {
+  return +stackKey[1] === card.belongsTo;
+}

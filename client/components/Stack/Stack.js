@@ -11,17 +11,7 @@ const Stack = ({cards, firebaseStackRef}) => {
   }
 
   return (
-    <div style={{
-      // alignContent: 'center',
-      // alignItems: 'center',
-      // display: 'flex',
-      height: 'calc(15vh)',
-      // justifyContent: 'center',
-      margin: '0 auto',
-      maxWidth: 'calc(100vw / 10)',
-      position: 'relative', // so absolute-positioned cards will stack
-      width: 'calc(10vh)',
-    }}>
+    <div className="stack-component">
       {renderCards()}
     </div>
   )

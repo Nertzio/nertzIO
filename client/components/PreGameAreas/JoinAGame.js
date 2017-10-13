@@ -67,7 +67,6 @@ class JoinAGame extends Component {
     }
 
     render() {
-      console.log(this.props, 'AND', this.props.me)
       return (
         <div style={styles.JoinAGame}>
           {this.state.redirect && <Redirect to={`/pendingGames/${this.state.gameId}`} />}
@@ -99,8 +98,8 @@ class JoinAGame extends Component {
   const styles = {
     JoinAGame: {
       alignContent: 'center',
-      background: '#63A2A7',
       textAlign: 'center',
+      backgroundColor: '#63a2a7',
       height: '100%',
       width: '100%',
       color: 'white',

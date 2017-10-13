@@ -1,91 +1,657 @@
+@mixin for-phone-only {
+    @media (max-width: 599px) {
+        @content;
+    }
+}
+
+@mixin for-tablet-portrait-up {
+    @media (min-width: 600px) {
+        @content;
+    }
+}
+
+@mixin for-tablet-landscape-up {
+    @media (min-width: 900px) {
+        @content;
+    }
+}
+
+@mixin for-desktop-up {
+    @media (min-width: 1200px) {
+        @content;
+    }
+}
+
+@mixin for-big-desktop-up {
+    @media (min-width: 1800px) {
+        @content;
+    }
+}
 
 html {
-  background-color: #63A2A7;
-  height: 100vh;
-  box-sizing: 'border-box';
-  *, *:before, *:after {
-    box-sizing: inherit;
-  }
-  body {
-    font-family: sans-serif;
-    height: 100vh;
-
-    #app {
-      height: 100vh;
+    background-color: #63A2A7;
+    box-sizing: 'border-box';
+    *,
+    *:before,
+    *:after {
+        box-sizing: inherit;
     }
+    body {
+        font-family: sans-serif;
+        height: 100%;
+        #app {
+            height: 100%;
+        }
+        a {
+            text-decoration: none;
+        }
+        div[data-reactroot] {
+            height: 100%;
+        }
+        label {
+            display: block;
+        }
+        nav a {
+            display: inline-block;
+            margin: 1em;
+        }
+        form div {
+            margin: 1em;
+            display: inline-block;
+        }
+        .keyInput {
+            border: none;
+            border-bottom: solid white 2px;
+            background: #63a2a7;
+            margin-left: 101px;
+            color: rgb(255, 153, 0);
+            padding: 10px;
+            font-family: 'Roboto', sans-serif;
+            transition: all 600ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
+            &:focus {
+             outline-width: 0;
+             font-size: 27px;
+            }
+           }
 
-    a {
-      text-decoration: none;
+          .startGameBtn {
+            background: #63a2a7;
+            -webkit-border-radius: 10;
+            -moz-border-radius: 10;
+            border-radius: 10px;
+            -webkit-box-shadow: 0px 1px 3px #989494;
+            -moz-box-shadow: 0px 1px 3px #989494;
+            box-shadow: 0px 1px 3px #989494;
+            font-family: Arial;
+            color: white;
+            font-size: 35px;
+            padding: 10px 20px 10px 20px;
+            border: solid rgb(255, 153, 0) 2px;
+            text-decoration: none;
+            margin: 20px
+          }
+
+          .startGameBtn:hover {
+            background: rgb(72, 72, 72);
+            background-image: -webkit-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
+            background-image: -moz-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
+            background-image: -ms-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
+            background-image: -o-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
+            background-image: linear-gradient(to bottom, rgb(48, 47, 47), rgb(72, 72, 72));
+            text-decoration: none;
+          }
+
+        .blur {
+            filter: none;
+            transform: none;
+            transition: filter 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55), transform 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            width: 100%;
+            max-width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .game-area-wrapper {
+            display: flex;
+            height: 100%;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            .game-area {
+                display: flex;
+                align-content: space-around;
+                align-items: center;
+                flex-direction: row;
+                flex-wrap: wrap;
+                height: 90%;
+                padding-top: 20px;
+                max-height: 100%;
+                justify-content: space-evenly;
+                width: 100vw;
+                max-width: 100vw; // transform: perspective(15em) rotateX(39deg) scale(0.6, 0.6);
+                .player-area-stacked-container {
+                    display: flex;
+                    width: 100%;
+                    justify-content: center;
+                    @include for-phone-only {
+                        margin: 3px auto;
+                    }
+                    @include for-tablet-portrait-up {
+                        margin: 6px auto;
+                    }
+                    .player-area-container {
+                        align-items: center;
+                        color: white;
+                        justify-content: space-around;
+                        width: 100%;
+                        max-width: 800px;
+                        min-width: 400px;
+                        .stack-area {
+                            align-items: center;
+                            display: flex;
+                            justify-content: center;
+
+                            .stack-component{
+                                background-color: rgba(255, 255, 255, 0.2);
+                            }
+
+                            .stack-solitaire-drop-target {
+                                margin: 0 2%;
+                                height: 100%;
+                                // display: flex;
+                                // justify-content: center;
+                                // align-items: center;
+                            }
+                            .stack-non-solitaire {
+                                height: 100%;
+                                margin: 0 2%;
+                            }
+
+                            .draggable-stack {
+                                background-color: rgba(255, 255, 255, 0.2);
+                                margin: 0px auto;
+                                opacity: 1;
+                                position: relative;
+                                z-index: 0;
+                                @include for-phone-only {
+                                    height: 6vh;
+                                    max-height: 100px;
+                                    min-height: 45px;
+                                    max-width: 75px;
+                                    min-width: 30px;
+                                    width: 4vh;
+                                }
+                                @include for-tablet-portrait-up {
+                                    height: 9vh;
+                                    max-height: 100px;
+                                    min-height: 45px;
+                                    max-width: 75px;
+                                    min-width: 30px;
+                                    width: 6vh;
+                                }
+                                @include for-desktop-up {
+                                    height: 10vh;
+                                    max-height: 100px;
+                                    min-height: 45px;
+                                    max-width: 75px;
+                                    min-width: 30px;
+                                    width: 7vh;
+                                }
+
+                            }
+                        }
+                        .stack-area.user-stack-area {
+                            align-items: center;
+                            display: flex;
+                            justify-content: space-evenly;
+                            .stack-solitaire-drop-target {
+                                margin: 0 auto;
+                                width: 100%;
+                                height: 100%
+                            }
+                            .stack-non-solitaire {
+                                height: 100%;
+                                width: 100%;
+                                margin: 0 auto;
+                            }
+                            .draggable-stack-anchor {
+                              top: -30%;
+                              // left: -49%;
+
+                              width: 1.8vh;
+                              height: 1.8vh;
+                              /* border-radius: 50%; */
+                              font-size: 90%;
+                              padding: 1px;
+                              position: absolute;
+                              display: flex;
+                              /* border: 1px solid white; */
+                              justify-content: center;
+                              align-items: center;
+
+                              @include for-phone-only {
+                                right: 5vh;
+                              }
+                              @include for-tablet-portrait-up {
+                                right: 7vh;
+                              }
+                              @include for-desktop-up {
+                                right: 8vh;
+                              }
+
+                              .anchor-num {
+                                color: white;
+                                height: 100%;
+                                width: 100%;
+                                z-index: 1;
+                                text-align: center;
+                                font-weight: 100;
+                                font-size: 70%;
+                              }
+                              .anchor-suit {
+                                position: absolute;
+                                width: 100%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+
+                                .anchor-suit-flex {
+                                  height: 100%;
+                                  width: 100%;
+                                  display: flex;
+                                  justify-content: center;
+                                  align-items: center;
+
+                                  .anchor-suit-inner {
+                                    height: 100%;
+                                    width: 100%;
+
+                                  }
+                                }
+                              }
+
+                                // background-color: rgb(232, 232, 232);
+                                // color: black;
+                                // font-size: 1.5vh;
+                                // height: 8.333%;
+                                // right: 0px;
+                                // margin-top: 0%;
+                                // max-width: 15vw;
+                                // padding: 3px;
+                                // position: absolute;
+                                // top: 0%;
+                                // width: 13vh;
+
+                                // anchor-suit
+                                // anchor-suit-inner
+                                // anchor-suit-flex
+                                // anchor-num
+                            }
+                            .draggable-stack {
+                                margin: 0px auto;
+                                opacity: 1;
+                                position: relative;
+                                z-index: 0;
+                                @include for-phone-only {
+                                    height: 6vh;
+                                    max-height: 100px;
+                                    min-height: 45px;
+                                    max-width: 75px;
+                                    min-width: 30px;
+                                    width: 4vh;
+                                }
+                                @include for-tablet-portrait-up {
+                                    height: 9vh;
+                                    max-height: 100px;
+                                    min-height: 45px;
+                                    max-width: 75px;
+                                    min-width: 30px;
+                                    width: 6vh;
+                                }
+                                @include for-desktop-up {
+                                    height: 10vh;
+                                    max-height: 100px;
+                                    min-height: 45px;
+                                    max-width: 75px;
+                                    min-width: 30px;
+                                    width: 7vh;
+                                }
+                            }
+                        }
+                    }
+                }
+                .game-field-stacked-container {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    .game-field-container {
+                        display: flex;
+                        width: 100%;
+                        max-width: 800px;
+                        min-width: 400px;
+                        padding-bottom: 3%;
+                        .game-field-outer {
+                            // background-color: purple;
+                            // border: 1px solid gray;
+                            color: white;
+                            width: 100%;
+                            height: 100%;
+                            .grid-component {
+                                color: white;
+                                display: flex;
+                                flex-wrap: wrap;
+                                height: 100%;
+                                max-height: 100%;
+                                width: 100%;
+                                .grid-cell-wrapper {
+                                    flex: 0 0 25%;
+                                    .grid-cell-component {
+                                        color: white;
+                                        display: flex;
+                                        height: 100%;
+                                        width: 100%;
+                                        .game-field-stack {
+                                            background-color: #463f3f;
+                                            color: white;
+                                            display: flex;
+                                            justify-content: center;
+                                            height: 100%;
+                                            width: 100%;
+                                            padding: 2%;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                .card-wrapper {
+                    border-radius: 3px;
+                    height: 100%;
+                    position: absolute;
+                    width: 100%; // ORIGINAL
+                    // border-radius: 3px;
+                    // height: 10vh;
+                    // left: 0px;
+                    // max-height: 100px;
+                    // min-height: 45px;
+                    // max-width: 75px;
+                    // min-width: 30px;
+                    // opacity: 1;
+                    // position: relative;
+                    // top: 0px;
+                    // width: 6vh;
+                    // // transform: translate(0px, 0px) perspective(50em) rotateX(20deg);
+                    // z-index: 0;
+                }
+                .card-back {
+                    align-items: center;
+                    background-color: rgb(0, 31, 63);
+                    border-radius: 2px;
+                    color: white;
+                    display: flex;
+                    flex-direction: column; // font-size: 10%; // bigger size is nice here
+                    height: 100%;
+                    justify-content: space-around;
+                }
+                .card-front {
+                    align-items: center;
+                    background-color: white;
+                    border-radius: 2px;
+                    color: black;
+                    display: flex;
+                    flex-direction: column;
+                    font-size: 61%;
+                    font-weight: 900;
+                    height: 100%;
+                    justify-content: space-around;
+                    @include for-tablet-portrait-up {
+                        font-size: 75%;
+                    }
+                }
+                .stack-component {
+                    position: relative;
+                    @include for-phone-only {
+                        height: 6vh;
+                        max-height: 100px;
+                        min-height: 45px;
+                        max-width: 75px;
+                        min-width: 30px;
+                        width: 4vh;
+                    }
+                    @include for-tablet-portrait-up {
+                        height: 9vh;
+                        max-height: 100px;
+                        min-height: 45px;
+                        max-width: 75px;
+                        min-width: 30px;
+                        width: 6vh;
+                    }
+                    @include for-desktop-up {
+                        height: 10vh;
+                        max-height: 100px;
+                        min-height: 45px;
+                        max-width: 75px;
+                        min-width: 30px;
+                        width: 7vh;
+                    }
+                    // @include for-desktop-up {
+                    //     height: 13vh;
+                    //     max-height: 100px;
+                    //     min-height: 45px;
+                    //     max-width: 75px;
+                    //     min-width: 30px;
+                    //     width: 8vh;
+                    // }
+                }
+                .player-right-container {
+                    transform: rotate(270deg);
+                    flex-direction: column;
+                    background-color: yellow;
+                    height: 33.33vw;
+                    width: 33.33vw;
+                    .player-area-container {
+                        align-items: center;
+                        background-color: tomato;
+                        border: 1px solid gray;
+                        color: white;
+                        display: flex;
+                        justify-content: space-evenly;
+                        width: 100%;
+                        max-width: 100%;
+                        max-height: 100%;
+                        .stack-area {
+                            align-items: center;
+                            border: 1px solid white;
+                            display: flex;
+                            justify-content: space-evenly;
+                            max-width: 100%;
+                            max-height: 100%;
+                            height: 100%;
+                            width: 100%;
+                        }
+                    }
+                }
+                .player-left-container {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    transform: rotate(90deg);
+                    background-color: yellow;
+                    height: 33.33vw;
+                    width: 33.33vw;
+                    .player-area-container {
+                        align-items: center;
+                        background-color: tomato;
+                        border: 1px solid gray;
+                        color: white;
+                        display: flex;
+                        justify-content: space-evenly;
+                        width: 100%;
+                        max-width: 100%;
+                        max-height: 100%;
+                        .stack-area {
+                            align-items: center;
+                            border: 1px solid white;
+                            display: flex;
+                            justify-content: space-evenly;
+                        }
+                    }
+                }
+                .game-area-middle-column {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    width: 33.33vw;
+                    max-width: 33.33%;
+                    height: 33.33vw;
+                    max-height: 33.33vw;
+                    .player-top-container {
+                        flex: 1 1 auto;
+                        display: flex;
+                        height: 25%;
+                        max-height: 25%;
+                        background-color: yellow;
+                        flex-direction: column;
+                        justify-content: flex-start;
+                        .player-area-container {
+                            align-items: center;
+                            background-color: tomato;
+                            border: 1px solid gray;
+                            color: white;
+                            justify-content: space-around;
+                            width: 100%;
+                        }
+                        .stack-area {
+                            align-items: center;
+                            border: 1px solid white;
+                            display: flex;
+                            justify-content: space-evenly;
+                            max-width: 100%;
+                            max-height: 100%;
+                            height: 100%;
+                            width: 100%;
+                        }
+                    }
+                    .player-bottom-container {
+                        flex: 1 1 25%;
+                        display: flex;
+                        max-height: 25%;
+                        background-color: yellow;
+                        flex-direction: column;
+                        justify-content: flex-end;
+                        .player-area-container {
+                            align-items: center;
+                            background-color: tomato;
+                            border: 1px solid gray;
+                            color: white;
+                            justify-content: space-around;
+                            width: 100%;
+                        }
+                        .stack-area {
+                            align-items: center;
+                            border: 1px solid white;
+                            display: flex;
+                            justify-content: space-evenly;
+                        }
+                    }
+                    .game-field-container {
+                        display: flex;
+                        max-height: 50%;
+                        height: 50%;
+                        .game-field-outer {
+                            background-color: purple;
+                            border: 1px solid gray;
+                            color: white;
+                            .grid-component {
+                                align-items: stretch;
+                                background-color: orange;
+                                border: 1px solid gray;
+                                color: white;
+                                display: flex;
+                                flex-wrap: wrap;
+                                height: 100%;
+                                max-height: 100%;
+                                .grid-cell-wrapper {
+                                    flex: 1 1 25%;
+                                    height: 25%;
+                                    max-height: 25%;
+                                    .grid-cell-component {
+                                        background-color: green;
+                                        border: 1px solid gray;
+                                        color: white;
+                                        display: flex;
+                                        flex-grow: 1;
+                                        height: 100%;
+                                        width: 100%;
+                                        .game-field-stack {
+                                            background-color: black;
+                                            border: 1px solid gray;
+                                            color: white;
+                                            display: flex;
+                                            flex-grow: 1;
+                                            height: 100%;
+                                            width: 100%;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } // .player-area-container {
+                //   align-items: center;
+                //   background-color: tomato;
+                //   border: 1px solid gray;
+                //   color: white;
+                //   display: flex;
+                //   justify-content: space-evenly;
+                //   .stack-area {
+                //     align-items: center;
+                //     border: 1px solid white;
+                //     display: flex;
+                //     justify-content: space-evenly;
+                //     .draggable-stack {
+                //       height: calc(15vh);
+                //       margin: 0px auto;
+                //       max-width: calc(10vw);
+                //       opacity: 1;
+                //       position: relative;
+                //       width: calc(10vh);
+                //       z-index: 0;
+                //       .draggable-stack-anchor {
+                //         background-color: rgb(232, 232, 232);
+                //         color: black;
+                //         font-size: 1.5vh;
+                //         height: 8.333%;
+                //         right: 0px;
+                //         margin-top: 0%;
+                //         max-width: 15vw;
+                //         padding: 3px;
+                //         position: absolute;
+                //         top: 0%;
+                //         width: 13vh;
+                //       }
+                //     }
+                //   }
+                // }
+            }
+        } // #gameArea {
+        //   .container {
+        //     display: flex;
+        //     flex-direction: row;
+        //     flex-wrap: nowrap;
+        //     align-items: center;
+        //     align-content: center;
+        //     height: '100vh';
+        //     justify-content: 'space-evenly';
+        //     margin: '10px auto';
+        //     width: '90%';
+        //   }
+        // }
+
+
     }
-
-    label {
-      display: block;
-    }
-
-    nav a {
-      display: inline-block;
-      margin: 1em;
-    }
-
-    form div {
-      margin: 1em;
-      display: inline-block;
-    }
-
-    #gameArea {
-      .container {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: center;
-        align-content: center;
-        height: '100vh';
-        justify-content: 'space-evenly';
-        margin: '10px auto';
-        width: '90%';
-      }
-    }
-
-    .keyInput {
-      border: none;
-      border-bottom: solid white 2px;
-      background: #63A2A7;
-      margin-left: 101px;
-      color: rgb(255, 153, 0);
-      padding: 10px;
-      font-family: 'Roboto', sans-serif;
-      transition: all 600ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
-      &:focus {
-       outline-width: 0;
-       font-size: 27px;
-      }
-     }
-
-    .startGameBtn {
-      background: #63a2a7;
-      -webkit-border-radius: 10;
-      -moz-border-radius: 10;
-      border-radius: 10px;
-      -webkit-box-shadow: 0px 1px 3px #989494;
-      -moz-box-shadow: 0px 1px 3px #989494;
-      box-shadow: 0px 1px 3px #989494;
-      font-family: Arial;
-      color: white;
-      font-size: 35px;
-      padding: 10px 20px 10px 20px;
-      border: solid rgb(255, 153, 0) 2px;
-      text-decoration: none;
-      margin: 20px
-    }
-
-    .startGameBtn:hover {
-      background: rgb(72, 72, 72);
-      background-image: -webkit-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
-      background-image: -moz-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
-      background-image: -ms-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
-      background-image: -o-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
-      background-image: linear-gradient(to bottom, rgb(48, 47, 47), rgb(72, 72, 72));
-      text-decoration: none;
-    }
-  }
 }

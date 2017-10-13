@@ -17,15 +17,7 @@ function GameFieldStack(props) {
   })
 
   return connectDropTarget(
-    <div style={{
-      backgroundColor: 'black',
-      border: '1px solid gray', // TODO: remove later
-      color: 'white',
-      display: 'flex',
-      flexGrow: 1,
-      height: '100%',
-      width: '100%',
-    }}>
+    <div className="game-field-stack">
       <Stack cards={faceUpCards} firebaseStackRef={firebaseRef}  />
     </div>
   )

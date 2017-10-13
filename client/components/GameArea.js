@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import React, {Component} from 'react';
-import {getUserPlayerNum} from '../vanillaUtils'
+
 import {
   BlurOnGamePaused,
   BlurOnRoundOver,
@@ -28,40 +28,47 @@ class GameArea extends Component {
     if (!game.isInProgress) {
       tellReduxImLoading();
       return resetReduxForStartedDbGameInstance(gameRef)
-      .then(() => tellReduxImDoneLoading())
+      .then(() => setTimeout(tellReduxImDoneLoading(), 0))
+      .catch(console.error.bind(console));
     }
   }
 
-  render() {
-    const {user, players} = this.props;
-    const currentUserPlayerNum = getUserPlayerNum(user, players);
-    const otherPlayerNums = Object.keys(players).filter(playerNum => +playerNum !== +currentUserPlayerNum).map(num => +num);
-    console.log('players', players, 'otherPlayerNums', otherPlayerNums);
+  renderOtherPlayersByNum(playerNums) {
+    if (!playerNums.length) return null;
+    return playerNums.map(playerNum => {
       return (
-        <div>
+        <div key={playerNum} className="player-area-stacked-container">
+          <PlayerArea key={playerNum} playerNum={playerNum} />
+        </div>
+      )
+    })
+  }
+
+  render() {
+    const {userPlayerNum, otherPlayerNums} = this.props;
+    if (!otherPlayerNums.length) return null;
+
+    return (
+        <div className="game-area-wrapper">
         <BlurOnRoundOver >
-          <BlurOnGamePaused >
-            <h1>Game Area</h1>
-            <div id="gameArea" >
-              <div id="firstRow" className="container">
-                <PlayerArea playerNum={otherPlayerNums[0] || 1} />
-              </div>
-              <div id="secondRow" className="container">
-                <div style={{transform: 'rotate(270deg)'}}>
-                <PlayerArea
-                  playerNum={otherPlayerNums[1] || 2} />
-                  </div>
+
+          <div id="gameArea" className="game-area">
+
+            {this.renderOtherPlayersByNum(otherPlayerNums)}
+
+            <div className="game-field-stacked-container">
+
+              <div className="game-field-container">
                 <GameField />
-                  <div style={{transform: 'rotate(90deg)'}}>
-                    <PlayerArea
-                      playerNum={otherPlayerNums[2] || 3} />
-                  </div>
               </div>
-              <div id="thirdRow" className="container">
-              <PlayerArea playerNum={currentUserPlayerNum || 4} />
-              </div>
+
             </div>
-          </BlurOnGamePaused>
+
+            <div className="player-area-stacked-container">
+              <PlayerArea playerNum={userPlayerNum} isCurrentUser side="bottom" />
+            </div>
+
+          </div>
         </BlurOnRoundOver>
         <GameEndModal />
         <PauseModal />
@@ -73,8 +80,9 @@ class GameArea extends Component {
 function mapStateToProps (state) {
   return {
     game: state.game,
-    players: state.players,
     user: state.user,
+    userPlayerNum: state.game.userPlayerNum,
+    otherPlayerNums: Object.keys(state.players).filter(num => +num !== +state.game.userPlayerNum).map(num => +num),
     isRoundOver: state.game.isNertzCalled,
     isGamePaused: state.game.isGamePaused
   }
@@ -83,3 +91,4 @@ function mapStateToProps (state) {
 
 const reduxifiedGameArea = connect(mapStateToProps)(GameArea);
 export default DragDropContext(HTML5Backend)(reduxifiedGameArea)
+
