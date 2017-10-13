@@ -56,7 +56,6 @@ const styles = {
     alignContent: 'center',
     textAlign: 'center',
     color: 'rgb(255, 157, 0)',
-    position: 'fixed',
     height: '100%',
     width: '100%',
   }
