@@ -5,9 +5,11 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import React, {Component} from 'react';
 
 import {
+  BlurOnGamePaused,
   BlurOnRoundOver,
   GameEndModal,
   GameField,
+  PauseModal,
   PlayerArea,
 } from '../components';
 import {
@@ -24,7 +26,6 @@ class GameArea extends Component {
     const {game} = this.props;
     const gameRef = db.ref(`games/${this.props.match.params.gameId}`)
     if (!game.isInProgress) {
-
       tellReduxImLoading();
       return resetReduxForStartedDbGameInstance(gameRef)
       .then(() => setTimeout(tellReduxImDoneLoading(), 0))
@@ -68,8 +69,9 @@ class GameArea extends Component {
             </div>
 
           </div>
-          </BlurOnRoundOver>
+        </BlurOnRoundOver>
         <GameEndModal />
+        <PauseModal />
         </div>
       )
   }
@@ -82,6 +84,7 @@ function mapStateToProps (state) {
     userPlayerNum: state.game.userPlayerNum,
     otherPlayerNums: Object.keys(state.players).filter(num => +num !== +state.game.userPlayerNum).map(num => +num),
     isRoundOver: state.game.isNertzCalled,
+    isGamePaused: state.game.isGamePaused
   }
 }
 

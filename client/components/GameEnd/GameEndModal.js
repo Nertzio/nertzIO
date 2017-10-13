@@ -6,16 +6,26 @@ const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
 
   const styler = () => ({
     header: {
-      // width: '90%',
+      width: '90%',
+      fontSize: '20px',
+      color: 'rgb(72, 72, 72)'
     },
-  //   playerId: {
-  //     display: 'inline'
-  //   },
-  //   score: {
-  //     display: 'inline'
-  //   },
+    playerScore: {
+      fontSize: '20px'
+    },
+    playerId: {
+      display: 'inline',
+      color: 'rgb(72, 72, 72)'
+    },
+    score: {
+      marginLeft: '12px',
+      display: 'inline',
+      color: 'rgb(72, 72, 72)'
+    },
     bonusPoints: {
-      // width: '10%',
+      width: '10%',
+      color: 'rgb(72, 72, 72)',
+      fontSize: '15px'
     }
   })
 
@@ -74,22 +84,16 @@ const GameEndModal = ({players, isRoundOver, playerNumWhoCalledNertz}) => {
   //     })
   //   }
 
-  console.log("Players", players)
-  console.log("PlayerNumNertzETc", playerNumWhoCalledNertz)
-  console.log("Round Over", isRoundOver)
-
-
   // -------------- COMPONENT --------------------
 
   return (
     <Modal shouldShow={isRoundOver}>
-
       <div style={header}>{playerNumWhoCalledNertz && players && players[playerNumWhoCalledNertz].displayName} calls Nertz!</div>
-      <div style={bonusPoints}>+ 10pts</div>
-
-      <div style={header}>Let's see how everyone did:</div>
-      <div style={playerStats}>
-      <h2>{winner.displayName} is the winner!</h2>
+      <div style={bonusPoints}>+10pts</div>
+      <br />
+      <div style={header}>Let's see how everyone did...</div>
+      <div>
+      <h2 style={{fontSize: '37px', textAlign: 'center', color: 'rgb(72, 72, 72)'}}>{winner.displayName} is the winner!</h2>
         {renderPlayerStats()}
       </div>
 

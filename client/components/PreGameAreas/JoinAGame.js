@@ -88,7 +88,7 @@ class JoinAGame extends Component {
                 autoFocus/>
               <button className="startGameBtn" >Join Existing Game by Key</button>
             </form>
-            {this.state.showJoinGameError && <p>Game key provided does not match a playable game.</p>}
+            {this.state.showJoinGameError && <p style={{fontSize: '20'}}>Game key provided does not match a playable game.</p>}
           </div>
         </div>
       )
