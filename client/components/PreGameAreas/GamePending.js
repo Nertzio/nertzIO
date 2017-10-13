@@ -32,23 +32,19 @@ class GamePending extends Component {
 
     return (
       <div style={styles.GamePending}>
-
-        <h1>Waiting for Four Players...</h1>
-        <h3>Game Key: {this.gameKey}</h3>
-
-        <div style={{borderStyle: 'solid'}}>
+        <h1 style={{marginTop: '60px', fontSize: '70px', textShadow: '3px 3px 4px rgba(150, 150, 150, 3)'}}>Waiting for Four Players...</h1>
+        <h3 style={{color: 'rgb(72, 72, 72)', fontSize: '40px'}}>Game Key: {this.gameKey}</h3>
+        <div>
           {
             playerKeys.length === 4 ?
               this.startNewGame() :
               playerKeys.map((playerKey, index) => (
-
-              <h4 key={playerKey} >
+              <h4 key={playerKey} style={{fontSize: '35px', color: 'white'}}>
                 Player {index + 1}. {this.props.players[playerKey].displayName}
               </h4>
             ))
           }
         </div>
-
       </div>
     )
   }
@@ -56,9 +52,13 @@ class GamePending extends Component {
 
 const styles = {
   GamePending: {
-    backgroundColor: '#bbb',
+    backgroundColor: '#63A2A7',
     alignContent: 'center',
-    textAlign: 'center'
+    textAlign: 'center',
+    color: 'rgb(255, 157, 0)',
+    position: 'fixed',
+    height: '100%',
+    width: '100%',
   }
 }
 

@@ -79,10 +79,12 @@ const TopNavbar = ({userIsLoggedIn, currentUser, players, game, history}) => {
         zIndex: 100 * 1000,
       }}>
         <BarTop alignLeft>
-          <Link to="/">Nertz.io</Link>
+
+          <Link to="/">NertzIO</Link>
           <Link to="/about">About</Link>
           {/*<Link to="#">Leaderboard</Link>*/}
           <a href="//github.com/Nertzio/nertz.io">View on GitHub</a>
+
         </BarTop>
 
         <BarTop alignRight>
