@@ -8,6 +8,7 @@ import {
 import {
   goCountAllPlayersInGame,
   markGameAsInProgress,
+  // markGameAsUnpaused,
   registerUpdateHandlersOnGameRef,
   setGameRefForUtils,
   setPlayersToGameRef,
@@ -154,6 +155,7 @@ export const resetReduxForPendingGameInstance = (gameRef) => {
   setGameRefForUtils(gameRef)
   setGameRefInRedux(gameRef)
   markGameAsInProgress(); // this must come after gameRef being stored
+  // markGameAsUnpaused();
   updateReduxWhenPlayersJoinGame(gameRef)
 }
 

@@ -50,6 +50,10 @@ export const flip3ForPlayer = (playerNum) => {
     .catch(console.error.bind(console));
 }
 
-
-
+export const updateDbWithPauseStatus = () => {
+  const currentGameRef = getGame();
+  const currentDbPauseStatus = currentGameRef.child('isGamePaused').once('value')
+  .then(pauseSnapshot => pauseSnapshot.val())
+  currentGameRef.child('isGamePaused').set(!currentDbPauseStatus)
+}
 

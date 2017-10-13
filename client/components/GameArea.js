@@ -5,9 +5,11 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import React, {Component} from 'react';
 import {getUserPlayerNum} from '../vanillaUtils'
 import {
+  BlurOnGamePaused,
   BlurOnRoundOver,
   GameEndModal,
   GameField,
+  PauseModal,
   PlayerArea,
 } from '../components';
 import {
@@ -24,7 +26,6 @@ class GameArea extends Component {
     const {game} = this.props;
     const gameRef = db.ref(`games/${this.props.match.params.gameId}`)
     if (!game.isInProgress) {
-
       tellReduxImLoading();
       return resetReduxForStartedDbGameInstance(gameRef)
       .then(() => tellReduxImDoneLoading())
@@ -39,28 +40,31 @@ class GameArea extends Component {
       return (
         <div>
         <BlurOnRoundOver >
-          <h1>Game Area</h1>
-          <div id="gameArea" >
-            <div id="firstRow" className="container">
-              <PlayerArea playerNum={otherPlayerNums[0] || 1} />
+          <BlurOnGamePaused >
+            <h1>Game Area</h1>
+            <div id="gameArea" >
+              <div id="firstRow" className="container">
+                <PlayerArea playerNum={otherPlayerNums[0] || 1} />
+              </div>
+              <div id="secondRow" className="container">
+                <div style={{transform: 'rotate(270deg)'}}>
+                <PlayerArea
+                  playerNum={otherPlayerNums[1] || 2} />
+                  </div>
+                <GameField />
+                  <div style={{transform: 'rotate(90deg)'}}>
+                    <PlayerArea
+                      playerNum={otherPlayerNums[2] || 3} />
+                  </div>
+              </div>
+              <div id="thirdRow" className="container">
+              <PlayerArea playerNum={currentUserPlayerNum || 4} />
+              </div>
             </div>
-            <div id="secondRow" className="container">
-              <div style={{transform: 'rotate(270deg)'}}>
-              <PlayerArea
-                playerNum={otherPlayerNums[1] || 2} />
-                </div>
-              <GameField />
-                <div style={{transform: 'rotate(90deg)'}}>
-                  <PlayerArea
-                    playerNum={otherPlayerNums[2] || 3} />
-                </div>
-            </div>
-            <div id="thirdRow" className="container">
-            <PlayerArea playerNum={currentUserPlayerNum || 4} />
-            </div>
-          </div>
-          </BlurOnRoundOver>
+          </BlurOnGamePaused>
+        </BlurOnRoundOver>
         <GameEndModal />
+        <PauseModal />
         </div>
       )
   }
@@ -72,6 +76,7 @@ function mapStateToProps (state) {
     players: state.players,
     user: state.user,
     isRoundOver: state.game.isNertzCalled,
+    isGamePaused: state.game.isGamePaused
   }
 }
 

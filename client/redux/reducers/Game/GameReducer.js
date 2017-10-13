@@ -1,8 +1,7 @@
 
 const DEFAULT_GAME = {
   isInProgress: false,
-  // playerCanCallNertz
-  // isRoundOver: false,
+  isGamePaused: false,
   // isGameOver: false,
   // playingTo: 0,
   playerNumWhoCalledNertz: false, // initialized to false to avoid potential complications with player associations
@@ -15,6 +14,8 @@ const DEFAULT_GAME = {
 // const ROUND_START = 'ROUND_START';
 const GAME_IN_PROGRESS = 'GAME_IN_PROGRESS';
 const GAME_NOT_IN_PROGRESS = 'GAME_NOT_IN_PROGRESS';
+const GAME_PAUSED = 'GAME_PAUSED';
+const GAME_UNPAUSED = 'GAME_UNPAUSED';
 const SET_SCORE_LIMIT = 'SET_SCORE_LIMIT';
 const SET_USER_PLAYER_NUM = 'SET_USER_PLAYER_NUM';
 const SET_PLAYER_NUM_WHO_CALLED_NERTZ = 'SET_PLAYER_NUM_WHO_CALLED_NERTZ';
@@ -39,6 +40,14 @@ export const setGameInProgress = () => ({
 
 export const setGameNotInProgress = () => ({
   type: GAME_NOT_IN_PROGRESS,
+})
+
+export const setGameToPaused = () => ({
+  type: GAME_PAUSED,
+})
+
+export const setGameToUnpaused = () => ({
+  type: GAME_UNPAUSED,
 })
 
 // export const startNewRound = () => ({
@@ -80,6 +89,10 @@ const gameReducer = (game = DEFAULT_GAME, action) => {
       return {...game, isInProgress: true}
     case GAME_NOT_IN_PROGRESS:
       return {...game, isInProgress: false};
+    case GAME_PAUSED:
+      return {...game, isGamePaused: true}
+    case GAME_UNPAUSED:
+      return {...game, isGamePaused: false};
     case SET_SCORE_LIMIT:
       return {...game, scoreLimit: limit}
     case SET_USER_PLAYER_NUM:

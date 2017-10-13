@@ -10,6 +10,8 @@ import store, {
   setStackRef,
   setGameInProgress,
   setGameNotInProgress,
+  setGameToPaused,
+  setGameToUnpaused,
   // userActionTaken,
   // requireUserAction,
   // setGameOver,
@@ -87,6 +89,11 @@ export const setReduxGameProgressStatus = isInProgress => {
   else return dispatch(setGameNotInProgress());
 }
 
+// export const setReduxGamePauseStatus = isGamePaused => {
+//   if (isGamePaused) return dispatch(setGameToPaused());
+//   else return dispatch(setGameToUnpaused());
+// }
+
 export const setUserPlayerNumInRedux = (num) => {
   return dispatch(setUserPlayerNum(num));
 }
@@ -96,8 +103,7 @@ export const setPlayerNumWhoCalledNertzInRedux = (playerNumWhoCalledNertz) => {
 }
 
 export const setNertzHasBeenCalledInRedux = (isNertzCalled) => {
-  console.log('IS NERTZ CALLED SHOULD BE FALSE', isNertzCalled);
-return dispatch(setNertzHasBeenCalled(isNertzCalled));
+  return dispatch(setNertzHasBeenCalled(isNertzCalled));
 }
 
 export const startNewGameInRedux = () => {

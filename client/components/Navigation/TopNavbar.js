@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {BarTop, BarBufferInPx} from '../Common';
 import {getUserPlayerNum} from '../../vanillaUtils'
 import {
@@ -9,9 +9,13 @@ import {
   // startNewRoundInRedux,
   getStackInStoreByKey,
 } from '../../redux/reduxUtils';
-import {updateDbWithNertzCall, updateDbWithPlayerScores} from '../../firebase'
+import {updateDbWithNertzCall,
+  updateDbWithPlayerScores,
+  markGameAsNotInProgress,
+  // updateDbWithPauseStatus,
+} from '../../firebase'
 
-const TopNavbar = ({userIsLoggedIn, currentUser, players}) => {
+const TopNavbar = ({userIsLoggedIn, currentUser, players, game, history}) => {
   // Replaced this functionality with combination of callNertz button and firebase/redux utils for isNertzCalled
 
   // TODO: remove when done testing modal
@@ -27,10 +31,40 @@ const TopNavbar = ({userIsLoggedIn, currentUser, players}) => {
     updateDbWithPlayerScores()
   }
 
+  // const reshuffle = () => {
+  //   //TODO: add functionality to reshuffle
+  // }
+
+// //PAUSE BUTTON ON PAUSE
+//   const pause = () => {
+//     updateDbWithPauseStatus()
+//   }
+
   const ableToCallNertz = () => {
     const nertzPile = getStackInStoreByKey(`p${playerNum}LittleStack`);
     return nertzPile && !nertzPile.length;
   }
+
+  const handleSignOutOrQuitGame = () => {
+    if (game.isInProgress) {
+      Promise.resolve(markGameAsNotInProgress())
+      .then(() => history.push('/signout'))
+    } else {
+      history.push('/signout')
+    }
+  }
+
+  const handlePlayOrNewGame = () => {
+    if (game.isInProgress) {
+      Promise.resolve(markGameAsNotInProgress())
+      .then(() => history.push('/join'))
+    } else {
+      history.push('/join')
+    }
+  }
+
+  const signOutOrQuitGameLabel = game.isInProgress ? 'Quit Game' : 'Sign Out'
+  const playOrNewGameLabel = game.isInProgress ? 'New Game' : 'Play'
 
   return (
     <div>
@@ -45,24 +79,22 @@ const TopNavbar = ({userIsLoggedIn, currentUser, players}) => {
         zIndex: 100 * 1000,
       }}>
         <BarTop alignLeft>
+
           <Link to="/">NertzIO</Link>
-          <Link to="#">How To Play</Link>
-          <Link to="#">Leaderboard</Link>
-          <Link to="#">Other Useful Page</Link>
+          <Link to="/about">About</Link>
+          {/*<Link to="#">Leaderboard</Link>*/}
+          <a href="//github.com/Nertzio/nertz.io">View on GitHub</a>
+
         </BarTop>
 
         <BarTop alignRight>
-        {
-          ableToCallNertz() &&
-          <button onClick={callNertz}>CALL NERTZ!!</button>
-        }
-        {/* TODO: remove this after testing modal */}
-          {/*<button onClick={() => toggleRound()}>Toggle Round</button>
-          */}
-          {userIsLoggedIn && <Link to="/join">Play</Link>}
-          {userIsLoggedIn && <Link to="/account">Account</Link>}
-          {userIsLoggedIn && <Link to="/signout">Sign Out</Link>}
-          {!userIsLoggedIn && <Link to="/sigin">Sign In</Link>}
+          {game.isInProgress && ableToCallNertz() && <button onClick={callNertz}>CALL NERTZ!!</button>}
+          {/*{game.isInProgress && <button onClick={pause}>Pause</button>}*/}
+          {/*{game.isInProgress && <button onClick={reshuffle}>Reshuffle Cards</button>}*/}
+          {userIsLoggedIn && <button onClick={handlePlayOrNewGame}>{playOrNewGameLabel}</button>}
+          {userIsLoggedIn && <button onClick={handleSignOutOrQuitGame}>{signOutOrQuitGameLabel}</button>}
+          {/*{userIsLoggedIn && <Link to="/account">Account</Link>}*/}
+          {!userIsLoggedIn && <Link to="/signin">Sign In</Link>}
           {!userIsLoggedIn && <Link to="/signup">Sign Up</Link>}
         </BarTop>
 
@@ -77,7 +109,8 @@ const TopNavbar = ({userIsLoggedIn, currentUser, players}) => {
 const mapState = state => ({
   userIsLoggedIn: state.user.email,
   currentUser: state.user,
-  players: state.players
+  players: state.players,
+  game: state.game
 })
 
-export default connect(mapState, null)(TopNavbar);
+export default withRouter(connect(mapState, null)(TopNavbar));
