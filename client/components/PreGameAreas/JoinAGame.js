@@ -89,7 +89,7 @@ class JoinAGame extends Component {
                 autoFocus/>
               <button className="startGameBtn" >Join Existing Game by Key</button>
             </form>
-            {this.state.showJoinGameError && <p>Game key provided does not match a playable game.</p>}
+            {this.state.showJoinGameError && <p style={{fontSize: '20'}}>Game key provided does not match a playable game.</p>}
           </div>
         </div>
       )
@@ -99,9 +99,8 @@ class JoinAGame extends Component {
   const styles = {
     JoinAGame: {
       alignContent: 'center',
+      background: '#63A2A7',
       textAlign: 'center',
-      backgroundColor: '#63a2a7',
-      position: 'absolute',
       height: '100%',
       width: '100%',
       color: 'white',
