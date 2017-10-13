@@ -26,7 +26,7 @@ const Home = () => {
           color: 'white',
           fontFamily: '"Comic Sans MS", cursive, sans-serif',
           marginBottom: '70px'
-        }} >Nertz.io</h1>
+        }} >NertzIO</h1>
         <Link
           style={{
             textAlign: 'center',
