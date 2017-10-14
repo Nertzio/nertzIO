@@ -155,14 +155,13 @@ export const startGame = () => {
 }
 
 export const resetReduxForPendingGameInstance = (gameRef) => {
-    setGameRefForUtils(gameRef)
-    setGameRefInRedux(gameRef)
-    markGameAsInProgress() // this must come after gameRef being stored
-  return Promise.all([
-    queryUserPlayerNum().then(setUserPlayerNumInRedux),
-    updateReduxWhenPlayersJoinGame(gameRef),
-  ])
-
+  setGameRefForUtils(gameRef)
+  setGameRefInRedux(gameRef)
+  return Promise.resolve(markGameAsInProgress())
+  .then(() => Promise.all([
+  queryUserPlayerNum().then(playerNum => setUserPlayerNumInRedux(playerNum)),
+  updateReduxWhenPlayersJoinGame(gameRef),
+  ]))
 }
 
 export const resetReduxForStartedDbGameInstance = (gameRef) => {
