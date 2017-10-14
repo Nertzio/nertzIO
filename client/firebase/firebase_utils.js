@@ -58,22 +58,17 @@ export const markGameAsInProgress = () => {
 }
 
 export const queryUserPlayerNum = () => {
-  console.log("Getting to queryUserPlayerNum function?")
   const user = getCurrentUserInRedux()
   return getSnapshotOfAllPlayers()
     .then(playersData => {
-      console.log(playersData.val())
       return playersData.val()
     })
     .then(players => {
       if (!players) throw new Error('no players')
-      console.log("PLAYERS:", players)
       return players
     })
     .then(players => Object.values(players))
     .then(players => {
-      console.log("User", user)
-      console.log("Players", players)
       return getUserPlayerNum(user, players)
     }) // returns a key (at least in theory)
     .catch(err => {
