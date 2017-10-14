@@ -48,7 +48,6 @@ class GameArea extends Component {
     const {userPlayerNum, otherPlayerNums} = this.props;
     if (!otherPlayerNums.length) return null;
 
-    console.log("Other player nums", otherPlayerNums)
 
     return (
         <div className="game-area-wrapper">
