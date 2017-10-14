@@ -157,7 +157,7 @@ export const startGame = () => {
 export const resetReduxForPendingGameInstance = (gameRef) => {
   setGameRefForUtils(gameRef)
   setGameRefInRedux(gameRef)
-  return Promise.resolve(markGameAsInProgress())
+  return markGameAsInProgress()
   .then(() => Promise.all([
   queryUserPlayerNum().then(playerNum => setUserPlayerNumInRedux(playerNum)),
   updateReduxWhenPlayersJoinGame(gameRef),
