@@ -77,9 +77,9 @@ export const updateReduxWhenPlayerDataChanges = (gameRef) => {
 export const updateReduxWhenPlayersJoinGame = (gameRef) => {
   return gameRef.child('players').once('value')
     .then(allPlayers => {
-      return allPlayers.ref.on('child_added', (player, prevPlayerKey) => {
+      return allPlayers.ref.on('child_added', (player => {
         return updatePlayerInReduxByKey(player.key, player.val())
-      })
+      }))
     })
     .then(() => updateReduxWithPlayerScores(gameRef))
 }

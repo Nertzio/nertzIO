@@ -16,7 +16,6 @@ const DEFAULT_PLAYERS = {}
  */
 export const updatePlayerByKey = (playerKey, playerInfo) => {
   let player = {};
-
   player[playerKey] = playerInfo;
   return ({type: UPDATE_PLAYER, player})
 }

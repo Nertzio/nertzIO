@@ -27,7 +27,7 @@ class GameArea extends Component {
     const gameRef = db.ref(`games/${this.props.match.params.gameId}`)
     if (!game.isInProgress) {
       tellReduxImLoading();
-      return resetReduxForStartedDbGameInstance(gameRef)
+      return Promise.resolve(resetReduxForStartedDbGameInstance(gameRef))
       .then(() => setTimeout(tellReduxImDoneLoading(), 0))
       .catch(console.error.bind(console));
     }
@@ -47,6 +47,7 @@ class GameArea extends Component {
   render() {
     const {userPlayerNum, otherPlayerNums} = this.props;
     if (!otherPlayerNums.length) return null;
+
 
     return (
         <div className="game-area-wrapper">

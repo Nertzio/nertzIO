@@ -60,13 +60,17 @@ export const markGameAsInProgress = () => {
 export const queryUserPlayerNum = () => {
   const user = getCurrentUserInRedux()
   return getSnapshotOfAllPlayers()
-    .then(playersData => playersData.val())
+    .then(playersData => {
+      return playersData.val()
+    })
     .then(players => {
       if (!players) throw new Error('no players')
       return players
     })
     .then(players => Object.values(players))
-    .then(players => getUserPlayerNum(user, players))
+    .then(players => {
+      return getUserPlayerNum(user, players)
+    }) // returns a key (at least in theory)
     .catch(err => {
       if (err.message === 'no players') {
         console.warn('[@queryUserPlayerNum]: Tried to query players but found none');
