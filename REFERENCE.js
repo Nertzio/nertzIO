@@ -22,7 +22,7 @@ Board
 
 export default {
   games: {
-    'asdf23452': { // all games have uid; use nertz.io/play/asdf23452
+    'asdf23452': { // all games have uid
       'boardCells': {
         1: [{
             'belongsTo': 1, // player number
