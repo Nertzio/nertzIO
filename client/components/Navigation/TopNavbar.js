@@ -80,22 +80,22 @@ const TopNavbar = ({userIsLoggedIn, currentUser, players, game, history}) => {
       }}>
         <BarTop alignLeft>
 
-          <Link to="/">NertzIO</Link>
-          <Link to="/about">About</Link>
+          <Link className="NavBtn" to="/">NertzIO</Link>
+          <Link className="NavBtn" to="/about">About</Link>
           {/*<Link to="#">Leaderboard</Link>*/}
-          <a href="//github.com/Nertzio/nertz.io">View on GitHub</a>
+          <a className="NavBtn" href="//github.com/Nertzio/nertz.io">View on GitHub</a>
 
         </BarTop>
 
         <BarTop alignRight>
-          {game.isInProgress && ableToCallNertz() && <button onClick={callNertz}>CALL NERTZ!!</button>}
+          {game.isInProgress && ableToCallNertz() && <button className="NavBtn" id="nertzBtn" onClick={callNertz}>CALL NERTZ!!</button>}
           {/*{game.isInProgress && <button onClick={pause}>Pause</button>}*/}
           {/*{game.isInProgress && <button onClick={reshuffle}>Reshuffle Cards</button>}*/}
-          {userIsLoggedIn && <button onClick={handlePlayOrNewGame}>{playOrNewGameLabel}</button>}
-          {userIsLoggedIn && <button onClick={handleSignOutOrQuitGame}>{signOutOrQuitGameLabel}</button>}
+          {userIsLoggedIn && <button className="NavBtn" onClick={handlePlayOrNewGame}>{playOrNewGameLabel}</button>}
+          {userIsLoggedIn && <button className="NavBtn" onClick={handleSignOutOrQuitGame}>{signOutOrQuitGameLabel}</button>}
           {/*{userIsLoggedIn && <Link to="/account">Account</Link>}*/}
-          {!userIsLoggedIn && <Link to="/signin">Sign In</Link>}
-          {!userIsLoggedIn && <Link to="/signup">Sign Up</Link>}
+          {!userIsLoggedIn && <Link className="NavBtn" to="/signin">Sign In</Link>}
+          {!userIsLoggedIn && <Link className="NavBtn" to="/signup">Sign Up</Link>}
         </BarTop>
 
       {/* this hides under the absolute positioned bar to keep things from getting hidden under the Bar */}
