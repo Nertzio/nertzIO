@@ -22,10 +22,10 @@ const Home = () => {
       }}>
         <h1 style={{
           textAlign: 'center',
-          fontSize: '70px',
+          fontSize: '80px',
           color: 'white',
           fontFamily: '"Comic Sans MS", cursive, sans-serif',
-          marginBottom: '70px'
+          marginBottom: '80px'
         }} >NertzIO</h1>
         <Link
           style={{
@@ -35,7 +35,9 @@ const Home = () => {
             borderColor: 'black',
             backgroundColor: 'white',
             color: 'black',
-            boxShadow: '10px 5px 5px black',
+            boxShadow: '8px 4px 4px black',
+            fontSize: '20px',
+            borderRadius: '5px'
           }}
           to={'/signin'}
         >Join A Game!</Link>

@@ -92,13 +92,38 @@ html {
           }
 
           .startGameBtn:hover {
-            background: rgb(72, 72, 72);
+            background-color: rgb(72, 72, 72);
             background-image: -webkit-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
             background-image: -moz-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
             background-image: -ms-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
             background-image: -o-linear-gradient(top, rgb(48, 47, 47), rgb(72, 72, 72));
             background-image: linear-gradient(to bottom, rgb(48, 47, 47), rgb(72, 72, 72));
-            text-decoration: none;
+          }
+
+          .NavBtn {
+            color: #463f3f;
+            font-family: Arial;
+            font-size: 20px;
+            border: none;
+            padding: 8px;
+            background-color: white;
+            border-radius: 5px;
+          }
+
+          .NavBtn:hover {
+            background-color:  rgba(255, 153, 0, 0.37);
+          }
+
+          #nertzBtn {
+            font-size: 30px;
+            color: rgb(255, 153, 0);
+            font-weight: bold;
+            text-shadow: #d1d1d1;
+          }
+
+          #nertzBtn:hover {
+            background-color: #463f3f;
+            text-shadow: none;
           }
 
         .blur {
@@ -361,6 +386,7 @@ html {
                                             height: 100%;
                                             width: 100%;
                                             padding: 2%;
+                                            border: 1px solid rgba(82, 77, 77, 0.42);
                                         }
                                     }
                                 }
