@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {addNewGame, addPlayerToGame} from '../../firebase';
 import firebase from 'firebase'
+import {resetReduxStore} from '../../redux/reduxUtils'
 const db = firebase.database();
 
 class JoinAGame extends Component {
@@ -23,6 +24,10 @@ class JoinAGame extends Component {
     this.startGame = this
       .startGame
       .bind(this);
+  }
+
+  componentDidMount() {
+    resetReduxStore()
   }
 
   handleChange(event) {

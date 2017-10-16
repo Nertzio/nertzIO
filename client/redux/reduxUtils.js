@@ -27,6 +27,8 @@ import store, {
   updateFieldStackByKey,
   updatePlayerScoreByKey,
   updatePlayerListeningStatusByKey,
+  resetRedux,
+  addLocalUserInfo
 } from '../redux';
 const {dispatch} = store;
 
@@ -108,6 +110,12 @@ export const setNertzHasBeenCalledInRedux = (isNertzCalled) => {
 
 export const startNewGameInRedux = () => {
   return dispatch(startNewGame());
+}
+
+export const resetReduxStore = () => {
+  const user = getCurrentUserInRedux()
+  dispatch(resetRedux())
+  return dispatch(addLocalUserInfo(user))
 }
 
 // export const setRoundOverInRedux = () => {

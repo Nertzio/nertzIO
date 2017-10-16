@@ -13,7 +13,7 @@ import {
   user,
 } from './reducers';
 
-const reducer = combineReducers({
+const appReducer = combineReducers({
   app,
   firebaseRefs,
   game,
@@ -23,6 +23,19 @@ const reducer = combineReducers({
   // see note in ./dynamicFieldStackReducerGenerator about this:
   ...createNFieldStackReducers(32),
 })
+
+export const resetRedux = () => {
+  return {
+    type: 'RESET_REDUX',
+  }
+}
+
+const reducer = (state, action) => {
+  if(action.type === 'RESET_REDUX') {
+    state = undefined
+  }
+  return appReducer(state, action)
+}
 
 const middleware = applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 
