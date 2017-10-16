@@ -26,12 +26,12 @@ const appReducer = combineReducers({
 
 export const resetRedux = () => {
   return {
-    type: 'JOIN_GAME_MOUNTS',
+    type: 'RESET_REDUX',
   }
 }
 
 const reducer = (state, action) => {
-  if(action.type === 'JOIN_GAME_MOUNTS') {
+  if(action.type === 'RESET_REDUX') {
     state = undefined
   }
   return appReducer(state, action)
