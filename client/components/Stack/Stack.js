@@ -1,5 +1,5 @@
 import React from 'react'
-import Card from './Card'
+import {ConnectedDragCard as Card} from '../Card'
 import PropTypes from 'prop-types';
 
 const Stack = ({cards, firebaseStackRef}) => {
