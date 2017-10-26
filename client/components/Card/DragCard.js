@@ -1,6 +1,7 @@
 import React from 'react';
 import { DragSource } from 'react-dnd'
 import Card from './Card';
+import {removeFromStackAtPosition} from '../../firebase/gameplayUtils';
 import {
   ItemTypes,
   canIDragGivenStackKeyOwnStackAndPosition,
@@ -13,6 +14,7 @@ const DragCard = (props) => {
 }
 
 const cardSource = {
+  // this defines the data to be passed to DropTargetMonitor.getItem()
   beginDrag(props) {
     const {
       backgroundColor,
@@ -25,7 +27,7 @@ const cardSource = {
       symbol,
       textColor,
     } = props;
-    return { // accessed by DropTargetMonitor.getItem()
+    return {
       backgroundColor,
       belongsTo,
       displayName,
@@ -38,19 +40,15 @@ const cardSource = {
     }
   },
 
+  // fires any time drag action ends, regardless of if dropped on target
   endDrag({firebaseStackRef, stackPosition}, monitor){
+    // checks if successfully dropped on a valid target
     if (monitor.didDrop()) {
-      firebaseStackRef.once('value')
-      .then(stackSnapShot => {
-        if (stackSnapShot.numChildren() === 1) {
-          firebaseStackRef.set(false);
-        } else {
-          firebaseStackRef.child(stackPosition).remove()
-        }
-      })
+      removeFromStackAtPosition(firebaseStackRef, stackPosition);
     }
   },
 
+  // validates the conditions under which item can be dragged
   canDrag(props) {
     const {
       firebaseStackRef,
@@ -67,6 +65,7 @@ const cardSource = {
   }
 }
 
+// connect provides HTML5 DnD methods to inject into props
 function collect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
