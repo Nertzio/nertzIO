@@ -13,7 +13,7 @@ Check out our demo presentation of NertzIO on YouTube here: [https://youtu.be/_c
 
 ## [Play NertzIO With Your Friends](https://nertzio.herokuapp.com/join)
 
-Currently the app requires 4 players to play, so grab three friends and give it a go!
+You can find the app deployed on Heroku here: [https://nertzio.herokuapp.com/join](https://nertzio.herokuapp.com/join) Currently the app requires 4 players to play (want to help us fix that?), so grab three friends and give it a go!
 
 ## Contribute
 
