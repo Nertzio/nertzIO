@@ -6,8 +6,9 @@ import {
 } from '../../vanillaUtils';
 
 const mapState = (state, {belongsTo}) => ({
-  user: state.user,
+  // for CardBack's props.initials
   playerInitials: takeInitials(state.players[belongsTo].displayName),
+  // used in canDrag for DragCard
   userPlayerNum: state.game.userPlayerNum,
 })
 

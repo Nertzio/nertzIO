@@ -1,13 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import { CardFront, CardBack } from '../Card';
-import { DragSource } from 'react-dnd'
-import {
-  ItemTypes,
-  canIDragGivenStackKeyOwnStackAndPosition,
-  iOwnThisCard,
-} from '../../DragNDrop';
-
 
 export const Card = (props) => {
   const {

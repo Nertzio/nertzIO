@@ -1,7 +1,3 @@
-// card pattern and player identifier
-// design legible playing card
-
-
 import React from 'react';
 
 const CardBack = ({initials, color}) => {
