@@ -3,7 +3,7 @@
 
 NertzIO is a web app version of the fast-paced, real-time multiplayer card game, Nertz, a hybrid of Solitaire and Speed. It is a competitive game for four players using a pack of cards for each player. The players race to play the most cards in the field before someone depletes their Nertz pile.
 
-If you've never played Nertz before read up game mechanics [here](https://en.wikipedia.org/wiki/Nertz) and check out [this video](https://www.youtube.com/watch?v=iem-5SUCC8Q), and [this one too](https://www.youtube.com/watch?v=zvca2HKMW0c&t=194s).
+If you've never played Nertz before, you should read up game mechanics [here](https://en.wikipedia.org/wiki/Nertz) and check out [this video](https://www.youtube.com/watch?v=iem-5SUCC8Q), and [this one too](https://www.youtube.com/watch?v=zvca2HKMW0c&t=194s).
 
 The real-time user experience of this app is achieved utilizing [Firebase](https://firebase.google.com/products/realtime-database/), [React](https://reactjs.org/), [React DnD](https://react-dnd.github.io/react-dnd/) and [Redux](http://redux.js.org/) as core technologies.
 
