@@ -27,13 +27,9 @@ const setBigStackForPlayer = (playerNum, stack) => {
 }
 
 export const restartBigStackForPlayer = (playerNum) => {
-  // WAS USED FOR 'RESET BIG STACK' BUTTON
-  // const bigStack = getStackInStoreByKey(`p${playerNum}BigStack`);
   const drawnStack = getStackInStoreByKey(`p${playerNum}DrawnStack`);
   drawnStack.reverse() // mutate to maintain LIFO
   return Promise.all([
-    // WAS USED FOR 'RESET BIG STACK' BUTTON
-    // setBigStackForPlayer(playerNum, [...bigStack, ...drawnStack])
     setBigStackForPlayer(playerNum, [...drawnStack]),
     clearDrawnStackForPlayer(playerNum)
   ])
@@ -62,3 +58,14 @@ export const updateDbWithPauseStatus = () => {
   currentGameRef.child('isGamePaused').set(!currentDbPauseStatus)
 }
 
+
+export const removeFromStackAtPosition = (stackRef, position) => {
+  stackRef.once('value')
+  .then(stackSnapShot => {
+    if (stackSnapShot.numChildren() === 1) {
+      stackRef.set(false);
+    } else {
+      stackRef.child(position).remove()
+    }
+  })
+}

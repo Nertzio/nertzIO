@@ -1,5 +1,5 @@
 import React from 'react'
-import Card from './Card'
+import {ConnectedDragCard as Card} from '../Card'
 import { DragSource } from 'react-dnd'
 import {
   ItemTypes,

@@ -8,7 +8,7 @@ import {
 import firebase from 'firebase'
 const db = firebase.database()
 
-class GamePending extends Component {
+export class GamePending extends Component {
   constructor(props){
     super(props)
     this.gameKey = props.match.params.gameId;
